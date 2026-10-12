@@ -1,14 +1,9 @@
-<a href="https://opendrivelab.com/EgoHumanoid-V2/#overview">
-  <img src="assets/teaser.gif" width="1280" alt="EgoHumanoid-V2 animated paper teaser: robot-free human demonstrations, visual and coarse-to-fine action alignment, policy learning, and zero-shot whole-body loco-manipulation">
-</a>
-
-<h1 align="center">EgoHumanoid-V2</h1>
+<h1 align="center">OpenLambda</h1>
 
 <div align="center">
 
-[![arXiv](https://img.shields.io/badge/arXiv-2609.37181-b31b1b)](https://arxiv.org/abs/2609.37181)
-[![Project Page](https://img.shields.io/badge/Project-Page-6b46c1)](https://opendrivelab.com/EgoHumanoid-V2/)
-[![Video](https://img.shields.io/badge/Video-Overview-ea4335)](https://opendrivelab.com/EgoHumanoid-V2/assets/videos/project-overview-v14.mp4)
+[![Paper](https://img.shields.io/badge/Paper-λ₀-b31b1b)](https://lambdahumanoid.github.io/paper.pdf)
+[![Project Page](https://img.shields.io/badge/Project-Page-6b46c1)](https://lambdahumanoid.github.io/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue)](LICENSE)
 [![Homepage](https://img.shields.io/badge/Homepage-Jin%20Chen-2563eb)](https://jinchen0056.github.io/)
 [![Email](https://img.shields.io/badge/Contact-Email-555555)](mailto:cj65000816081@gmail.com)
@@ -16,12 +11,14 @@
 </div>
 
 <p align="center">
-  <strong>🤖 Human-to-humanoid skill transfer for coordinated whole-body loco&#8209;manipulation.</strong>
+  <strong>From human experience to humanoid foundation models.</strong>
 </p>
 
-Human demonstrations capture rich whole-body motion across diverse scenes without robot teleoperation. **EgoHumanoid-V2** transfers these coordinated skills to a humanoid through coarse-to-fine action alignment: kinematic reference correction improves motion targets, and dynamics-aware refinement improves their execution through a frozen whole-body controller.
+**OpenLambda** brings together data collection, human-to-robot alignment, foundation-model training, and deployment for humanoid loco-manipulation. It is the code repository for [λ₀](https://lambdahumanoid.github.io/paper.pdf), which learns coordinated locomotion, posture, and manipulation from egocentric human experience.
 
-Visual alignment replaces human arms with rendered robot arms, while training-time image augmentation improves viewpoint robustness. A **π₀.₅ vision-language-action policy** learns from the aligned demonstrations and executes through **Unitree G1 + BrainCo Revo2 + the SONIC whole-body controller**. The paper evaluates zero-shot transfer on four real-world tasks without target-task robot demonstrations.
+The project connects **HumanVerse-500**, a 500-hour whole-body human dataset, with a three-stage learning pipeline: egocentric hand-motion pretraining, robot-aligned whole-body human mid-training, and robot post-training. λ₀ combines a **Qwen3.5-2B** vision–language backbone with a generative action expert; on **Unitree G1**, its outputs drive the **SONIC** whole-body controller and **BrainCo Revo2** hands.
+
+The current release includes human capture, synchronization, action alignment, simulation replay, and hardware/environment setup. Dataset access, λ₀ training, model checkpoints, and deployment will be added as they become available.
 
 ---
 
@@ -31,7 +28,7 @@ Visual alignment replaces human arms with rendered robot arms, while training-ti
 
 ### Workflow & Release Checklist
 
-> **Coming soon:** The remaining unchecked items are expected to be released within the next two weeks. Stay tuned!
+> **Release in progress:** Checked items are available in this repository. The remaining components will be released progressively—stay tuned!
 
 1. **Hardware Setup**
    - [x] [Robot Hardware](#robot-data-collection-hardware)
@@ -39,17 +36,23 @@ Visual alignment replaces human arms with rendered robot arms, while training-ti
 2. **Environment Setup**
    - [x] [Robot Control & Data Collection](#robot-runtime-environment)
    - [x] [Human Data Collection](#human-collection-environment)
-   - [x] [Policy Training & Serving](#policy-environment)
+   - [x] [OpenPI Baseline Environment](#policy-environment)
 3. **Data Collection**
    - [x] [Human Collection](#human-data-collection)
    - [ ] [Robot Collection](#robot-data-collection)
 4. **Data Alignment**
    - [x] **[Action Alignment](#action-alignment)** ⭐
    - [ ] [Vision Alignment](#vision-alignment)
-5. **Model Training**
-   - [ ] Training pipeline
-6. **Policy Deployment**
-   - [ ] Deployment pipeline
+5. **[HumanVerse-500](#humanverse-500)**
+   - [ ] Dataset access and preparation
+6. **[λ₀ Foundation Model](#model-training)**
+   - [ ] Stage I · Egocentric hand-motion pretraining
+   - [ ] Stage II · Whole-body human mid-training
+   - [ ] Stage III · Robot post-training
+   - [ ] Model checkpoints
+7. **[Evaluation & Deployment](#deployment)**
+   - [ ] Simulation evaluation
+   - [ ] Real-robot deployment
 
 ---
 
@@ -133,7 +136,7 @@ Visual alignment replaces human arms with rendered robot arms, while training-ti
 
 ## 💻 Environment Setup
 
-We use three separate environments: one for robot control, teleoperation and data collection; one for collecting human demonstrations; and one for policy training and serving.
+The available tools use separate environments for robot control and action alignment, human data collection, and the OpenPI policy baseline. The λ₀ training environment will accompany the training release.
 
 <a id="prerequisites"></a>
 
@@ -234,7 +237,7 @@ source .venv-human/bin/activate
 <a id="policy-environment"></a>
 
 <details>
-<summary>🧠 <strong>Policy Training &amp; Serving</strong></summary>
+<summary>🧠 <strong>OpenPI Baseline</strong></summary>
 
 <p></p>
 <p>Ubuntu 22.04 · NVIDIA GPU and driver.</p>
@@ -309,7 +312,7 @@ Coming soon.
 
 ### 🦾 Action Alignment
 
-We provide one example trajectory for each of the four tasks in [examples](data_alignment/action_alignment/examples). The simulation replays below compare these trajectories before (left) and after (right) alignment.
+The action-alignment pipeline converts human motion into executable whole-body motion tokens through reference correction and dynamics-aware refinement. We provide four [example trajectories](data_alignment/action_alignment/examples) from [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/). The simulation replays below compare these trajectories before (left) and after (right) alignment.
 
 <table>
 <tr>
@@ -383,17 +386,35 @@ Coming soon.
 
 <a id="model-training"></a>
 
-## 🤖 Model Training
+## 🤖 λ₀ Foundation Model
 
-Coming soon.
+λ₀ learns from human and robot experience in three stages:
+
+| Stage | Supervision | Training objective |
+| :--- | :--- | :--- |
+| I · Pretraining | Egocentric hand–object datasets | Predict future hand-state tokens with the vision–language backbone. |
+| II · Mid-training | Robot-aligned HumanVerse whole-body demonstrations | Introduce the action expert and learn whole-body actions from human experience. |
+| III · Post-training | Robot demonstrations | Adapt the policy to downstream tasks and robot execution. |
+
+Training code, data preparation recipes, configurations, and checkpoints are coming soon. The currently provided OpenPI setup is a baseline environment, not the λ₀ training implementation. See the [paper](https://lambdahumanoid.github.io/paper.pdf) for the architecture and training recipe.
+
+<a id="humanverse-500"></a>
+
+### HumanVerse-500
+
+HumanVerse-500 pairs egocentric video with synchronized body and hand motion across open-world loco-manipulation tasks. Observation and action alignment turn these recordings into robot-compatible supervision for Stage II.
+
+Dataset access and preparation instructions are coming soon. The four action-alignment examples above are available now; they are not the full dataset release.
 
 <p></p>
 
 <a id="deployment"></a>
 
-## 🚀 Policy Deployment
+## 🚀 Evaluation & Deployment
 
-Coming soon.
+At deployment, λ₀ takes robot camera observations, language instructions, and proprioceptive state. It predicts SONIC motion tokens and Revo2 hand commands without a human motion stream.
+
+Simulation evaluation and real-robot deployment instructions are coming soon. For the currently available motion-level simulation tools, see [Action Alignment](#action-alignment).
 
 <p></p>
 
@@ -401,7 +422,21 @@ Coming soon.
 
 ## 📝 Citation
 
-If you use this work, please cite:
+For λ₀, please use the citation provided on the [project page](https://lambdahumanoid.github.io/):
+
+```bibtex
+@misc{xu2026generalhumanoidlocomanipulationmodel,
+  title={Towards a General Humanoid Loco-Manipulation Model via Egocentric Whole-Body Human Data Pretraining},
+  author={Chongyang Xu and Zhao Wu and Jin Chen and Yiming Jiang and Jinhui Ye and Yuming Jiang and Shifeng Zhang and Ziliang Feng and Mu Xu and Yilun Chen and Li Lu and Steven C. H. Hoi},
+  year={2026},
+  eprint={2610.00438},
+  archivePrefix={arXiv},
+  primaryClass={cs.RO},
+  url={https://arxiv.org/abs/2610.00438}
+}
+```
+
+If you use the EgoHumanoid-V2 collection and alignment components, please also cite:
 
 ```bibtex
 @article{chen2026egohumanoidv2,
@@ -422,7 +457,7 @@ If you use this work, please cite:
 
 We sincerely thank the following projects and teams:
 
-Presentation media comes from the [EgoHumanoid-V2 project page](https://opendrivelab.com/EgoHumanoid-V2/) and paper; assets retain their owners' rights.
+The initial collection and alignment components, hardware illustrations, and example videos are adapted from [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/). Assets retain their owners' rights. Existing command-line tools retain their `eh2-` names.
 
 | [![OpenPI](https://img.shields.io/badge/OpenPI-Physical%20Intelligence-d58b45)](https://github.com/Physical-Intelligence/openpi) | [![SONIC](https://img.shields.io/badge/SONIC-NVIDIA-76b900)](https://github.com/NVlabs/GR00T-WholeBodyControl) | [![XRoboToolkit](https://img.shields.io/badge/XRoboToolkit-PICO%20VR-397bbf)](https://github.com/XR-Robotics/XRoboToolkit-Unity-Client) | [![Open GoPro](https://img.shields.io/badge/Open%20GoPro-GoPro-009fdf)](https://github.com/gopro/OpenGoPro) |
 | :---: | :---: | :---: | :---: |
