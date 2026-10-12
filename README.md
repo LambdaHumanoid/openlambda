@@ -447,6 +447,20 @@ If you use the EgoHumanoid-V2 collection and alignment components, please also c
 }
 ```
 
+For long-range human-to-humanoid alignment, please also cite EgoAlign:
+
+```bibtex
+@misc{jiang2026egoalignbridginghumanhumanoidgap,
+  title={EgoAlign: Bridging the Human-Humanoid Gap for Long-Range Loco-Manipulation},
+  author={Yiming Jiang and Jin Chen and Chongyang Xu and Yilun Chen and Aimin Hao and Yisheng He},
+  year={2026},
+  eprint={2609.38046},
+  archivePrefix={arXiv},
+  primaryClass={cs.RO},
+  url={https://arxiv.org/abs/2609.38046}
+}
+```
+
 ---
 
 <p></p>
@@ -459,6 +473,6 @@ We sincerely thank the following projects and teams:
 
 The initial collection and alignment components, hardware illustrations, and example videos are adapted from [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/). Assets retain their owners' rights. Existing command-line tools retain their `eh2-` names.
 
-| [![OpenPI](https://img.shields.io/badge/OpenPI-Physical%20Intelligence-d58b45)](https://github.com/Physical-Intelligence/openpi) | [![SONIC](https://img.shields.io/badge/SONIC-NVIDIA-76b900)](https://github.com/NVlabs/GR00T-WholeBodyControl) | [![XRoboToolkit](https://img.shields.io/badge/XRoboToolkit-PICO%20VR-397bbf)](https://github.com/XR-Robotics/XRoboToolkit-Unity-Client) | [![Open GoPro](https://img.shields.io/badge/Open%20GoPro-GoPro-009fdf)](https://github.com/gopro/OpenGoPro) |
+| [![StarVLA](https://img.shields.io/badge/StarVLA-VLA%20Framework-d58b45)](https://github.com/starVLA/starVLA) | [![SONIC](https://img.shields.io/badge/SONIC-NVIDIA-76b900)](https://github.com/NVlabs/GR00T-WholeBodyControl) | [![XRoboToolkit](https://img.shields.io/badge/XRoboToolkit-PICO%20VR-397bbf)](https://github.com/XR-Robotics/XRoboToolkit-Unity-Client) | [![Open GoPro](https://img.shields.io/badge/Open%20GoPro-GoPro-009fdf)](https://github.com/gopro/OpenGoPro) |
 | :---: | :---: | :---: | :---: |
 | VLA&nbsp;models | Whole-body&nbsp;control | PICO&nbsp;tracking | GoPro&nbsp;interface |
