@@ -462,13 +462,3 @@ The initial collection and alignment components, hardware illustrations, and exa
 | [![OpenPI](https://img.shields.io/badge/OpenPI-Physical%20Intelligence-d58b45)](https://github.com/Physical-Intelligence/openpi) | [![SONIC](https://img.shields.io/badge/SONIC-NVIDIA-76b900)](https://github.com/NVlabs/GR00T-WholeBodyControl) | [![XRoboToolkit](https://img.shields.io/badge/XRoboToolkit-PICO%20VR-397bbf)](https://github.com/XR-Robotics/XRoboToolkit-Unity-Client) | [![Open GoPro](https://img.shields.io/badge/Open%20GoPro-GoPro-009fdf)](https://github.com/gopro/OpenGoPro) |
 | :---: | :---: | :---: | :---: |
 | VLA&nbsp;models | Whole-body&nbsp;control | PICO&nbsp;tracking | GoPro&nbsp;interface |
-
----
-
-## Contact
-
-Questions, ideas, or interested in collaborating? We'd love to hear from you—feel free to connect with Jin Chen on WeChat!
-
-<p align="center">
-  <a href="assets/wechat.png"><img src="assets/wechat.png" width="240" alt="Scan to add Jinstonn on WeChat"></a>
-</p>
