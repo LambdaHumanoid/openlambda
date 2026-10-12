@@ -1,3 +1,7 @@
+<a href="https://lambdahumanoid.github.io/">
+  <img src="assets/lambda-teaser.png" width="1280" alt="Lambda teaser: HumanVerse-500, three-stage training, and humanoid loco-manipulation">
+</a>
+
 <h1 align="center">OpenLambda</h1>
 
 <div align="center">
