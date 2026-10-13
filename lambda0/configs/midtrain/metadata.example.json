@@ -1,0 +1,21 @@
+{
+  "dataset_name": "humanverse_500_g1",
+  "handler": "lambda0.data.domain_handler.parquet_episode:ParquetEpisodeHandler",
+  "action_space": "robot_sonic_revo2",
+  "coordinate_contract": "g1_real_absolute_v1",
+  "embodiment_id": 0,
+  "root_path": "humanverse_500_g1",
+  "data_path": "data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet",
+  "video_path": "videos/chunk-{episode_chunk:03d}/{video_key}/episode_{episode_index:06d}.mp4",
+  "chunks_size": 1000,
+  "fps": 50,
+  "datalist": [
+    {
+      "episode_index": 0,
+      "length": 1000,
+      "tasks": [
+        "Your task instruction"
+      ]
+    }
+  ]
+}

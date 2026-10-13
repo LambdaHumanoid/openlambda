@@ -1,0 +1,21 @@
+{
+  "dataset_name": "egodex",
+  "handler": "lambda0.data.domain_handler.hand_state_episode:HandStateEpisodeHandler",
+  "action_space": "human_hand_geometry",
+  "coordinate_contract": "bilateral_hand_state_138_v1",
+  "embodiment_id": 0,
+  "root_path": "egodex",
+  "data_path": "data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet",
+  "video_path": "videos/chunk-{episode_chunk:03d}/{video_key}/episode_{episode_index:06d}.mp4",
+  "chunks_size": 1000,
+  "fps": 30,
+  "datalist": [
+    {
+      "episode_index": 0,
+      "length": 1000,
+      "tasks": [
+        "Describe the observed hand interaction"
+      ]
+    }
+  ]
+}
