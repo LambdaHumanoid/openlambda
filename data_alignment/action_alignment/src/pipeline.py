@@ -8,13 +8,13 @@ import numpy as np
 from scipy.signal import savgol_filter
 import torch
 
-from .refinement.decoder import load_torch_decoder_from_onnx, rollout_observations
+from .dynamics.decoder import load_torch_decoder_from_onnx, rollout_observations
 from .data.dataset import read_reference, write_episode, reference_metadata
-from .refinement.dynamics import optimize_tokens_for_linearized_task
-from .correction.feet import solve_foot_trajectory
-from .correction.human import correct_human_reference, human_scale
+from .dynamics.optimization import optimize_tokens_for_linearized_task
+from .robot.feet import solve_foot_trajectory
+from .human.reference import correct_human_reference, human_scale
 from .kinematics import G1Kinematics
-from .refinement.response import EndpointResponse, ResponseTask, measured_pair_delta
+from .dynamics.response import EndpointResponse, ResponseTask, measured_pair_delta
 from .simulation.rollout import encode_joints, encode_poses, replay_tokens
 from .selection import pelvis_limit_cm, rank_candidates, rollout_metrics
 
@@ -130,8 +130,8 @@ def endpoint_series(robot, capture):
 
 def initialize_hands(robot, generation, replay, targets):
     """Solve semantic palms from the initial reference in the replay body frame."""
-    from .correction.arm_ik import ArmIK
-    from .correction.arm_trajectory import transition_palm_targets, solve_arm_trajectory
+    from .robot.arm_ik import ArmIK
+    from .robot.arm_trajectory import transition_palm_targets, solve_arm_trajectory
 
     arms = ArmIK(robot)
     baseline = generation['body_q']
@@ -148,7 +148,7 @@ def initialize_hands(robot, generation, replay, targets):
 
 def initialize_feet(robot, generation, replay, targets, encoder_root):
     """Correct measured sole error around the fixed initial joint reference."""
-    from .correction.arm_trajectory import gravity_local_rotation_from_body_quat
+    from .robot.arm_trajectory import gravity_local_rotation_from_body_quat
     baseline = np.asarray(generation['body_q'], dtype=np.float64)
     positions = []
     for index, q in enumerate(baseline):

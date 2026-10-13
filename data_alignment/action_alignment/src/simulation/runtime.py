@@ -64,7 +64,7 @@ class InitialSupport:
 def initialize_stance(environment):
     """Set the controller's standing configuration once, before physics starts."""
     import mujoco
-    from ..refinement.decoder import DEFAULT_ANGLES_MUJOCO
+    from ..dynamics.decoder import DEFAULT_ANGLES_MUJOCO
     model, data = environment.mj_model, environment.mj_data
     data.qpos[model.jnt_qposadr[environment.body_joint_index]] = DEFAULT_ANGLES_MUJOCO
     if environment.use_floating_root_link:

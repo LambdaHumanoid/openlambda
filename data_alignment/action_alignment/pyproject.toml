@@ -15,5 +15,5 @@ lambda-render = "align.render:main"
 lambda-replay = "align.replay:main"
 
 [tool.setuptools]
-packages = ["align", "align.data", "align.correction", "align.refinement", "align.simulation"]
+packages = ["align", "align.data", "align.human", "align.robot", "align.dynamics", "align.simulation"]
 package-dir = {align = "src"}

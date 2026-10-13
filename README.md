@@ -316,7 +316,15 @@ Coming soon.
 
 ### 🦾 Action Alignment
 
-The action-alignment pipeline follows three stages: **human-reference alignment → robot-reference alignment → dynamics-aware optimization**. Human-reference alignment adapts SMPL collar, shoulder, and elbow poses using a uniformly scaled virtual body. All stages retain the original human palm targets and use the same Revo2 palm geometry for robot evaluation. Root motion, lower-body and spine poses, and wrist-local rotations remain unchanged during human-reference alignment. Foot tasks use robot-reference alignment and dynamics-aware optimization without the upper-body SMPL stage.
+Action alignment converts human SMPL motion into executable robot motion tokens through three stages:
+
+| Stage | Processing | Code |
+| :--- | :--- | :--- |
+| **H · Human-reference alignment** | Adjust SMPL collar, shoulder, and elbow poses using a uniformly scaled virtual body, then encode the corrected motion online and replay its tokens. | [human/](data_alignment/action_alignment/src/human) |
+| **K · Robot-reference alignment** | Correct robot joint trajectories with constrained inverse kinematics, then encode and replay the corrected reference. | [robot/](data_alignment/action_alignment/src/robot) |
+| **D · Dynamics-aware optimization** | Refine motion tokens using simulation feedback and a pretrained response MLP; evaluate each round in a fresh replay. | [dynamics/](data_alignment/action_alignment/src/dynamics) |
+
+The original human end-effector targets remain fixed throughout alignment. The human-reference stage preserves root motion, lower-body and spine poses, and wrist-local rotations. For foot tasks, H encodes the input SMPL directly without the upper-body correction; K and D optimize the foot targets.
 
 We provide four [example trajectories](data_alignment/action_alignment/examples) for replay and evaluation. These reference examples and videos predate the human-reference alignment stage. The simulation replays below compare their trajectories before (left) and after (right) alignment.
 
@@ -349,7 +357,7 @@ https://github.com/user-attachments/assets/71c1de99-8f2e-4ee1-875c-fe4be36db618
 
 **1. Align motion.**
 
-Place the input recording at `{task_name}/input.parquet`. Set `{endpoints}` to `hands` for hand alignment or `feet` for foot alignment.
+Activate the [robot control and action-alignment environment](#environment-setup) and run from the repository root. Place a synchronized human recording, or a copy of an example's `data.parquet`, at `{task_name}/input.parquet`. Set `{endpoints}` to `hands` or `feet`.
 
 ```bash
 lambda-align \
@@ -358,13 +366,30 @@ lambda-align \
   --output "results/{task_name}"
 ```
 
-Results are saved under `results/{task_name}/`: `data.parquet` contains the human SMPL motion and aligned tokens; `run.json` records per-round metrics and the selected round.
+Use a new output directory for each run. The default pipeline evaluates H, K, and D1–D8 and exports the selected eligible rollout:
 
-`H` encodes and replays the human SMPL reference, `K` is robot-reference alignment, and `D1`–`D8` are dynamics-aware optimization rounds. Hand tasks apply human-reference alignment before `H`; foot tasks retain the original H → K → D pipeline. The exported human SMPL remains the original reference; the corrected SMPL used by hand tasks is saved separately in `H/reference.npz`.
+```text
+results/{task_name}/
+├── data.parquet       # Original human SMPL and selected robot motion tokens
+├── run.json           # Stage metrics and selected round
+├── targets.npz        # Registered end-effector targets
+├── H/
+│   ├── reference.npz  # Corrected SMPL input (hand tasks only)
+│   ├── encode/        # Online SMPL encoding capture
+│   └── replay/        # Measured token replay
+├── K/
+│   ├── encode/        # Online robot-reference encoding capture
+│   └── replay/
+└── D1/ … D8/          # Per-round token replays
+```
+
+`run.json` records position error and pelvis displacement for each stage, plus orientation error for hand tasks. If no rollout passes selection, the report is retained without exporting `data.parquet`. The human reference in an exported `data.parquet` is unchanged; corrected hand-task SMPL is stored separately in `H/reference.npz`.
 
 **2. Replay motion.**
 
-**SMPL replay:** encode the human motion online to simulate before alignment.
+Use an example's `{task_name}/data.parquet`, or the generated `results/{task_name}/data.parquet`, as the input to either mode below.
+
+**SMPL replay:** drive the simulator by encoding the original human SMPL online. This shows the unaligned input motion; it does not apply H's human-reference correction.
 
 ```bash
 lambda-replay \
@@ -373,7 +398,7 @@ lambda-replay \
   --output "results/{task_name}/before"
 ```
 
-**Token replay:** replay the aligned motion tokens to simulate after alignment.
+**Token replay:** drive the simulator with the selected aligned motion tokens from the same file.
 
 ```bash
 lambda-replay \
@@ -383,6 +408,28 @@ lambda-replay \
 ```
 
 Each command saves `replay.mp4` in its output directory. Results may vary slightly between runs.
+
+<details>
+<summary>Code organization</summary>
+
+```text
+data_alignment/action_alignment/
+├── examples/          # Four prepared trajectories and reports
+├── pyproject.toml     # lambda-align, lambda-replay, lambda-render
+└── src/
+    ├── pipeline.py    # H → K → D orchestration
+    ├── human/         # Human-reference alignment
+    ├── robot/         # Robot-reference alignment
+    ├── dynamics/      # Dynamics-aware optimization and response MLP
+    ├── data/          # Input preparation and episode I/O
+    ├── simulation/    # Online encoding, replay, and state capture
+    ├── kinematics.py  # Shared robot geometry and end-effector definitions
+    ├── selection.py   # Rollout metrics and candidate selection
+    ├── replay.py      # SMPL/token replay entry point
+    └── render.py      # Render recorded simulation states
+```
+
+</details>
 
 <a id="vision-alignment"></a>
 
