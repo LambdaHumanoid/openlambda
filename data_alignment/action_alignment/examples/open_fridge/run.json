@@ -1,0 +1,69 @@
+{
+  "endpoints": "hands",
+  "fps": 50,
+  "human_displacement_cm": 30.89243120476299,
+  "pelvis_limit_cm": 37.07091744571559,
+  "rounds": [
+    {
+      "stage": "H",
+      "position_cm": 9.894011206610283,
+      "pelvis_cm": 15.31166139789659,
+      "orientation_deg": 39.8036056073088
+    },
+    {
+      "stage": "K",
+      "position_cm": 2.639592438039466,
+      "pelvis_cm": 13.81875232278366,
+      "orientation_deg": 11.565048893873733
+    },
+    {
+      "stage": "D1",
+      "position_cm": 1.9576183105235598,
+      "pelvis_cm": 13.55820876950633,
+      "orientation_deg": 9.356492214219372
+    },
+    {
+      "stage": "D2",
+      "position_cm": 1.6524510597245234,
+      "pelvis_cm": 14.121109504268558,
+      "orientation_deg": 7.539353706335716
+    },
+    {
+      "stage": "D3",
+      "position_cm": 1.6233461170756995,
+      "pelvis_cm": 14.320153173319037,
+      "orientation_deg": 5.976453593304069
+    },
+    {
+      "stage": "D4",
+      "position_cm": 1.663360300428773,
+      "pelvis_cm": 14.209526348922138,
+      "orientation_deg": 5.189951739328977
+    },
+    {
+      "stage": "D5",
+      "position_cm": 1.6606377545081146,
+      "pelvis_cm": 13.60741701554,
+      "orientation_deg": 4.635848498656074
+    },
+    {
+      "stage": "D6",
+      "position_cm": 1.7145663009980432,
+      "pelvis_cm": 14.48857392336122,
+      "orientation_deg": 4.194629005733317
+    },
+    {
+      "stage": "D7",
+      "position_cm": 1.6639196167787196,
+      "pelvis_cm": 14.533479593751974,
+      "orientation_deg": 4.001564978096419
+    },
+    {
+      "stage": "D8",
+      "position_cm": 1.6880001718746152,
+      "pelvis_cm": 14.325436250886058,
+      "orientation_deg": 3.835692902529321
+    }
+  ],
+  "selected": "D7"
+}
