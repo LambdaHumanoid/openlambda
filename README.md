@@ -325,13 +325,7 @@ https://github.com/user-attachments/assets/71c1de99-8f2e-4ee1-875c-fe4be36db618
 
 **1. Align motion.**
 
-The pipeline consists of three stages:
-
-- ![H — Human-reference alignment](https://img.shields.io/badge/H-Human--reference_alignment-2563EB): correct SMPL collar, shoulder, and elbow poses using a uniformly scaled virtual body while preserving the original end-effector targets, then encode and replay the motion.
-- ![K — Robot-reference alignment](https://img.shields.io/badge/K-Robot--reference_alignment-059669): correct robot joint trajectories through constrained inverse kinematics, then encode and replay the corrected reference.
-- ![D — Dynamics-aware optimization](https://img.shields.io/badge/D-Dynamics--aware_optimization-9333EA): refine motion tokens using simulation feedback and a pretrained response MLP.
-
-For foot tasks, H encodes the input SMPL directly without human-reference correction; K and D optimize the foot targets.
+The pipeline performs $\textcolor{#2563EB}{\text{human-reference alignment}}$, $\textcolor{#059669}{\text{robot-reference alignment}}$, and $\textcolor{#9333EA}{\text{dynamics-aware optimization}}$. For hand tasks, $\textcolor{#2563EB}{\text{H}}$ first corrects SMPL collar, shoulder, and elbow poses using a uniformly scaled virtual body while preserving the original end-effector targets. Foot tasks encode the input SMPL directly without this correction; $\textcolor{#059669}{\text{K}}$ and $\textcolor{#9333EA}{\text{D}}$ retain their joint-space and motion-token optimization.
 
 Place the input recording at `{task_name}/input.parquet`. Set `{endpoints}` to `hands` for hand alignment or `feet` for foot alignment.
 
