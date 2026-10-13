@@ -1,0 +1,9 @@
+{
+  "stage": "posttrain",
+  "data": {
+    "metas_path": "${SIMPLE_META_DIR}",
+    "datasets": [
+      "psi_simple_task_03"
+    ]
+  }
+}

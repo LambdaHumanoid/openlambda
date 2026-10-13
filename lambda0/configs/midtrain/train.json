@@ -1,0 +1,11 @@
+{
+  "stage": "midtrain",
+  "prediction_type": "velocity",
+  "model": "${STAGE1_EMA_DIR}",
+  "data": "${BUNDLE_DIR}",
+  "data_root": "${DATA_ROOT}",
+  "output": "${OUTPUT_DIR}",
+  "seed": 0,
+  "global_batch_size": 128,
+  "resume": "none"
+}

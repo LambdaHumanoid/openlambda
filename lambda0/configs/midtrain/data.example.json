@@ -1,0 +1,35 @@
+{
+  "stage": "midtrain",
+  "data": {
+    "metas_path": "${METADATA_DIR}",
+    "datasets": [
+      "humanverse_500_g1"
+    ],
+    "sampling": {
+      "strategy": "hierarchical_iid",
+      "groups": [
+        {
+          "name": "robot",
+          "action_space": "robot_sonic_revo2",
+          "weight": 1.0,
+          "datasets": {
+            "mode": "explicit",
+            "weights": {
+              "humanverse_500_g1": 1.0
+            }
+          },
+          "task": {
+            "mode": "none",
+            "key": null
+          },
+          "episode": {
+            "mode": "uniform"
+          },
+          "timestep": {
+            "mode": "uniform"
+          }
+        }
+      ]
+    }
+  }
+}

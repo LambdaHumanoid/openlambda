@@ -13,7 +13,7 @@ logs/
 work/
 /sonic/
 /openpi/
-data/
+/data/
 !/data_alignment/action_alignment/src/data/
 checkpoints/
 weights/

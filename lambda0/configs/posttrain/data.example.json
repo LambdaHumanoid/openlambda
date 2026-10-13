@@ -1,0 +1,9 @@
+{
+  "stage": "posttrain",
+  "data": {
+    "metas_path": "${METADATA_DIR}",
+    "datasets": [
+      "my_robot_dataset"
+    ]
+  }
+}

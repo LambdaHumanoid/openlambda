@@ -1,0 +1,21 @@
+{
+  "stage": "posttrain",
+  "initialization": "vlm",
+  "prediction_type": "velocity",
+  "model": "${VLM_MODEL_DIR}",
+  "data": "${BUNDLE_DIR}",
+  "data_root": "${DATA_ROOT}",
+  "output": "${OUTPUT_DIR}",
+  "seed": 0,
+  "batch_size": 4,
+  "global_batch_size": 16,
+  "gradient_accumulation_steps": 1,
+  "resume": "none",
+  "training": {
+    "iters": 40000,
+    "num_domains": 8,
+    "trainable_action_space_ids": [
+      3
+    ]
+  }
+}

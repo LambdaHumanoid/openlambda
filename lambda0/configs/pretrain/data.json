@@ -1,0 +1,18 @@
+{
+  "stage": "pretrain",
+  "data": {
+    "metas_path": "${METADATA_DIR}",
+    "datasets": [
+      "egodex",
+      "egoverse",
+      "ho_cap",
+      "hoi4d",
+      "holoassist",
+      "hot3d",
+      "vitra_1m"
+    ],
+    "sampling": {
+      "strategy": "sqrt_frames"
+    }
+  }
+}
