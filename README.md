@@ -338,8 +338,6 @@ lambda-align \
 
 Results are saved under `results/{task_name}/`: `data.parquet` contains the original human SMPL motion and aligned tokens; `run.json` records per-round metrics and the selected round.
 
-Corrected SMPL for hand tasks is saved separately in `H/reference.npz`.
-
 **2. Replay motion.**
 
 **SMPL replay:** encode the original human motion online, without human-reference correction, to simulate before alignment.
