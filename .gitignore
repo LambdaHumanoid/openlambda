@@ -24,6 +24,7 @@ weights/
 *.npz
 *.npy
 *.mp4
+!/data_alignment/action_alignment/examples/*/comparison.mp4
 *.svo2
 *.pt
 *.pth

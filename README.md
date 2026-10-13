@@ -304,25 +304,25 @@ Action alignment converts human SMPL motion into executable robot motion tokens 
 
 The original human end-effector targets remain fixed throughout alignment. The human-reference stage preserves root motion, lower-body and spine poses, and wrist-local rotations. For foot tasks, H encodes the input SMPL directly without the upper-body correction; K and D optimize the foot targets.
 
-We provide four [example trajectories](data_alignment/action_alignment/examples) for replay and evaluation. These reference examples and videos predate the human-reference alignment stage. The simulation replays below compare their trajectories before (left) and after (right) alignment.
+We provide four [example trajectories](data_alignment/action_alignment/examples) for replay and evaluation. The three hand-task examples have been regenerated with the H → K → D pipeline; the foot-task drawer example is unchanged. Each comparison shows original SMPL online driving on the left (**Unaligned**) and the exact selected robot rollout on the right (**Aligned**).
 
 <table>
 <tr>
 <td width="50%">
 
-https://github.com/user-attachments/assets/ea461aca-9635-46b3-b522-6a3471bf7dc6
+[Close laptop — watch comparison](data_alignment/action_alignment/examples/close_laptop/comparison.mp4)
 
 </td>
 <td width="50%">
 
-https://github.com/user-attachments/assets/68c5a826-4416-4180-a525-5b584e38e250
+[Open fridge — watch comparison](data_alignment/action_alignment/examples/open_fridge/comparison.mp4)
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-https://github.com/user-attachments/assets/906522e9-1088-4619-9d0f-6d2844623d29
+[Pull curtain — watch comparison](data_alignment/action_alignment/examples/pull_curtain/comparison.mp4)
 
 </td>
 <td width="50%">
@@ -332,6 +332,16 @@ https://github.com/user-attachments/assets/71c1de99-8f2e-4ee1-875c-fe4be36db618
 </td>
 </tr>
 </table>
+
+**Updated hand-task results.** Values compare the previously published selected rollout with the new selected rollout on the same human reference (previous → current).
+
+| Task | Selected round | Position error (cm) ↓ | Orientation error (°) ↓ | Max. horizontal pelvis displacement (cm) |
+| :--- | :---: | ---: | ---: | ---: |
+| Close laptop | D4 → D4 | 2.63 → 2.26 | 9.04 → 10.81 | 3.72 → 2.88 |
+| Open fridge | D8 → D4 | 2.79 → 1.72 | 5.41 → 6.23 | 11.91 → 18.62 |
+| Pull curtain | D7 → D4 | 3.76 → 2.45 | 6.88 → 10.07 | 53.33 → 50.40 |
+
+Position error decreases by 13.8%, 38.5%, and 34.9%, respectively, and all three selected rollouts improve the existing combined position/orientation score. Orientation error increases in all three cases; pelvis displacement increases for opening the fridge. These are individual example reruns, not a repeated-trial benchmark or evidence of uniformly improved stability. The current per-round measurements are included in each example's `run.json`.
 
 **1. Align motion.**
 
