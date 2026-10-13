@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from ..kinematics import gravity_rotation
+from .kinematics import gravity_rotation
 
 
 ACTIVE_JOINTS = np.array([13, 14, 16, 17, 18, 19]) - 1

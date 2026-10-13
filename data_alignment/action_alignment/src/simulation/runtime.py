@@ -64,7 +64,7 @@ class InitialSupport:
 def initialize_stance(environment):
     """Set the controller's standing configuration once, before physics starts."""
     import mujoco
-    from ..dynamics.decoder import DEFAULT_ANGLES_MUJOCO
+    from ..refinement.decoder import DEFAULT_ANGLES_MUJOCO
     model, data = environment.mj_model, environment.mj_data
     data.qpos[model.jnt_qposadr[environment.body_joint_index]] = DEFAULT_ANGLES_MUJOCO
     if environment.use_floating_root_link:
@@ -180,7 +180,7 @@ def create_environment(config, scene=None):
 
     class Revo2Environment(ContinuousEnvironment):
         def init_scene(self):
-            self.robot.NUM_HAND_JOINTS = self.num_hand_dof = 16
+            self.correction.NUM_HAND_JOINTS = self.num_hand_dof = 16
             self.torques = np.zeros(61)
             body_limits = self.torque_limit[np.r_[0:22, 29:36]].copy()
             super().init_scene()

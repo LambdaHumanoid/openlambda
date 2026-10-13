@@ -7,7 +7,7 @@ from typing import Callable
 import numpy as np
 import torch
 
-from align.dynamics.decoder import JointTargetDecoder
+from align.refinement.decoder import JointTargetDecoder
 
 
 def _bounded_delta(

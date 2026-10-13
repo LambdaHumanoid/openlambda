@@ -3,7 +3,7 @@ import json
 
 import numpy as np
 
-from ..dynamics.decoder import ISAACLAB_TO_MUJOCO
+from ..refinement.decoder import ISAACLAB_TO_MUJOCO
 
 MUJOCO_TO_ISAACLAB = np.argsort(ISAACLAB_TO_MUJOCO)
 
