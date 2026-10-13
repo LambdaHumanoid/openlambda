@@ -40,7 +40,7 @@ The current release includes human capture, synchronization, action alignment, s
 2. **Environment Setup**
    - [x] [Robot Control & Data Collection](#robot-runtime-environment)
    - [x] [Human Data Collection](#human-collection-environment)
-   - [x] [OpenPI Baseline Environment](#policy-environment)
+   - [ ] [λ₀ Training & Inference Environment](#policy-environment)
 3. **Data Collection**
    - [x] [Human Collection](#human-data-collection)
    - [ ] [Robot Collection](#robot-data-collection)
@@ -140,7 +140,7 @@ The current release includes human capture, synchronization, action alignment, s
 
 ## 💻 Environment Setup
 
-The available tools use separate environments for robot control and action alignment, human data collection, and the OpenPI policy baseline. The λ₀ training environment will accompany the training release.
+The available tools use separate environments for robot control and action alignment, and human data collection. The λ₀ training and inference environment is TBD.
 
 <a id="prerequisites"></a>
 
@@ -241,31 +241,9 @@ source .venv-human/bin/activate
 <a id="policy-environment"></a>
 
 <details>
-<summary>🧠 <strong>OpenPI Baseline</strong></summary>
+<summary>🧠 <strong>λ₀ Training & Inference</strong></summary>
 
-<p></p>
-<p>Ubuntu 22.04 · NVIDIA GPU and driver.</p>
-
-**1. Install dependencies.**
-
-```bash
-sudo apt-get update
-sudo apt-get install -y --no-install-recommends ca-certificates curl git build-essential libgl1 libglib2.0-0
-curl -LsSf https://astral.sh/uv/0.11.14/install.sh | sh
-source "$HOME/.local/bin/env"
-```
-
-**2. Install [OpenPI](https://github.com/Physical-Intelligence/openpi#installation).**
-
-```bash
-bash setup/policy/install.sh
-```
-
-**3. Activate environment.**
-
-```bash
-source openpi/.venv/bin/activate
-```
+TBD — environment dependencies and installation instructions will accompany the λ₀ code release.
 
 </details>
 
@@ -451,7 +429,7 @@ Coming soon.
 | II · Mid-training | Robot-aligned HumanVerse whole-body demonstrations | Introduce the action expert and learn whole-body actions from human experience. |
 | III · Post-training | Robot demonstrations | Adapt the policy to downstream tasks and robot execution. |
 
-Training code, data preparation recipes, configurations, and checkpoints are coming soon. The currently provided OpenPI setup is a baseline environment, not the λ₀ training implementation. See the [paper](https://lambdahumanoid.github.io/paper.pdf) for the architecture and training recipe.
+**TBD:** λ₀ training code, data preparation recipes, configurations, and checkpoints. See the [paper](https://lambdahumanoid.github.io/paper.pdf) for the architecture and training recipe.
 
 <a id="humanverse-500"></a>
 
@@ -469,7 +447,7 @@ Dataset access and preparation instructions are coming soon. The four action-ali
 
 At deployment, λ₀ takes robot camera observations, language instructions, and proprioceptive state. It predicts SONIC motion tokens and Revo2 hand commands without a human motion stream.
 
-Simulation evaluation and real-robot deployment instructions are coming soon. For the currently available motion-level simulation tools, see [Action Alignment](#action-alignment).
+**TBD:** λ₀ inference code, policy serving, simulation evaluation, and real-robot deployment instructions. For the currently available motion-level simulation tools, see [Action Alignment](#action-alignment).
 
 <p></p>
 

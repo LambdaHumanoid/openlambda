@@ -141,6 +141,4 @@ uv pip check --python .venv/bin/python
 .venv/bin/python gear_sonic/scripts/pico_manager_thread_server.py --help >/dev/null
 .venv/bin/python gear_sonic/scripts/run_data_exporter.py --help >/dev/null
 .venv/bin/python gear_sonic/scripts/run_gopro_receiver.py --help >/dev/null
-.venv/bin/python -c 'from gear_sonic.utils.inference.openpi_http_policy import OpenPIHttpPolicy'
-.venv/bin/python gear_sonic/scripts/run_vla_inference.py --help >/dev/null
 echo "Installed host environment. Activate with: source \"$PWD/.venv/bin/activate\""
