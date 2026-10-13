@@ -360,7 +360,7 @@ eh2-align \
 
 Results are saved under `results/{task_name}/`: `data.parquet` contains the human SMPL motion and aligned tokens; `run.json` records per-round metrics and the selected round.
 
-`B` is the uncorrected baseline, `H` is human-reference correction (hands), `K` is robot-reference correction, and `D1`–`D8` are dynamics refinement rounds. The exported human SMPL remains the original reference; the corrected SMPL used by `H` is saved separately in `H/reference.npz`.
+`H` encodes and replays the human SMPL reference, `K` is robot-reference correction, and `D1`–`D8` are dynamics refinement rounds. Hand tasks apply human-reference correction before `H`; foot tasks retain the original H → K → D pipeline. The exported human SMPL remains the original reference; the corrected SMPL used by hand tasks is saved separately in `H/reference.npz`.
 
 **2. Replay motion.**
 
