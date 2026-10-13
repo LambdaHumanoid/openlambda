@@ -310,19 +310,19 @@ We provide four [example trajectories](data_alignment/action_alignment/examples)
 <tr>
 <td width="50%">
 
-[Close laptop — watch comparison](data_alignment/action_alignment/examples/close_laptop/comparison.mp4)
+https://github.com/user-attachments/assets/0716f1fc-4598-4b88-a05d-f086044682dc
 
 </td>
 <td width="50%">
 
-[Open fridge — watch comparison](data_alignment/action_alignment/examples/open_fridge/comparison.mp4)
+https://github.com/user-attachments/assets/ab1aff25-0df6-4126-8d0f-f6ac6e7f6b05
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-[Pull curtain — watch comparison](data_alignment/action_alignment/examples/pull_curtain/comparison.mp4)
+https://github.com/user-attachments/assets/c45d3cf8-d391-4d8b-9bde-c5bfaa7b0f85
 
 </td>
 <td width="50%">
