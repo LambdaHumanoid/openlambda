@@ -172,7 +172,7 @@ def encode_joints(sonic_root, joints, velocities, quaternions, output, *, fps=50
 
 def encode_poses(sonic_root, joints, poses, quaternions, output, *, fps=50,
                  scene=None, hands=None):
-    """Online H encoding from SMPL history; replay its tokens separately."""
+    """Online human encoding from SMPL history; replay its tokens separately."""
     joints, poses, quat = _trajectories((joints, poses, quaternions), ((24, 3), (21, 3), (4,)))
     startup = [np.repeat(value[:1], 5, axis=0) for value in (joints, poses, quat)]
     lead_joints, lead_poses, lead_quat, blend = pose_startup(joints[0], poses[0], quat[0], fps)

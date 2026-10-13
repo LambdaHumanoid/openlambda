@@ -316,7 +316,9 @@ Coming soon.
 
 ### 🦾 Action Alignment
 
-The action-alignment pipeline converts human motion into executable whole-body motion tokens through reference correction and dynamics-aware refinement. We provide four [example trajectories](data_alignment/action_alignment/examples) from [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/). The simulation replays below compare these trajectories before (left) and after (right) alignment.
+The action-alignment pipeline follows three stages: **human-reference correction → robot-reference correction → dynamics-aware refinement**. Human-reference correction adapts SMPL collar, shoulder, and elbow poses using a uniformly scaled virtual body. All stages retain the original human palm targets and use the same Revo2 palm geometry for robot evaluation. Root motion, lower-body and spine poses, and wrist-local rotations remain unchanged during human-reference correction. Foot tasks use robot-reference correction and dynamics refinement without the upper-body SMPL stage.
+
+We provide four [example trajectories](data_alignment/action_alignment/examples) from [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/). These reference examples and videos predate the added human-reference stage. The simulation replays below compare their trajectories before (left) and after (right) alignment.
 
 <table>
 <tr>
@@ -357,6 +359,8 @@ eh2-align \
 ```
 
 Results are saved under `results/{task_name}/`: `data.parquet` contains the human SMPL motion and aligned tokens; `run.json` records per-round metrics and the selected round.
+
+`B` is the uncorrected baseline, `H` is human-reference correction (hands), `K` is robot-reference correction, and `D1`–`D8` are dynamics refinement rounds. The exported human SMPL remains the original reference; the corrected SMPL used by `H` is saved separately in `H/reference.npz`.
 
 **2. Replay motion.**
 

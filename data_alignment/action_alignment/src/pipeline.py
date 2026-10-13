@@ -1,4 +1,4 @@
-"""H → K → D alignment from prepared human references and fresh rollouts."""
+"""Human-reference → robot-reference → dynamics alignment with a raw baseline."""
 
 import argparse
 import json
@@ -12,6 +12,7 @@ from .refinement.decoder import load_torch_decoder_from_onnx, rollout_observatio
 from .data.dataset import read_reference, write_episode
 from .refinement.dynamics import optimize_tokens_for_linearized_task
 from .correction.feet import solve_foot_trajectory
+from .correction.human import correct_human_reference, human_scale
 from .kinematics import G1Kinematics
 from .refinement.response import EndpointResponse, ResponseTask, measured_pair_delta
 from .simulation.rollout import encode_joints, encode_poses, replay_tokens
@@ -272,8 +273,9 @@ def run_prepared(prepared, *, sonic_root, urdf, scene, output, endpoints, rounds
         device=torch.device(device))
     options = dict(fps=fps, scene=scene, hands=prepared['hands'])
     generated = encode_poses(sonic_root, prepared['joints'], prepared['poses'],
-                             prepared['quaternions'], output/'H'/'encode', **options)
-    current = replay_tokens(sonic_root, generated['token_state'], output/'H'/'replay', **options)
+                             prepared['quaternions'], output/'B'/'encode', **options)
+    current = replay_tokens(sonic_root, generated['token_state'], output/'B'/'replay', **options)
+    # Register once from the uncorrected reference, identically for B/H/K/D.
     targets = register_targets(prepared['targets'], prepared['human_height'], generated['odometry_world'])
     np.savez_compressed(output/'targets.npz', poses=targets)
     report = dict(endpoints=endpoints, fps=fps, human_displacement_cm=human_displacement,
@@ -302,11 +304,22 @@ def run_prepared(prepared, *, sonic_root, urdf, scene, output, endpoints, rounds
         (output/'run.json').write_text(json.dumps(report, indent=2) + '\n')
         print(json.dumps(row), flush=True)
 
-    record('H', current)
+    record('B', current)
+    if endpoints == 'hands':
+        corrected = correct_human_reference(
+            prepared, sonic_root=sonic_root, scale=human_scale(robot, sonic_root, urdf=urdf), device=device)
+        (output/'H').mkdir()
+        np.savez_compressed(output/'H'/'reference.npz', joints=corrected['joints'],
+                            poses=corrected['poses'], quaternions=corrected['quaternions'])
+        generated = encode_poses(sonic_root, corrected['joints'], corrected['poses'],
+                                 corrected['quaternions'], output/'H'/'encode', **options)
+        current = replay_tokens(sonic_root, generated['token_state'], output/'H'/'replay', **options)
+        record('H', current)
+    initialization = current
     encoder_root = np.asarray(prepared['quaternions'], dtype=float)
     encoder_root = encoder_root / np.linalg.norm(encoder_root, axis=1, keepdims=True)
     if endpoints == 'hands':
-        q = initialize_hands(robot, generated, current, targets)
+        q = initialize_hands(robot, initialization, initialization, targets)
     else:
         q = initialize_feet(robot, generated, current, targets, encoder_root)
     velocity = np.gradient(q, 1/fps, axis=0)
@@ -321,7 +334,7 @@ def run_prepared(prepared, *, sonic_root, urdf, scene, output, endpoints, rounds
         tokens = refine_round(current, targets, robot, decoder,
                                               weights, response_model=model_path,
                                               device=device, safe=round_index == 8)
-        tokens = blend_startup_reference(captures['H']['token_state'], tokens)
+        tokens = blend_startup_reference(initialization['token_state'], tokens)
         (output/name).mkdir()
         trial = replay_tokens(sonic_root, tokens, output/name/'replay', **options)
         record(name, trial)
