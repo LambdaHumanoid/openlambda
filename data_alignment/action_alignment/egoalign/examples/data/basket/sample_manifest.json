@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "episode_index": 0,
+  "raw_frames": 1009,
+  "source_parquet_sha256": "44755ff68e435ae3341caf61f2fb21cb7906b079e605d107bb9de1dfd7f8be10",
+  "numerical_parquet_values_unchanged": true,
+  "videos": [
+    {
+      "path": "videos/chunk-000/observation.images.gopro/episode_000000.mp4",
+      "source_sha256": "1606095a99acbc8dfe043a3a0cffaabfabdc8d25f109c83f7bc378af7732d7b2",
+      "video_packets_and_timestamps_unchanged": true
+    },
+    {
+      "path": "videos/chunk-000/observation.images.level-cam/episode_000000.mp4",
+      "source_sha256": "88e04d3d403d6dc08fbff429281cc178d3a4f452848c0bfedbea764f11860b93",
+      "video_packets_and_timestamps_unchanged": true
+    }
+  ],
+  "files": [
+    {
+      "path": "data/chunk-000/episode_000000.parquet",
+      "bytes": 3629679,
+      "sha256": "fc38ddbf5d5968a9ab4a82ff7bfa875ed5e44c53ea47ca43d8f5c9ecaec316f5"
+    },
+    {
+      "path": "meta/episodes.jsonl",
+      "bytes": 97,
+      "sha256": "194cad9a3e1603190f8cd12e338adaa49f858eaa4a1e5b248d8b6ed400654921"
+    },
+    {
+      "path": "meta/info.json",
+      "bytes": 4144,
+      "sha256": "c0d96341e0ddfb54e3e437311696d20c2b13d325b37e69fb550f9883f81f7bb9"
+    },
+    {
+      "path": "meta/tasks.jsonl",
+      "bytes": 58,
+      "sha256": "abc7e1531a8a6266ce2ece7aac8b91193d29ca4cdcca21acd0f2843653e0d698"
+    },
+    {
+      "path": "sync/episode_000000.all_cam_alignment.json",
+      "bytes": 17154,
+      "sha256": "42dc5d7b98a8f9c00aed6dbd09f69430129ecf808f79824819cf12e31d772616"
+    },
+    {
+      "path": "sync/episode_000000.gopro_alignment.json",
+      "bytes": 7541,
+      "sha256": "66fc12ebb29228e85e99c8e94479b940f68a76733a9d248b9427678d68fa14a3"
+    },
+    {
+      "path": "sync/episode_000000.level-cam_alignment.json",
+      "bytes": 7607,
+      "sha256": "46ac032a57d1bbac2912c3899d4d601e990d52dc567e54fd5967ecee54108e1e"
+    },
+    {
+      "path": "videos/chunk-000/observation.images.gopro/episode_000000.mp4",
+      "bytes": 6622756,
+      "sha256": "2cee83795e11ae0377968e46d7893ed40957b567077f934507c148cb92109e4f"
+    },
+    {
+      "path": "videos/chunk-000/observation.images.level-cam/episode_000000.mp4",
+      "bytes": 3349392,
+      "sha256": "338f2459f6e0acbc63573f227c6bffb55812686ac829cfcd26886a71f04a97f5"
+    }
+  ],
+  "privacy": "Capture logs/schema metadata omitted; MP4 video-only remux; no audio or GPMF."
+}

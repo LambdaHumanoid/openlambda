@@ -1,0 +1,231 @@
+{
+  "description": "README pipeline figure and measured replay comparison videos.",
+  "sample": "examples/data/basket",
+  "comparison": {
+    "panels": [
+      "SMPL Reference",
+      "Before Alignment",
+      "After Alignment"
+    ],
+    "after": "Final refined replay (Round 2)",
+    "timing": "Same source clock; no latency compensation",
+    "view": "Metric world motion for human and G1; heading-relative tracking cameras; one constant human ground offset",
+    "human_display_scale": 1,
+    "human_unscaled_max_height_m": 1.7142480845213868,
+    "robot_neutral_mesh_height_m": 1.3228454869574164,
+    "hand_color": "Copied from the G1 gray pelvis shell; rendering only",
+    "fps": 30,
+    "frames": 604,
+    "width": 1920,
+    "height": 824,
+    "metric": {
+      "name": "Mean bilateral palm Euclidean error",
+      "unit": "cm",
+      "compensation_s": 0.24,
+      "pairing": "target[i] versus actual[i+12] at 50 Hz; no padding",
+      "coordinate_frame": "pelvis-centered XY, lower-foot grounded Z",
+      "valid_frames": 994,
+      "before_cm": 15.129025703408535,
+      "after_cm": 1.4093356354899527
+    }
+  },
+  "files": [
+    {
+      "path": "figures/pipeline.png",
+      "origin": "Raster export of the paper pipeline figure",
+      "bytes": 617395,
+      "sha256": "f3c12b36039f2bbda4ad7f3e5f39ba0c64fbf87d7c306c02481b0760bc16900f"
+    },
+    {
+      "path": "videos/object_relocation_comparison.mp4",
+      "origin": "SMPL reference and recorded SONIC-MuJoCo simulation telemetry",
+      "bytes": 7196877,
+      "sha256": "e6d3118534ac1e0b149ae1b0839e9092b174b59a35ffb147e8fb83b530ce2cf4"
+    },
+    {
+      "path": "videos/storage_box_comparison.mp4",
+      "bytes": 7403532,
+      "sha256": "08bc8b84a0b7c79ff58774d6a571b3551f5b5d2187cc66e246c2e15d51e4272a",
+      "origin": "Public-code SONIC-MuJoCo measured replay comparison"
+    },
+    {
+      "path": "videos/shelf_interaction_comparison.mp4",
+      "bytes": 14240268,
+      "sha256": "ab3f385a9ac94925293644adff6fc062900ac265f9e95a730875b8ca20309b62",
+      "origin": "Public-code SONIC-MuJoCo measured replay comparison"
+    },
+    {
+      "path": "videos/parcel_delivery_comparison.mp4",
+      "bytes": 5616159,
+      "sha256": "26e15028e19a601bacc9f667961b1168f70d9e8a0d75caf9249a40555468b438",
+      "origin": "Public-code SONIC-MuJoCo measured replay comparison"
+    },
+    {
+      "path": "videos/indoor_cleaning_comparison.mp4",
+      "bytes": 7253072,
+      "sha256": "a1b552bf636632a7916acb93b3a88e0b8057593452d266f648b4163c268fac32",
+      "origin": "Public-code SONIC-MuJoCo measured replay comparison"
+    },
+    {
+      "path": "figures/title_light.svg",
+      "origin": "Theme-aware project title",
+      "bytes": 666,
+      "sha256": "21719723ec6f0d8b198ba22d5d10ffbd6f463ffd37ff465847bc84c11b8268ba"
+    },
+    {
+      "path": "figures/title_dark.svg",
+      "origin": "Theme-aware project title",
+      "bytes": 666,
+      "sha256": "c3211aaade729ed6c1cb75676010220228026ef503685db29e0be63de95c52ff"
+    }
+  ],
+  "additional_examples": [
+    {
+      "title": "Storage Box Placement",
+      "video": "videos/storage_box_comparison.mp4",
+      "after": "Round 2",
+      "fps": 30,
+      "frames": 495,
+      "width": 1920,
+      "height": 824,
+      "human_display_scale": 1,
+      "hand_color": "G1 body gray; rendering only",
+      "metric": {
+        "name": "Mean bilateral palm Euclidean error",
+        "unit": "cm",
+        "compensation_s": 0.24,
+        "pairing": "target[i] versus actual[i+12] at 50 Hz; no padding",
+        "coordinate_frame": "pelvis-centered XY, lower-foot grounded Z",
+        "valid_frames": 813,
+        "before_cm": 9.224723468066037,
+        "after_cm": 1.4690717990869453
+      },
+      "video_timing": "Original source clock; no lag compensation",
+      "endpoint_quality_gate": {
+        "accepted": true,
+        "failed_checks": []
+      }
+    },
+    {
+      "title": "Shelf Interaction",
+      "video": "videos/shelf_interaction_comparison.mp4",
+      "after": "Round 2",
+      "fps": 30,
+      "frames": 900,
+      "width": 1920,
+      "height": 824,
+      "human_display_scale": 1,
+      "hand_color": "G1 body gray; rendering only",
+      "metric": {
+        "name": "Mean bilateral palm Euclidean error",
+        "unit": "cm",
+        "compensation_s": 0.24,
+        "pairing": "target[i] versus actual[i+12] at 50 Hz; no padding",
+        "coordinate_frame": "pelvis-centered XY, lower-foot grounded Z",
+        "valid_frames": 1488,
+        "before_cm": 11.99789811242767,
+        "after_cm": 2.1475935461161826
+      },
+      "video_timing": "Original source clock; no lag compensation",
+      "endpoint_quality_gate": {
+        "accepted": false,
+        "failed_checks": [
+          "combined_max_within_limit"
+        ]
+      }
+    },
+    {
+      "title": "Parcel Delivery",
+      "video": "videos/parcel_delivery_comparison.mp4",
+      "after": "Round 2",
+      "fps": 30,
+      "frames": 436,
+      "width": 1920,
+      "height": 824,
+      "human_display_scale": 1,
+      "hand_color": "G1 body gray; rendering only",
+      "metric": {
+        "name": "Mean bilateral palm Euclidean error",
+        "unit": "cm",
+        "compensation_s": 0.24,
+        "pairing": "target[i] versus actual[i+12] at 50 Hz; no padding",
+        "coordinate_frame": "pelvis-centered XY, lower-foot grounded Z",
+        "valid_frames": 714,
+        "before_cm": 14.443438831931148,
+        "after_cm": 3.4238729086284634
+      },
+      "video_timing": "Original source clock; no lag compensation",
+      "endpoint_quality_gate": {
+        "accepted": false,
+        "failed_checks": [
+          "combined_mean_within_limit",
+          "combined_p95_within_limit",
+          "combined_max_within_limit",
+          "left_mean_within_limit",
+          "right_mean_within_limit",
+          "root_tilt_within_limit"
+        ]
+      }
+    },
+    {
+      "title": "Indoor Cleaning",
+      "video": "videos/indoor_cleaning_comparison.mp4",
+      "after": "Round 2",
+      "fps": 30,
+      "frames": 630,
+      "width": 1920,
+      "height": 824,
+      "human_display_scale": 1,
+      "hand_color": "G1 body gray; rendering only",
+      "metric": {
+        "name": "Mean bilateral palm Euclidean error",
+        "unit": "cm",
+        "compensation_s": 0.24,
+        "pairing": "target[i] versus actual[i+12] at 50 Hz; no padding",
+        "coordinate_frame": "pelvis-centered XY, lower-foot grounded Z",
+        "valid_frames": 1038,
+        "before_cm": 13.182822612229296,
+        "after_cm": 3.6342670356501983
+      },
+      "video_timing": "Original source clock; no lag compensation",
+      "endpoint_quality_gate": {
+        "accepted": false,
+        "failed_checks": [
+          "combined_mean_within_limit",
+          "combined_p95_within_limit",
+          "combined_max_within_limit",
+          "right_mean_within_limit",
+          "combined_mean_reduction_sufficient"
+        ]
+      }
+    }
+  ],
+  "path_base": "assets/",
+  "rendering_protocol": {
+    "approved": "2026-10-13",
+    "physical_scale": 1,
+    "human_fingers": "Visualization of After Alignment six-channel BrainCo commands using identical telemetry timestamp indices; not optical finger reconstruction",
+    "video_timing": "Original source clock; no video shift",
+    "camera": {
+      "azimuth_relative_to_heading": 215,
+      "elevation": -12,
+      "distance": 3.2,
+      "lookat_height_m": 0.85
+    },
+    "robot_hand_color": "G1 body gray",
+    "human_rgba": [
+      0.9215686,
+      0.7647059,
+      0.6470588,
+      1
+    ],
+    "robot_body_and_root_modified": false
+  },
+  "github_video_attachments": {
+    "videos/indoor_cleaning_comparison.mp4": "https://github.com/user-attachments/assets/198caafd-7a0f-48e2-b434-868fee009aa2",
+    "videos/object_relocation_comparison.mp4": "https://github.com/user-attachments/assets/3129a65a-8715-4151-a03d-8384ddb4d9a1",
+    "videos/parcel_delivery_comparison.mp4": "https://github.com/user-attachments/assets/edc0d6e7-979d-4917-bff6-0a12ba669ecc",
+    "videos/shelf_interaction_comparison.mp4": "https://github.com/user-attachments/assets/71dfa4c2-544c-4625-b2d2-8b13f361d30a",
+    "videos/storage_box_comparison.mp4": "https://github.com/user-attachments/assets/50d807a1-633c-4e5e-ac26-31af12d567a2"
+  }
+}

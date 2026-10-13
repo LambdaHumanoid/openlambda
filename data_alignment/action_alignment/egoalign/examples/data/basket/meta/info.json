@@ -1,0 +1,226 @@
+{
+  "codebase_version": "v2.1",
+  "robot_type": null,
+  "chunks_size": 1000,
+  "fps": 50,
+  "data_path": "data/chunk-{episode_chunk:03d}/episode_{episode_index:06d}.parquet",
+  "video_path": {
+    "observation.images.gopro": "videos/chunk-{episode_chunk:03d}/observation.images.gopro/episode_{episode_index:06d}.mp4",
+    "observation.images.level-cam": "videos/chunk-{episode_chunk:03d}/observation.images.level-cam/episode_{episode_index:06d}.mp4"
+  },
+  "features": {
+    "observation.pico.body_pose": {
+      "dtype": "float32",
+      "shape": [
+        24,
+        7
+      ],
+      "names": [
+        "body_joint",
+        "xyz_qxyzw"
+      ]
+    },
+    "observation.pico.body_available": {
+      "dtype": "bool",
+      "shape": [
+        1
+      ],
+      "names": [
+        "available"
+      ]
+    },
+    "observation.pico.body_timestamp_ns": {
+      "dtype": "int64",
+      "shape": [
+        1
+      ],
+      "names": [
+        "time_ns"
+      ]
+    },
+    "observation.pico.body_joint_timestamp_ns": {
+      "dtype": "int64",
+      "shape": [
+        24
+      ],
+      "names": [
+        "body_joint"
+      ]
+    },
+    "observation.pico.body_velocity": {
+      "dtype": "float32",
+      "shape": [
+        24,
+        6
+      ],
+      "names": [
+        "body_joint",
+        "linear_angular_velocity"
+      ]
+    },
+    "observation.pico.local_timestamp_ns": {
+      "dtype": "int64",
+      "shape": [
+        1
+      ],
+      "names": [
+        "time_ns"
+      ]
+    },
+    "observation.pico.left_controller_pose": {
+      "dtype": "float32",
+      "shape": [
+        7
+      ],
+      "names": [
+        "x",
+        "y",
+        "z",
+        "qx",
+        "qy",
+        "qz",
+        "qw"
+      ]
+    },
+    "observation.pico.right_controller_pose": {
+      "dtype": "float32",
+      "shape": [
+        7
+      ],
+      "names": [
+        "x",
+        "y",
+        "z",
+        "qx",
+        "qy",
+        "qz",
+        "qw"
+      ]
+    },
+    "observation.pico.left_hand_pose": {
+      "dtype": "float32",
+      "shape": [
+        26,
+        7
+      ],
+      "names": [
+        "hand_joint",
+        "xyz_qxyzw"
+      ]
+    },
+    "observation.pico.right_hand_pose": {
+      "dtype": "float32",
+      "shape": [
+        26,
+        7
+      ],
+      "names": [
+        "hand_joint",
+        "xyz_qxyzw"
+      ]
+    },
+    "observation.pico.left_hand_active": {
+      "dtype": "bool",
+      "shape": [
+        1
+      ],
+      "names": [
+        "active"
+      ]
+    },
+    "observation.pico.right_hand_active": {
+      "dtype": "bool",
+      "shape": [
+        1
+      ],
+      "names": [
+        "active"
+      ]
+    },
+    "timestamp": {
+      "dtype": "float32",
+      "shape": [
+        1
+      ],
+      "names": null
+    },
+    "frame_index": {
+      "dtype": "int64",
+      "shape": [
+        1
+      ],
+      "names": null
+    },
+    "episode_index": {
+      "dtype": "int64",
+      "shape": [
+        1
+      ],
+      "names": null
+    },
+    "index": {
+      "dtype": "int64",
+      "shape": [
+        1
+      ],
+      "names": null
+    },
+    "task_index": {
+      "dtype": "int64",
+      "shape": [
+        1
+      ],
+      "names": null
+    },
+    "observation.images.gopro": {
+      "dtype": "video",
+      "shape": [
+        720,
+        1280,
+        3
+      ],
+      "names": [
+        "height",
+        "width",
+        "channel"
+      ],
+      "video_info": {
+        "video.fps": 30.0,
+        "video.height": 720,
+        "video.width": 1280,
+        "video.channels": 3,
+        "video.codec": "h264",
+        "has_audio": false
+      }
+    },
+    "observation.images.level-cam": {
+      "dtype": "video",
+      "shape": [
+        720,
+        1280,
+        3
+      ],
+      "names": [
+        "height",
+        "width",
+        "channel"
+      ],
+      "video_info": {
+        "video.fps": 30.0,
+        "video.height": 720,
+        "video.width": 1280,
+        "video.channels": 3,
+        "video.codec": "h264",
+        "has_audio": false
+      }
+    }
+  },
+  "total_episodes": 1,
+  "total_frames": 1009,
+  "total_tasks": 1,
+  "total_videos": 2,
+  "total_chunks": 1,
+  "splits": {
+    "train": "0:1"
+  }
+}
