@@ -45,7 +45,7 @@ The current repository includes human capture, synchronization, action alignment
    - [x] [Human Collection](#human-data-collection)
    - [ ] [Robot Collection](#robot-data-collection)
 4. **Data Alignment**
-   - [x] **[Action Alignment](#action-alignment)** ⭐
+   - [x] [Action Alignment](#action-alignment)
    - [ ] [Vision Alignment](#vision-alignment)
 5. **Data Conversion**
    - [ ] [Human recordings to λ₀ training episodes](#data-conversion)
