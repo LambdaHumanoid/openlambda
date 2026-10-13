@@ -304,7 +304,7 @@ Action alignment converts human SMPL motion into executable robot motion tokens 
 
 The original human end-effector targets remain fixed throughout alignment. The human-reference stage preserves root motion, lower-body and spine poses, and wrist-local rotations. For foot tasks, H encodes the input SMPL directly without the upper-body correction; K and D optimize the foot targets.
 
-We provide four [example trajectories](data_alignment/action_alignment/examples) for replay and evaluation. The three hand-task examples have been regenerated with the H → K → D pipeline; the foot-task drawer example is unchanged. Each comparison shows original SMPL online driving on the left (**Unaligned**) and the exact selected robot rollout on the right (**Aligned**).
+We provide four [example trajectories](data_alignment/action_alignment/examples) for replay and evaluation. Download the data, reports, and comparison videos from the [v0.1.0 release](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.0). Each comparison shows original SMPL online driving on the left (**Unaligned**) and the exact selected robot rollout on the right (**Aligned**).
 
 <table>
 <tr>
@@ -333,15 +333,15 @@ https://github.com/user-attachments/assets/71c1de99-8f2e-4ee1-875c-fe4be36db618
 </tr>
 </table>
 
-**Updated hand-task results.** Values compare the previously published selected rollout with the new selected rollout on the same human reference (previous → current).
+**Example results.** Metrics below describe the selected rollout included in each hand-task example.
 
 | Task | Selected round | Position error (cm) ↓ | Orientation error (°) ↓ | Max. horizontal pelvis displacement (cm) |
 | :--- | :---: | ---: | ---: | ---: |
-| Close laptop | D4 → D4 | 2.63 → 2.26 | 9.04 → 10.81 | 3.72 → 2.88 |
-| Open fridge | D8 → D4 | 2.79 → 1.72 | 5.41 → 6.23 | 11.91 → 18.62 |
-| Pull curtain | D7 → D4 | 3.76 → 2.45 | 6.88 → 10.07 | 53.33 → 50.40 |
+| Close laptop | D4 | 2.26 | 10.81 | 2.88 |
+| Open fridge | D4 | 1.72 | 6.23 | 18.62 |
+| Pull curtain | D4 | 2.45 | 10.07 | 50.40 |
 
-Position error decreases by 13.8%, 38.5%, and 34.9%, respectively, and all three selected rollouts improve the existing combined position/orientation score. Orientation error increases in all three cases; pelvis displacement increases for opening the fridge. These are individual example reruns, not a repeated-trial benchmark or evidence of uniformly improved stability. The current per-round measurements are included in each example's `run.json`.
+These are individual example rollouts, not a repeated-trial benchmark. Full per-round measurements are included in each example's `run.json`; fresh runs may produce different metrics and selected rounds.
 
 **1. Align motion.**
 
