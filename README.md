@@ -296,13 +296,13 @@ Checks the recordings, synchronizes motion and video at 50 Hz, then checks the o
 
 ### 🦾 Action Alignment
 
-We provide one example trajectory for each of the four tasks in [examples](data_alignment/action_alignment/examples). Data, reports, and videos are also available in the [release](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.0). The simulation replays below compare these trajectories before (left) and after (right) alignment.
+We provide one example trajectory for each of the four tasks in [examples](data_alignment/action_alignment/examples). Data, reports, and videos are also available in the [release](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.1). The simulation replays below compare these trajectories before (left) and after (right) alignment.
 
 <table>
 <tr>
 <td width="50%">
 
-https://github.com/user-attachments/assets/0716f1fc-4598-4b88-a05d-f086044682dc
+https://github.com/user-attachments/assets/c4b43c5d-199a-447b-b0a3-afe6afe76d3e
 
 </td>
 <td width="50%">
@@ -314,7 +314,7 @@ https://github.com/user-attachments/assets/a7d8f8d4-a22a-40b6-816a-bf562f691720
 <tr>
 <td width="50%">
 
-https://github.com/user-attachments/assets/c45d3cf8-d391-4d8b-9bde-c5bfaa7b0f85
+https://github.com/user-attachments/assets/403659cc-2f87-4d60-bf84-14bf831a65d7
 
 </td>
 <td width="50%">

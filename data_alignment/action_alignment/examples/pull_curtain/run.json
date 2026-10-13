@@ -6,64 +6,64 @@
   "rounds": [
     {
       "stage": "H",
-      "position_cm": 10.220408523933653,
-      "pelvis_cm": 55.88516209340949,
-      "orientation_deg": 39.08867926603044
+      "position_cm": 10.39904150550542,
+      "pelvis_cm": 57.0622958307032,
+      "orientation_deg": 37.40766649870679
     },
     {
       "stage": "K",
-      "position_cm": 3.5450802585098926,
-      "pelvis_cm": 62.07850850088354,
-      "orientation_deg": 15.674425645297372
+      "position_cm": 3.7110572734744802,
+      "pelvis_cm": 63.6293079205142,
+      "orientation_deg": 14.463628219667399
     },
     {
       "stage": "D1",
-      "position_cm": 2.9867064826054652,
-      "pelvis_cm": 51.047494517096126,
-      "orientation_deg": 14.071422495895929
+      "position_cm": 3.121068801067545,
+      "pelvis_cm": 62.61344683592053,
+      "orientation_deg": 12.706969189623889
     },
     {
       "stage": "D2",
-      "position_cm": 2.5445229050658913,
-      "pelvis_cm": 51.103304339822046,
-      "orientation_deg": 12.55248529907636
+      "position_cm": 2.7183144314549996,
+      "pelvis_cm": 63.68240678827559,
+      "orientation_deg": 11.060919920729106
     },
     {
       "stage": "D3",
-      "position_cm": 2.3442335356598067,
-      "pelvis_cm": 49.85738339225603,
-      "orientation_deg": 11.148557567627183
+      "position_cm": 2.572283380987473,
+      "pelvis_cm": 50.571841946312276,
+      "orientation_deg": 9.566780781167536
     },
     {
       "stage": "D4",
-      "position_cm": 2.449120449421739,
-      "pelvis_cm": 50.402129399691084,
-      "orientation_deg": 10.07481438715359
+      "position_cm": 2.701644170668057,
+      "pelvis_cm": 49.9640931885868,
+      "orientation_deg": 8.413213722112964
     },
     {
       "stage": "D5",
-      "position_cm": 2.609176913116119,
-      "pelvis_cm": 50.01722650291622,
-      "orientation_deg": 9.336425128715655
+      "position_cm": 2.7912331933951573,
+      "pelvis_cm": 51.78893287653935,
+      "orientation_deg": 7.748930809983266
     },
     {
       "stage": "D6",
-      "position_cm": 2.7039186503273047,
-      "pelvis_cm": 50.45772065412666,
-      "orientation_deg": 8.856355952938289
+      "position_cm": 2.9017942506278382,
+      "pelvis_cm": 60.20093113420803,
+      "orientation_deg": 7.241686233390613
     },
     {
       "stage": "D7",
-      "position_cm": 2.7474879762466613,
-      "pelvis_cm": 50.930345942795086,
-      "orientation_deg": 8.604705405687357
+      "position_cm": 2.891144584373406,
+      "pelvis_cm": 54.23049383114149,
+      "orientation_deg": 7.08088070081095
     },
     {
       "stage": "D8",
-      "position_cm": 2.9491510933004004,
-      "pelvis_cm": 50.64474340416637,
-      "orientation_deg": 8.106831919219905
+      "position_cm": 3.1038773370950454,
+      "pelvis_cm": 62.38175424396905,
+      "orientation_deg": 6.44036642328106
     }
   ],
-  "selected": "D4"
+  "selected": "D3"
 }
