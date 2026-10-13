@@ -325,7 +325,7 @@ https://github.com/user-attachments/assets/71c1de99-8f2e-4ee1-875c-fe4be36db618
 
 **1. Align motion.**
 
-The pipeline performs <img src="assets/alignment/h-stage.svg" alt="human-reference alignment" height="32" align="middle">, <img src="assets/alignment/k-stage.svg" alt="robot-reference alignment" height="32" align="middle">, and <img src="assets/alignment/d-stage.svg" alt="dynamics-aware optimization" height="32" align="middle">. For hand tasks, <img src="assets/alignment/h.svg" alt="H" height="32" align="middle"> first corrects SMPL collar, shoulder, and elbow poses using a uniformly scaled virtual body while preserving the original end-effector targets. Foot tasks encode the input SMPL directly without this correction; <img src="assets/alignment/k.svg" alt="K" height="32" align="middle"> and <img src="assets/alignment/d.svg" alt="D" height="32" align="middle"> retain their joint-space and motion-token optimization.
+The pipeline performs **human-reference alignment**, **robot-reference alignment**, and **dynamics-aware optimization**. For hand tasks, **H** first corrects SMPL collar, shoulder, and elbow poses using a uniformly scaled virtual body while preserving the original end-effector targets. Foot tasks encode the input SMPL directly without this correction; **K** and **D** retain their joint-space and motion-token optimization.
 
 Place the input recording at `{task_name}/input.parquet`. Set `{endpoints}` to `hands` for hand alignment or `feet` for foot alignment.
 
