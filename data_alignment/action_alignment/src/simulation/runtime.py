@@ -180,7 +180,7 @@ def create_environment(config, scene=None):
 
     class Revo2Environment(ContinuousEnvironment):
         def init_scene(self):
-            self.correction.NUM_HAND_JOINTS = self.num_hand_dof = 16
+            self.robot.NUM_HAND_JOINTS = self.num_hand_dof = 16
             self.torques = np.zeros(61)
             body_limits = self.torque_limit[np.r_[0:22, 29:36]].copy()
             super().init_scene()

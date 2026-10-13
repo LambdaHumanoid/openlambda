@@ -153,10 +153,13 @@ def correct_human_reference(prepared, *, sonic_root, scale, iterations=350, devi
     parameter = torch.nn.Parameter(torch.zeros_like(baseline[:, ACTIVE_JOINTS]))
     optimizer = torch.optim.Adam([parameter], lr=.035)
     limits = baseline.new_tensor(DELTA_LIMITS)[None, :, None]
+    phase = ((torch.arange(len(baseline), device=baseline.device,
+                           dtype=baseline.dtype)-10)/50).clamp(0, 1)
+    startup = (phase.square()*(3-2*phase))[:, None, None]
     best_loss, best = float('inf'), baseline.detach().clone()
     for step in range(iterations+1):
         # Radial bound limits each joint's entire correction, not each component.
-        delta = limits*parameter/(1+torch.linalg.vector_norm(parameter, dim=-1, keepdim=True))
+        delta = startup*limits*parameter/(1+torch.linalg.vector_norm(parameter, dim=-1, keepdim=True))
         candidate = baseline.clone()
         candidate[:, ACTIVE_JOINTS] = baseline[:, ACTIVE_JOINTS]+delta
         position = (scale*geometry.palms(candidate)-target).square().mean()
@@ -175,5 +178,6 @@ def correct_human_reference(prepared, *, sonic_root, scale, iterations=350, devi
     result = dict(prepared)
     result['poses'] = np.asarray(prepared['poses']).copy()
     result['poses'][:, ACTIVE_JOINTS] = best.cpu().numpy()[:, ACTIVE_JOINTS]
+    result['poses'][:10] = prepared['poses'][:10]
     result['joints'] = geometry.encoder_joints(best, prepared['joints'])
     return result
