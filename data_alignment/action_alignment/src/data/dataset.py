@@ -66,7 +66,7 @@ def write_episode(prepared, capture, targets, output, *, fps=50):
     columns['debug.runtime_simulation_qpos'] = qpos.tolist()
     metadata = dict(version=1, fps=fps, human_displacement_cm=displacement,
                     reference_frame='human_root_gravity_local', quaternion_order='wxyz')
-    table = pa.table(columns).replace_schema_metadata({b'eh2.reference': json.dumps(metadata).encode()})
+    table = pa.table(columns).replace_schema_metadata({b'lambda.reference': json.dumps(metadata).encode()})
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open('xb') as stream:
         pq.write_table(table, stream, compression='zstd')
@@ -75,7 +75,7 @@ def write_episode(prepared, capture, targets, output, *, fps=50):
 def read_reference(path, *, fps=50):
     """Load the human reference independently of stored robot motion tokens."""
     table = pq.read_table(path)
-    encoded = (table.schema.metadata or {}).get(b'eh2.reference')
+    encoded = reference_metadata(table.schema)
     if encoded is None:
         raise ValueError('not an alignment reference episode')
     metadata = json.loads(encoded)
@@ -93,3 +93,9 @@ def read_reference(path, *, fps=50):
         prepared['human_root_position'] = _array(root, (len(table), 3), 'human root position')
         prepared['human_displacement_cm'] = float(np.linalg.norm(root[:, :2]-root[0, :2], axis=1).max()*100)
     return prepared
+
+
+def reference_metadata(schema):
+    """Read current reference metadata or the legacy example format."""
+    metadata = schema.metadata or {}
+    return metadata.get(b'lambda.reference', metadata.get(b'eh2.reference'))

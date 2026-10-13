@@ -1,1 +1,1 @@
-"""Selected EgoHumanoid-V2 offline alignment components."""
+"""Lambda human-to-humanoid action alignment."""

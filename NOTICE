@@ -1,0 +1,10 @@
+OpenLambda
+
+Collection and alignment components, hardware illustrations, and example videos
+are adapted from EgoHumanoid-V2 (https://opendrivelab.com/EgoHumanoid-V2/).
+The human-reference alignment implementation adapts the geometric correction
+method from EgoAlign (https://lambdahumanoid.github.io/EgoAlign/).
+OpenLambda modifies and integrates these components into its action-alignment
+pipeline. Assets and third-party components retain their owners' rights and
+original terms. SONIC runtime code and model assets are obtained separately;
+their upstream notices and licenses continue to apply.

@@ -1,9 +1,8 @@
-"""EgoAlign-style SMPL correction with EH2 physical palm targets.
+"""Human-reference alignment with fixed physical palm targets.
 
 Implements Lambda's human-reference stage: a uniformly scaled virtual body,
 bounded collar/shoulder/elbow corrections, and fixed original human targets.
-The magnitude and temporal penalties follow EgoAlign's geometric optimizer;
-its MCP endpoints, morphology fitting and spine assistance are not used here.
+Magnitude and temporal penalties regularize the pose corrections.
 """
 
 from pathlib import Path

@@ -286,7 +286,7 @@ Connect the host and PICO headset to the same network. Start the XRoboToolkit PC
 **2. Start recording.**
 
 ```bash
-eh2-collect-human --task-name "{task_name}" --task "{task_instruction}"
+lambda-collect-human --task-name "{task_name}" --task "{task_instruction}"
 ```
 
 Open `http://127.0.0.1:8080`. Enter the host's WiFi credentials if needed, then click **Prepare collection → Start recording → Save episode / Discard episode**. Wait for saving before recording again. Episodes are saved in LeRobot format to `data/{task_name}/`; new recordings append to the dataset.
@@ -294,7 +294,7 @@ Open `http://127.0.0.1:8080`. Enter the host's WiFi credentials if needed, then 
 **3. Check and synchronize data.**
 
 ```bash
-eh2-sync-human --root "data/{task_name}"
+lambda-sync-human --root "data/{task_name}"
 ```
 
 Checks the recordings, synchronizes motion and video at 50 Hz, then checks the output. Results are saved to `data/{task_name}_synced/`, with synchronization and data quality reports in `meta/`.
@@ -316,9 +316,9 @@ Coming soon.
 
 ### 🦾 Action Alignment
 
-The action-alignment pipeline follows three stages: **human-reference correction → robot-reference correction → dynamics-aware refinement**. Human-reference correction adapts SMPL collar, shoulder, and elbow poses using a uniformly scaled virtual body. All stages retain the original human palm targets and use the same Revo2 palm geometry for robot evaluation. Root motion, lower-body and spine poses, and wrist-local rotations remain unchanged during human-reference correction. Foot tasks use robot-reference correction and dynamics refinement without the upper-body SMPL stage.
+The action-alignment pipeline follows three stages: **human-reference alignment → robot-reference alignment → dynamics-aware optimization**. Human-reference alignment adapts SMPL collar, shoulder, and elbow poses using a uniformly scaled virtual body. All stages retain the original human palm targets and use the same Revo2 palm geometry for robot evaluation. Root motion, lower-body and spine poses, and wrist-local rotations remain unchanged during human-reference alignment. Foot tasks use robot-reference alignment and dynamics-aware optimization without the upper-body SMPL stage.
 
-We provide four [example trajectories](data_alignment/action_alignment/examples) from [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/). These reference examples and videos predate the added human-reference stage. The simulation replays below compare their trajectories before (left) and after (right) alignment.
+We provide four [example trajectories](data_alignment/action_alignment/examples) for replay and evaluation. These reference examples and videos predate the human-reference alignment stage. The simulation replays below compare their trajectories before (left) and after (right) alignment.
 
 <table>
 <tr>
@@ -352,7 +352,7 @@ https://github.com/user-attachments/assets/71c1de99-8f2e-4ee1-875c-fe4be36db618
 Place the input recording at `{task_name}/input.parquet`. Set `{endpoints}` to `hands` for hand alignment or `feet` for foot alignment.
 
 ```bash
-eh2-align \
+lambda-align \
   --input "{task_name}/input.parquet" \
   --endpoints {endpoints} \
   --output "results/{task_name}"
@@ -360,14 +360,14 @@ eh2-align \
 
 Results are saved under `results/{task_name}/`: `data.parquet` contains the human SMPL motion and aligned tokens; `run.json` records per-round metrics and the selected round.
 
-`H` encodes and replays the human SMPL reference, `K` is robot-reference correction, and `D1`–`D8` are dynamics refinement rounds. Hand tasks apply human-reference correction before `H`; foot tasks retain the original H → K → D pipeline. The exported human SMPL remains the original reference; the corrected SMPL used by hand tasks is saved separately in `H/reference.npz`.
+`H` encodes and replays the human SMPL reference, `K` is robot-reference alignment, and `D1`–`D8` are dynamics-aware optimization rounds. Hand tasks apply human-reference alignment before `H`; foot tasks retain the original H → K → D pipeline. The exported human SMPL remains the original reference; the corrected SMPL used by hand tasks is saved separately in `H/reference.npz`.
 
 **2. Replay motion.**
 
 **SMPL replay:** encode the human motion online to simulate before alignment.
 
 ```bash
-eh2-replay \
+lambda-replay \
   --input "{task_name}/data.parquet" \
   --mode smpl \
   --output "results/{task_name}/before"
@@ -376,7 +376,7 @@ eh2-replay \
 **Token replay:** replay the aligned motion tokens to simulate after alignment.
 
 ```bash
-eh2-replay \
+lambda-replay \
   --input "{task_name}/data.parquet" \
   --mode token \
   --output "results/{task_name}/after"
@@ -444,30 +444,6 @@ For λ₀, please use the citation provided on the [project page](https://lambda
 }
 ```
 
-If you use the EgoHumanoid-V2 collection and alignment components, please also cite:
-
-```bibtex
-@article{chen2026egohumanoidv2,
-  title={{EgoHumanoid-V2}: Human-to-Humanoid Transfer of Coordinated Whole-Body Skills for Loco-Manipulation},
-  author={Chen, Jin and Jiang, Yiming and Xu, Chongyang and Shi, Modi and Peng, Shijia and Chen, Li and Li, Tianyu and Xu, Mu and Chen, Yilun and Hoi, Steven and Li, Hongyang},
-  journal={arXiv preprint arXiv:2609.37181},
-  year={2026}
-}
-```
-
-For long-range human-to-humanoid alignment, please also cite EgoAlign:
-
-```bibtex
-@misc{jiang2026egoalignbridginghumanhumanoidgap,
-  title={EgoAlign: Bridging the Human-Humanoid Gap for Long-Range Loco-Manipulation},
-  author={Yiming Jiang and Jin Chen and Chongyang Xu and Yilun Chen and Aimin Hao and Yisheng He},
-  year={2026},
-  eprint={2609.38046},
-  archivePrefix={arXiv},
-  primaryClass={cs.RO},
-  url={https://arxiv.org/abs/2609.38046}
-}
-```
 
 ---
 
@@ -479,7 +455,7 @@ For long-range human-to-humanoid alignment, please also cite EgoAlign:
 
 We sincerely thank the following projects and teams:
 
-The initial collection and alignment components, hardware illustrations, and example videos are adapted from [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/). Assets retain their owners' rights. Existing command-line tools retain their `eh2-` names.
+Source and asset attributions are retained in [NOTICE](NOTICE).
 
 | [![StarVLA](https://img.shields.io/badge/StarVLA-VLA%20Framework-d58b45)](https://github.com/starVLA/starVLA) | [![SONIC](https://img.shields.io/badge/SONIC-NVIDIA-76b900)](https://github.com/NVlabs/GR00T-WholeBodyControl) | [![XRoboToolkit](https://img.shields.io/badge/XRoboToolkit-PICO%20VR-397bbf)](https://github.com/XR-Robotics/XRoboToolkit-Unity-Client) | [![Open GoPro](https://img.shields.io/badge/Open%20GoPro-GoPro-009fdf)](https://github.com/gopro/OpenGoPro) |
 | :---: | :---: | :---: | :---: |

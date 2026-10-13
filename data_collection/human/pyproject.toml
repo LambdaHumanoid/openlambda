@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "eh2-human-data"
+name = "lambda-human-data"
 version = "0.1.0"
 description = "PICO/GoPro human demonstration collection and synchronization"
 requires-python = ">=3.10,<3.11"
@@ -17,9 +17,9 @@ dependencies = [
 ]
 
 [project.scripts]
-eh2-collect-human = "human.collect:main"
-eh2-sync-human = "human.processing.sync:main"
-eh2-human-quality = "human.processing.quality:main"
+lambda-collect-human = "human.collect:main"
+lambda-sync-human = "human.processing.sync:main"
+lambda-human-quality = "human.processing.quality:main"
 
 [tool.setuptools]
 packages = ["human", "human.devices", "human.storage", "human.processing", "human.ui"]

@@ -46,6 +46,6 @@ bash "$project_root/setup/install_xrobotoolkit.sh" "$venv"
 "$python" -m pip install -e "$project_root/data_collection/human"
 
 # Imports and CLI checks only: never initialize hardware during installation.
-"$venv/bin/eh2-collect-human" --help >/dev/null
-"$venv/bin/eh2-sync-human" --help >/dev/null
+"$venv/bin/lambda-collect-human" --help >/dev/null
+"$venv/bin/lambda-sync-human" --help >/dev/null
 echo "Installed. Activate with: source \"$venv/bin/activate\""

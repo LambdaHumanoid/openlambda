@@ -68,7 +68,8 @@ def main():
     args = parser.parse_args()
     import pyarrow.parquet as pq
     table = pq.read_table(args.input, columns=['debug.runtime_simulation_qpos'])
-    metadata = json.loads((table.schema.metadata or {}).get(b'eh2.reference', b'{}'))
+    from .data.dataset import reference_metadata
+    metadata = json.loads(reference_metadata(table.schema) or b'{}')
     if metadata.get('version') != 1 or 'fps' not in metadata:
         raise ValueError('input must be an exported alignment episode with a recorded frame rate')
     capture = {'simulation_qpos': np.asarray(table['debug.runtime_simulation_qpos'].to_pylist())}

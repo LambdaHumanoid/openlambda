@@ -9,7 +9,7 @@ from scipy.signal import savgol_filter
 import torch
 
 from .refinement.decoder import load_torch_decoder_from_onnx, rollout_observations
-from .data.dataset import read_reference, write_episode
+from .data.dataset import read_reference, write_episode, reference_metadata
 from .refinement.dynamics import optimize_tokens_for_linearized_task
 from .correction.feet import solve_foot_trajectory
 from .correction.human import correct_human_reference, human_scale
@@ -357,7 +357,7 @@ def main():
     source = arguments.pop('input')
     if source.suffix == '.parquet':
         import pyarrow.parquet as pq
-        if b'eh2.reference' in (pq.read_schema(source).metadata or {}):
+        if reference_metadata(pq.read_schema(source)) is not None:
             prepared = read_reference(source, fps=arguments['fps'])
         else:
             from .data.reference import prepare_raw
