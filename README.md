@@ -19,8 +19,6 @@
 [![Checkpoint](https://img.shields.io/badge/🤗_Checkpoint-Stage_II-6950C8?style=flat-square)](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k)
 [![License](https://img.shields.io/badge/License-Apache_2.0-64748B?style=flat-square)](LICENSE)
 
-**Report:** [λ₀](https://arxiv.org/abs/2610.18950) · **Related work:** [Human data pretraining](https://arxiv.org/abs/2610.00438) · [EgoHumanoid-V2](https://arxiv.org/abs/2609.37181) · [EgoAlign](https://arxiv.org/abs/2609.38046)
-
 [Abstract](#abstract) · [Demo](#demo) · [Get started](#get-started) · [Model](#model-training) · [Hardware](#hardware-setup) · [Data pipeline](#data-collection) · [Release status](#release-status) · [Citation](#citation)
 
 </div>
@@ -29,9 +27,7 @@
 
 ## Abstract
 
-**OpenLambda** connects whole-body human data with humanoid loco-manipulation: capture human demonstrations, align them to a robot, and train policies that learn from human and robot experience. Developed by **Lambda-humanoid Team**, it accompanies the [λ₀ report](https://arxiv.org/abs/2610.18950) and builds on [egocentric whole-body human data pretraining](https://arxiv.org/abs/2610.00438), [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/), and [EgoAlign](https://lambdahumanoid.github.io/EgoAlign/).
-
-λ₀ combines a **Qwen3.5-2B** vision–language backbone with a generative action expert. It learns through egocentric hand-motion pretraining, robot-aligned whole-body mid-training with **HumanVerse-500**, and robot post-training. On **Unitree G1**, the policy targets the **SONIC** whole-body controller and **BrainCo Revo2** hands.
+Humanoid loco-manipulation requires coordinated whole-body interaction with the physical world, yet collecting robot demonstrations at scale remains costly. Human demonstrations offer a scalable alternative, but existing egocentric human supervision often omits locomotion and posture, while embodiment differences and controller dynamics hinder accurate end-effector execution. We introduce HumanVerse, a 500-hour dataset of open-world human loco-manipulation pairing egocentric video with synchronized body and hand motion. Our human-to-humanoid pipeline aligns camera viewpoints and arm appearance, and refines motion references and controller inputs offline to reduce end-effector errors while preserving whole-body coordination. We validate the pipeline through zero-shot transfer to Unitree G1 on representative whole-body manipulation and long-range loco-manipulation tasks, without target-task robot demonstrations. Building on this pipeline, we develop λ₀, a humanoid foundation model for whole-body loco-manipulation, with robot-aligned human demonstrations providing supervision for mid-training. Increasing whole-body human data consistently improves downstream task progress. λ₀ achieves 90.0% success on SIMPLE and 62.5% across real-world loco-manipulation tasks. We expect this study to guide scalable whole-body human data collection toward humanoid foundation models for richer interaction with the physical world.
 
 <p align="center">
   <a href="https://lambdahumanoid.github.io/#overview">
