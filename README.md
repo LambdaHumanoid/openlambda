@@ -60,7 +60,7 @@
 
 ## Get started
 
-> **Available now:**Stage I/II/III model and training code, a [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k), and human capture, synchronization, action alignment, and simulation replay tools. The complete post-training and deployment workflows are in preparation; pretraining and mid-training datasets are not included.
+> **Available now:** Stage I/II/III model and training code, a [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k), and human capture, synchronization, action alignment, and simulation replay tools. The complete post-training and deployment workflows are in preparation; pretraining and mid-training datasets are not included.
 
 Clone the repository, then choose the path that matches your work:
 
