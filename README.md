@@ -31,7 +31,7 @@ Humanoid loco-manipulation requires coordinated whole-body interaction with the 
 
 <p align="center">
   <a href="https://lambdahumanoid.github.io/#overview">
-    <img src="assets/lambda-teaser.png" width="1280" alt="λ₀ overview: HumanVerse-500, three-stage learning, and humanoid loco-manipulation results">
+    <img src="assets/lambda-teaser.png" width="1280" alt="λ₀ overview: HumanVerse, three-stage learning, and humanoid loco-manipulation results">
   </a>
 </p>
 
@@ -126,13 +126,13 @@ Current human collection writes `observation.pico.*` and `observation.images.gop
 
 </details>
 
-<a id="humanverse-500"></a>
+<a id="humanverse"></a>
 
-### HumanVerse-500
+### HumanVerse
 
-HumanVerse-500 is a 500-hour whole-body human dataset that pairs egocentric video with synchronized body and hand motion across open-world loco-manipulation tasks. Observation and action alignment turn these recordings into robot-compatible supervision for Stage II.
+HumanVerse is a 500-hour whole-body human dataset that pairs egocentric video with synchronized body and hand motion across open-world loco-manipulation tasks. Observation and action alignment turn these recordings into robot-compatible supervision for Stage II.
 
-HumanVerse-500 training data is not included in this code release. The four [action-alignment examples](#action-alignment) are available now; they are not the full dataset.
+HumanVerse training data is not included in this code release. The four [action-alignment examples](#action-alignment) are available now; they are not the full dataset.
 
 <a id="hardware-setup"></a>
 
@@ -458,7 +458,7 @@ The [λ₀ package](lambda0/) includes an inference server that returns predicti
 | Data collection | [Human capture and synchronization](#human-data-collection) | [Robot episode recorder](#robot-data-collection) |
 | Data alignment | [Action alignment and simulation examples](#action-alignment) | [Vision alignment](#vision-alignment) |
 | Data conversion | `lambda0 prepare` bundles already-canonical episodes | [Human/robot recording converters](#data-conversion) |
-| HumanVerse-500 | [Dataset overview](#humanverse-500); four alignment examples | Training data is not included in this release. |
+| HumanVerse | [Dataset overview](#humanverse); four alignment examples | Training data is not included in this release. |
 | λ₀ model | [Stage I/II/III code and configs](#model-training); [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k) | Complete Stage III post-training workflow |
 | Evaluation & deployment | [Motion replay](#action-alignment); prediction server | [Policy evaluation and real-robot deployment](#deployment) |
 
@@ -466,10 +466,8 @@ The [λ₀ package](lambda0/) includes an inference server that returns predicti
 
 ## Citation
 
-If you find this repository useful in your research, please consider citing the relevant works below.
-
 <details open>
-<summary><strong>λ₀ · Scaling open-world egocentric human data (Lambda-humanoid Team)</strong></summary>
+<summary><strong>λ₀ report</strong></summary>
 
 ```bibtex
 @misc{lambdahumanoidteam2026lambda0scalingopenworldegocentric,
@@ -486,7 +484,9 @@ If you find this repository useful in your research, please consider citing the 
 </details>
 
 <details>
-<summary><strong>Related work · Egocentric whole-body human data pretraining</strong></summary>
+<summary><strong>Related works</strong></summary>
+
+### Egocentric whole-body human data pretraining
 
 ```bibtex
 @article{xu2026generalhumanoidlocomanipulationmodel,
@@ -497,10 +497,7 @@ If you find this repository useful in your research, please consider citing the 
 }
 ```
 
-</details>
-
-<details>
-<summary><strong>EgoHumanoid-V2 · Coordinated whole-body skills</strong></summary>
+### EgoHumanoid-V2
 
 ```bibtex
 @article{chen2026egohumanoidv2,
@@ -511,10 +508,7 @@ If you find this repository useful in your research, please consider citing the 
 }
 ```
 
-</details>
-
-<details>
-<summary><strong>EgoAlign · Long-range loco-manipulation</strong></summary>
+### EgoAlign
 
 ```bibtex
 @article{jiang2026egoalign,
