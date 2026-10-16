@@ -1,72 +1,146 @@
-<a href="https://lambdahumanoid.github.io/">
-  <img src="assets/lambda-teaser.png" width="1280" alt="Lambda teaser: HumanVerse-500, three-stage training, and humanoid loco-manipulation">
-</a>
+<p align="center">
+  <a href="https://github.com/LambdaHumanoid">
+    <img src="assets/lambda-humanoid-logo.png" width="320" alt="Lambda-humanoid Team">
+  </a>
+</p>
 
 <h1 align="center">OpenLambda</h1>
 
+<p align="center"><a href="https://github.com/LambdaHumanoid"><strong>Lambda-humanoid Team</strong></a></p>
+
+<p align="center">
+  <strong>From human experience to humanoid foundation models.</strong><br>
+  Data collection · Human-to-robot alignment · λ₀ training · Inference
+</p>
+
 <div align="center">
 
-[![Homepage](https://img.shields.io/badge/Homepage-λ₀-b31b1b)](https://lambdahumanoid.github.io/)
-[![arXiv](https://img.shields.io/badge/arXiv-λ₀-b31b1b)](https://arxiv.org/abs/2610.00438)
-[![arXiv](https://img.shields.io/badge/arXiv-EgoHumanoid--V2-2563eb)](https://arxiv.org/abs/2609.37181)
-[![arXiv](https://img.shields.io/badge/arXiv-EgoAlign-198754)](https://arxiv.org/abs/2609.38046)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue)](LICENSE)
+[![Project](https://img.shields.io/badge/Project-λ₀-6950C8?style=flat-square)](https://lambdahumanoid.github.io/)
+[![Checkpoint](https://img.shields.io/badge/🤗_Checkpoint-Stage_II-6950C8?style=flat-square)](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k)
+[![License](https://img.shields.io/badge/License-Apache_2.0-64748B?style=flat-square)](LICENSE)
+
+**Report:** [λ₀](https://arxiv.org/abs/2610.18950) · **Related work:** [Human data pretraining](https://arxiv.org/abs/2610.00438) · [EgoHumanoid-V2](https://arxiv.org/abs/2609.37181) · [EgoAlign](https://arxiv.org/abs/2609.38046)
+
+[Abstract](#abstract) · [Demo](#demo) · [Get started](#get-started) · [Model](#model-training) · [Hardware](#hardware-setup) · [Data pipeline](#data-collection) · [Release status](#release-status) · [Citation](#citation)
 
 </div>
 
+<a id="abstract"></a>
+
+## Abstract
+
+**OpenLambda** connects whole-body human data with humanoid loco-manipulation: capture human demonstrations, align them to a robot, and train policies that learn from human and robot experience. Developed by **Lambda-humanoid Team**, it accompanies the [λ₀ report](https://arxiv.org/abs/2610.18950) and builds on [egocentric whole-body human data pretraining](https://arxiv.org/abs/2610.00438), [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/), and [EgoAlign](https://lambdahumanoid.github.io/EgoAlign/).
+
+λ₀ combines a **Qwen3.5-2B** vision–language backbone with a generative action expert. It learns through egocentric hand-motion pretraining, robot-aligned whole-body mid-training with **HumanVerse-500**, and robot post-training. On **Unitree G1**, the policy targets the **SONIC** whole-body controller and **BrainCo Revo2** hands.
+
 <p align="center">
-  <strong>From human experience to humanoid foundation models.</strong>
+  <a href="https://lambdahumanoid.github.io/#overview">
+    <img src="assets/lambda-teaser.png" width="1280" alt="λ₀ overview: HumanVerse-500, three-stage learning, and humanoid loco-manipulation results">
+  </a>
 </p>
 
-**OpenLambda** provides tools for data collection, human-to-robot alignment, foundation-model training, and deployment for humanoid loco-manipulation. It builds on [λ₀](https://lambdahumanoid.github.io/) (Xu et al.), [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/) (Chen et al.), and [EgoAlign](https://lambdahumanoid.github.io/EgoAlign/) (Jiang et al.).
+<p align="center"><em>Human data → alignment → three-stage learning → humanoid loco-manipulation.</em></p>
 
-The project connects **HumanVerse-500**, a 500-hour whole-body human dataset, with a three-stage learning pipeline: egocentric hand-motion pretraining, robot-aligned whole-body human mid-training, and robot post-training. λ₀ combines a **Qwen3.5-2B** vision–language backbone with a generative action expert; on **Unitree G1**, its outputs drive the **SONIC** whole-body controller and **BrainCo Revo2** hands.
+<a id="demo"></a>
 
-The current repository includes human capture, synchronization, action alignment, simulation replay, hardware/environment setup, and the [λ₀ model and training package](lambda0/). The [Stage II mid-training checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k) is available now; the complete post-training workflow is being prepared. The pretraining and mid-training datasets are not part of this code release.
+## Demo
 
----
+<p align="center">
+  <a href="https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/assets/lambda0-demo.mp4">
+    <img src="assets/lambda0-demo.gif" width="960" alt="λ₀ demo: human data capture transitions to humanoid object transport">
+  </a>
+</p>
 
-<p></p>
+<p align="center">
+  Human experience → humanoid loco-manipulation<br>
+  <a href="https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/assets/lambda0-demo.mp4">Watch the 17-second clip (MP4)</a> · <a href="https://lambdahumanoid.github.io/#report-video">Full project video</a>
+</p>
 
-<a id="todo"></a>
+<a id="get-started"></a>
 
-### Workflow & Release Checklist
+## Get started
 
-> **Release in progress:** Checked items are available in this repository. Unchecked items are not yet available here; see each section for the release scope.
+> **Available now:**Stage I/II/III model and training code, a [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k), and human capture, synchronization, action alignment, and simulation replay tools. The complete post-training and deployment workflows are in preparation; pretraining and mid-training datasets are not included.
 
-1. **Hardware Setup**
-   - [x] [Robot Hardware](#robot-data-collection-hardware)
-   - [x] [Human Hardware](#human-data-collection-hardware)
-2. **Environment Setup**
-   - [x] [Robot Control & Data Collection](#robot-runtime-environment)
-   - [x] [Human Data Collection](#human-collection-environment)
-   - [x] [λ₀ Training & Inference Environment](#policy-environment)
-3. **Data Collection**
-   - [x] [Human Collection](#human-data-collection)
-   - [ ] [Robot Collection](#robot-data-collection)
-4. **Data Alignment**
-   - [x] [Action Alignment](#action-alignment)
-   - [ ] [Vision Alignment](#vision-alignment)
-5. **Data Conversion**
-   - [ ] [Human recordings to λ₀ training episodes](#data-conversion)
-   - [ ] [Robot recordings to λ₀ post-training episodes](#data-conversion)
-6. **[HumanVerse-500](#humanverse-500)**
-   - [x] Dataset overview
-7. **[λ₀ Foundation Model](#model-training)**
-   - [x] Stage I/II/III model, training code, and example configs
-   - [x] [Checkpoint after Stage II mid-training](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k)
-   - [ ] Complete Stage III post-training workflow
-8. **[Evaluation & Deployment](#deployment)**
-   - [ ] Simulation evaluation
-   - [ ] Real-robot deployment
+Clone the repository, then choose the path that matches your work:
 
----
+```bash
+git clone https://github.com/LambdaHumanoid/openlambda.git
+cd openlambda
+```
 
-<p></p>
+| I want to… | Start here | What is available |
+| :--- | :--- | :--- |
+| Explore λ₀ | [Install the model package](#lambda0-install) · [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k) | Model code, example training configs, environment checks, and an inference server. |
+| Capture human demonstrations | [Human hardware](#human-data-collection-hardware) → [Environment](#human-collection-environment) → [Collection](#human-data-collection) | PICO + GoPro recording and motion/video synchronization. |
+| Align and replay motion | [Robot runtime environment](#robot-runtime-environment) → [Action alignment](#action-alignment) | Four example trajectories, alignment tools, and before/after simulation replays. |
+
+<a id="model-training"></a>
+
+## λ₀ foundation model
+
+λ₀ learns from human and robot experience in three stages:
+
+| Stage | Supervision | Training objective |
+| :--- | :--- | :--- |
+| I · Pretraining | Egocentric hand–object datasets | Predict future hand-state tokens with the vision–language backbone. |
+| II · Mid-training | Robot-aligned HumanVerse whole-body demonstrations | Introduce the action expert and learn whole-body actions from human experience. |
+| III · Post-training | Robot demonstrations | Adapt the policy to downstream tasks and robot execution. |
+
+The [λ₀ package](lambda0/) contains the model, Stage I/II/III training code, data preparation, example configurations, and an inference server. Stage I and II code and configs are provided without a guarantee of end-to-end reproduction. The supported end-to-end release path will be Stage III post-training from the [released Stage-II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k). The complete post-training workflow is still being prepared.
+
+<a id="lambda0-install"></a>
+
+### Install and run λ₀
+
+From the repository root, use Python 3.11 or 3.12 in a separate environment (the example uses 3.11):
+
+```bash
+cd lambda0
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -e .
+python -m lambda0 doctor
+```
+
+The CLI provides `prepare`, `train`, `serve`, and `doctor`. Optional extras are `.[serve]` for the HTTP inference server, `.[tracking]` for WandB, and `.[fast]` for platform-dependent GPU kernels. `lambda0 serve` returns predictions; it does not connect to the robot bridge or send actuator commands.
+
+| Stage | Data selection | Training config |
+| :--- | :--- | :--- |
+| I · Pretraining | `lambda0/configs/pretrain/data.json` | `lambda0/configs/pretrain/train.json` |
+| II · Mid-training | `lambda0/configs/midtrain/data.example.json` | `lambda0/configs/midtrain/train.json` |
+| III · Post-training | `lambda0/configs/posttrain/data.example.json` | `lambda0/configs/posttrain/train.json` |
+
+The Stage III example initializes from the raw weights in the [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k). Set `STAGE2_CHECKPOINT_DIR` to its downloaded directory.
+
+From the `lambda0/` directory, set paths for the selected stage, then prepare a new data bundle and validate the training configuration before a run:
+
+```bash
+python -m lambda0 prepare --source-config configs/pretrain/data.json \
+  --data-root "$DATA_ROOT" --output "$BUNDLE_DIR"
+python -m lambda0 train --config configs/pretrain/train.json --check-only
+```
+
+<details>
+<summary><strong>Training data format and current conversion limits</strong></summary>
+
+Stage I expects first-person video and Parquet `observation.state` and `observation.valid_mask` fields, each with 138 coordinates per frame. Stage II and III examples expect canonical `observation.state`, `observation.valid_mask`, `action`, and `action.valid_mask` fields plus aligned video and metadata; the action and state dimensions follow the selected contract in `lambda0/lambda0/models/action_specs.py`. Packaged defaults are in `lambda0/lambda0/recipes/`, while `lambda0/configs/` contains editable examples.
+
+Current human collection writes `observation.pico.*` and `observation.images.gopro`; the action-alignment examples write a 64-dimensional `action.motion_token`. These are not directly usable as λ₀ training episodes. A conversion must combine aligned video, actions, hand targets, proprioception, timestamps, instructions, and validity masks. Stage II uses the 76-dimensional SONIC/Revo2 action contract, so converting human hand motion to Revo2 commands is also required. The examples do not include the paper's pretraining or mid-training datasets, and installation does not verify large-model GPU training or robot deployment.
+
+</details>
+
+<a id="humanverse-500"></a>
+
+### HumanVerse-500
+
+HumanVerse-500 is a 500-hour whole-body human dataset that pairs egocentric video with synchronized body and hand motion across open-world loco-manipulation tasks. Observation and action alignment turn these recordings into robot-compatible supervision for Stage II.
+
+HumanVerse-500 training data is not included in this code release. The four [action-alignment examples](#action-alignment) are available now; they are not the full dataset.
 
 <a id="hardware-setup"></a>
 
-## 🛠️ Hardware Setup
+## Hardware setup
 
 <table width="100%">
 <tr>
@@ -136,11 +210,9 @@ The current repository includes human capture, synchronization, action alignment
 </tr>
 </table>
 
-<p></p>
-
 <a id="environment-setup"></a>
 
-## 💻 Environment Setup
+## Environment setup
 
 The available tools use separate environments for robot control and action alignment, human data collection, and λ₀ training. Install the [λ₀ package](lambda0/) in its own Python 3.11 or 3.12 environment.
 
@@ -249,15 +321,13 @@ See [Install and run λ₀](#lambda0-install) for the package setup and dependen
 
 </details>
 
-<p></p>
-
 <a id="data-collection"></a>
 
-## 🎥 Data Collection
+## Data collection
 
 <a id="human-data-collection"></a>
 
-### 👤 Human Data Collection
+### Human data collection
 
 **1. Prepare devices.**
 
@@ -281,20 +351,18 @@ Checks the recordings, synchronizes motion and video at 50 Hz, then checks the o
 
 <a id="robot-data-collection"></a>
 
-### 🤖 Robot Data Collection
+### Robot data collection
 
 **TODO:** Release an episode-based recorder for the G1, SONIC controller, Revo2 hands, and head camera. The existing robot state bridge and camera relay provide runtime signals, but they do not yet form a reproducible data-collection workflow. The recorder still needs synchronized video, robot state, commanded actions, task instructions, timestamps, and episode boundaries, followed by checks for dropped frames and incomplete episodes.
-
-<p></p>
 
 <a id="data-processing"></a>
 <a id="data-alignment"></a>
 
-## ⚡ Data Alignment
+## Data alignment
 
 <a id="action-alignment"></a>
 
-### 🦾 Action Alignment
+### Action alignment
 
 We provide one example trajectory for each of the four tasks in [examples](data_alignment/action_alignment/examples). Data, reports, and videos are also available in the [release](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.1). The simulation replays below compare these trajectories before (left) and after (right) alignment.
 
@@ -364,95 +432,65 @@ Each command saves `replay.mp4` in its output directory. Results may vary slight
 
 <a id="vision-alignment"></a>
 
-### 🎨 Vision Alignment
+### Vision alignment
 
 Coming soon.
 
-<p></p>
-
 <a id="data-conversion"></a>
 
-## 🔄 Data Conversion
+## Data conversion
 
 **TODO:** Release converters from synchronized human recordings and robot demonstrations to the canonical λ₀ episode format. The human path needs to combine aligned video, hand targets, whole-body actions, and proprioception. The robot path needs to align camera frames, robot state, and action signals, and define which signals become post-training targets. Both paths need task text, timestamps, validity masks, dataset metadata, and validation against the selected action and coordinate contracts. The existing `lambda0 prepare` command bundles episodes that already follow this format; it does not perform these source-data conversions.
 
-<p></p>
-
-<a id="model-training"></a>
-
-## 🤖 λ₀ Foundation Model
-
-λ₀ learns from human and robot experience in three stages:
-
-| Stage | Supervision | Training objective |
-| :--- | :--- | :--- |
-| I · Pretraining | Egocentric hand–object datasets | Predict future hand-state tokens with the vision–language backbone. |
-| II · Mid-training | Robot-aligned HumanVerse whole-body demonstrations | Introduce the action expert and learn whole-body actions from human experience. |
-| III · Post-training | Robot demonstrations | Adapt the policy to downstream tasks and robot execution. |
-
-The [λ₀ package](lambda0/) contains the model, Stage I/II/III training code, data preparation, example configurations, and an inference server. Stage I and II code and configs are provided without a guarantee of end-to-end reproduction. The supported end-to-end release path will be Stage III post-training from the [released Stage-II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k). The complete post-training workflow is still being prepared.
-
-<a id="lambda0-install"></a>
-
-### Install and run λ₀
-
-Use Python 3.11 or 3.12 in a separate environment:
-
-```bash
-cd lambda0
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install -e .
-python -m lambda0 doctor
-```
-
-The CLI provides `prepare`, `train`, `serve`, and `doctor`. Optional extras are `.[serve]` for the HTTP inference server, `.[tracking]` for WandB, and `.[fast]` for platform-dependent GPU kernels. `lambda0 serve` returns predictions; it does not connect to the robot bridge or send actuator commands.
-
-| Stage | Data selection | Training config |
-| :--- | :--- | :--- |
-| I · Pretraining | `lambda0/configs/pretrain/data.json` | `lambda0/configs/pretrain/train.json` |
-| II · Mid-training | `lambda0/configs/midtrain/data.example.json` | `lambda0/configs/midtrain/train.json` |
-| III · Post-training | `lambda0/configs/posttrain/data.example.json` | `lambda0/configs/posttrain/train.json` |
-
-The Stage III example initializes from the raw weights in the [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k). Set `STAGE2_CHECKPOINT_DIR` to its downloaded directory.
-
-From the `lambda0/` directory, set paths for the selected stage, then prepare a new data bundle and validate the training configuration before a run:
-
-```bash
-python -m lambda0 prepare --source-config configs/pretrain/data.json \
-  --data-root "$DATA_ROOT" --output "$BUNDLE_DIR"
-python -m lambda0 train --config configs/pretrain/train.json --check-only
-```
-
-Stage I expects first-person video and Parquet `observation.state` and `observation.valid_mask` fields, each with 138 coordinates per frame. Stage II and III examples expect canonical `observation.state`, `observation.valid_mask`, `action`, and `action.valid_mask` fields plus aligned video and metadata; the action and state dimensions follow the selected contract in `lambda0/lambda0/models/action_specs.py`. Packaged defaults are in `lambda0/lambda0/recipes/`, while `lambda0/configs/` contains editable examples.
-
-Current human collection writes `observation.pico.*` and `observation.images.gopro`; the action-alignment examples write a 64-dimensional `action.motion_token`. These are not directly usable as λ₀ training episodes. A conversion must combine aligned video, actions, hand targets, proprioception, timestamps, instructions, and validity masks. Stage II uses the 76-dimensional SONIC/Revo2 action contract, so converting human hand motion to Revo2 commands is also required. The examples do not include the paper's pretraining or mid-training datasets, and installation does not verify large-model GPU training or robot deployment.
-
-<a id="humanverse-500"></a>
-
-### HumanVerse-500
-
-HumanVerse-500 pairs egocentric video with synchronized body and hand motion across open-world loco-manipulation tasks. Observation and action alignment turn these recordings into robot-compatible supervision for Stage II.
-
-HumanVerse-500 training data is not included in this code release. The four action-alignment examples above are available now; they are not the full dataset.
-
-<p></p>
-
 <a id="deployment"></a>
 
-## 🚀 Evaluation & Deployment
+## Evaluation & deployment
 
 At deployment, λ₀ takes robot camera observations, language instructions, and proprioceptive state. It predicts SONIC motion tokens and Revo2 hand commands without a human motion stream.
 
 The [λ₀ package](lambda0/) includes an inference server that returns predictions without sending robot commands. Simulation evaluation and real-robot deployment instructions are still being prepared. For the available motion-level simulation tools, see [Action Alignment](#action-alignment).
 
-<p></p>
+<a id="todo"></a>
+<a id="workflow--release-checklist"></a>
+<a id="release-status"></a>
+
+## Release status
+
+| Component | Available now | Pending / not included |
+| :--- | :--- | :--- |
+| Hardware & environments | [Human and robot setup](#hardware-setup); [runtime environments](#environment-setup); [λ₀ environment](#lambda0-install) | — |
+| Data collection | [Human capture and synchronization](#human-data-collection) | [Robot episode recorder](#robot-data-collection) |
+| Data alignment | [Action alignment and simulation examples](#action-alignment) | [Vision alignment](#vision-alignment) |
+| Data conversion | `lambda0 prepare` bundles already-canonical episodes | [Human/robot recording converters](#data-conversion) |
+| HumanVerse-500 | [Dataset overview](#humanverse-500); four alignment examples | Training data is not included in this release. |
+| λ₀ model | [Stage I/II/III code and configs](#model-training); [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k) | Complete Stage III post-training workflow |
+| Evaluation & deployment | [Motion replay](#action-alignment); prediction server | [Policy evaluation and real-robot deployment](#deployment) |
 
 <a id="citation"></a>
 
-## 📝 Citation
+## Citation
 
 If you find this repository useful in your research, please consider citing the relevant works below.
+
+<details open>
+<summary><strong>λ₀ · Scaling open-world egocentric human data (Lambda-humanoid Team)</strong></summary>
+
+```bibtex
+@misc{lambdahumanoidteam2026lambda0scalingopenworldegocentric,
+      title={$\lambda_0$: Scaling Open-World Egocentric Human Data for Humanoid Loco-Manipulation},
+      author={{Lambda-humanoid Team}},
+      year={2026},
+      eprint={2610.18950},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO},
+      url={https://arxiv.org/abs/2610.18950},
+}
+```
+
+</details>
+
+<details>
+<summary><strong>Related work · Egocentric whole-body human data pretraining</strong></summary>
 
 ```bibtex
 @article{xu2026generalhumanoidlocomanipulationmodel,
@@ -463,6 +501,11 @@ If you find this repository useful in your research, please consider citing the 
 }
 ```
 
+</details>
+
+<details>
+<summary><strong>EgoHumanoid-V2 · Coordinated whole-body skills</strong></summary>
+
 ```bibtex
 @article{chen2026egohumanoidv2,
   title={{EgoHumanoid-V2}: Human-to-Humanoid Transfer of Coordinated Whole-Body Skills for Loco-Manipulation},
@@ -471,6 +514,11 @@ If you find this repository useful in your research, please consider citing the 
   year={2026}
 }
 ```
+
+</details>
+
+<details>
+<summary><strong>EgoAlign · Long-range loco-manipulation</strong></summary>
 
 ```bibtex
 @article{jiang2026egoalign,
@@ -481,14 +529,14 @@ If you find this repository useful in your research, please consider citing the 
 }
 ```
 
+</details>
+
 
 ---
 
-<p></p>
-
 <a id="acknowledgments"></a>
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 We thank X-VLA, StarVLA, SONIC, XRoboToolkit, and Open GoPro for sharing their work with the community.
 
