@@ -14,9 +14,15 @@
 [![Checkpoint](https://img.shields.io/badge/🤗_Checkpoint-Stage_II-6950C8?style=flat-square)](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k)
 [![License](https://img.shields.io/badge/License-Apache_2.0-64748B?style=flat-square)](LICENSE)
 
-[Abstract](#abstract) · [Demo](#demo) · [Get started](#get-started) · [Model](#model-training) · [Hardware](#hardware-setup) · [Data pipeline](#data-collection) · [Release status](#release-status) · [Citation](#citation)
+[News](#news) · [Abstract](#abstract) · [Demo](#demo) · [Get started](#get-started) · [Model](#model-training) · [Hardware](#hardware-setup) · [Data pipeline](#data-collection) · [Release status](#release-status) · [Citation](#citation)
 
 </div>
+
+<a id="news"></a>
+
+## News
+
+- **2026-10 · λ₀ release** — From everyday human experience to humanoid intelligence. The shape of **λ** echoes **人**, the Chinese character for “human”.
 
 <a id="abstract"></a>
 
