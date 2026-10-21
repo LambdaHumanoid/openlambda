@@ -4,41 +4,15 @@
   </a>
 </p>
 
-<h1 align="center">OpenLambda</h1>
-
 <p align="center"><a href="https://github.com/LambdaHumanoid"><strong>Lambda-humanoid Team</strong></a></p>
 
-<div align="center">
-
-[![Project](https://img.shields.io/badge/Project-λ₀-6950C8?style=flat-square)](https://lambdahumanoid.github.io/)
-[![Checkpoint](https://img.shields.io/badge/🤗_Checkpoint-Stage_II-6950C8?style=flat-square)](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k)
-[![License](https://img.shields.io/badge/License-Apache_2.0-64748B?style=flat-square)](LICENSE)
-
-[News](#news) · [Abstract](#abstract) · [Demo](#demo) · [Get started](#get-started) · [Model](#model-training) · [Hardware](#hardware-setup) · [Data pipeline](#data-collection) · [Release status](#release-status) · [Citation](#citation)
-
-</div>
-
-<a id="news"></a>
-
-## News
-
-- **2026-10 · λ₀ release** — From everyday human experience to humanoid intelligence. The shape of **λ** echoes **人**, the Chinese character for “human”.
+<h1 align="center">OpenLambda</h1>
 
 <a id="abstract"></a>
 
-## Abstract
-
-Humanoid loco-manipulation requires coordinated whole-body interaction with the physical world, yet collecting robot demonstrations at scale remains costly. Human demonstrations offer a scalable alternative, but existing egocentric human supervision often omits locomotion and posture, while embodiment differences and controller dynamics hinder accurate end-effector execution. We introduce HumanVerse, a 500-hour dataset of open-world human loco-manipulation pairing egocentric video with synchronized body and hand motion. Our human-to-humanoid pipeline aligns camera viewpoints and arm appearance, and refines motion references and controller inputs offline to reduce end-effector errors while preserving whole-body coordination. We validate the pipeline through zero-shot transfer to Unitree G1 on representative whole-body manipulation and long-range loco-manipulation tasks, without target-task robot demonstrations. Building on this pipeline, we develop λ₀, a humanoid foundation model for whole-body loco-manipulation, with robot-aligned human demonstrations providing supervision for mid-training. Increasing whole-body human data consistently improves downstream task progress. λ₀ achieves 90.0% success on SIMPLE and 62.5% across real-world loco-manipulation tasks. We expect this study to guide scalable whole-body human data collection toward humanoid foundation models for richer interaction with the physical world.
-
-<p align="center">
-  <a href="https://lambdahumanoid.github.io/#overview">
-    <img src="assets/lambda-teaser.png" width="1280" alt="λ₀ overview: HumanVerse, three-stage learning, and humanoid loco-manipulation results">
-  </a>
-</p>
+<p align="center">λ₀ is a humanoid foundation model that learns whole-body loco-manipulation from everyday human experience.</p>
 
 <a id="demo"></a>
-
-## Demo
 
 <p align="center">
   <a href="https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/assets/lambda0-demo.mp4">
@@ -49,6 +23,22 @@ Humanoid loco-manipulation requires coordinated whole-body interaction with the 
 <p align="center">
   <a href="https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/assets/lambda0-demo.mp4">Watch the 17-second clip (MP4)</a> · <a href="https://lambdahumanoid.github.io/#report-video">Full project video</a>
 </p>
+
+<div align="center">
+
+[![Project](https://img.shields.io/badge/Project-λ₀-6950C8?style=flat-square)](https://lambdahumanoid.github.io/)
+[![Checkpoint](https://img.shields.io/badge/🤗_Checkpoint-Stage_II-6950C8?style=flat-square)](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k)
+[![License](https://img.shields.io/badge/License-Apache_2.0-64748B?style=flat-square)](LICENSE)
+
+[News](#news) · [Get started](#get-started) · [Model](#model-training) · [Hardware](#hardware-setup) · [Data pipeline](#data-collection) · [Release status](#release-status) · [Citation](#citation)
+
+</div>
+
+<a id="news"></a>
+
+## News
+
+- **2026-10 · λ₀ release** — From everyday human experience to humanoid intelligence. The shape of **λ** echoes **人**, the Chinese character for “human”.
 
 <a id="get-started"></a>
 
@@ -68,6 +58,12 @@ cd openlambda
 <a id="model-training"></a>
 
 ## λ₀ foundation model
+
+<p align="center">
+  <a href="https://lambdahumanoid.github.io/#overview">
+    <img src="assets/lambda-teaser.png" width="1280" alt="λ₀ overview: HumanVerse, three-stage learning, and humanoid loco-manipulation results">
+  </a>
+</p>
 
 <a id="lambda0-install"></a>
 <a id="policy-environment"></a>
