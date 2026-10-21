@@ -1,38 +1,22 @@
 <p align="center">
   <a href="https://github.com/LambdaHumanoid">
-    <img src="assets/lambda-humanoid-logo.png" width="320" alt="Lambda-humanoid Team">
+    <img src="assets/lambda-humanoid-logo.png" width="240" alt="Lambda-humanoid Team">
   </a>
 </p>
 
-<p align="center"><a href="https://github.com/LambdaHumanoid"><strong>Lambda-humanoid Team</strong></a></p>
-
 <h1 align="center">OpenLambda</h1>
 
-<a id="abstract"></a>
+<p align="center"><a id="abstract"></a>λ₀ learns whole-body humanoid loco-manipulation from everyday human experience.</p>
 
-<p align="center">λ₀ is a humanoid foundation model that learns whole-body loco-manipulation from everyday human experience.</p>
-
-<a id="demo"></a>
-
-<p align="center">
+<p align="center"><a id="demo"></a>
   <a href="https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/assets/lambda0-demo.mp4">
     <img src="assets/lambda0-demo.gif" width="960" alt="λ₀ demo: human data capture transitions to humanoid object transport">
   </a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/assets/lambda0-demo.mp4">Watch the 17-second clip (MP4)</a> · <a href="https://lambdahumanoid.github.io/#report-video">Full project video</a>
+  <a href="https://lambdahumanoid.github.io/">Website</a> · <a href="https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k">Checkpoint</a> · <a href="https://lambdahumanoid.github.io/#report-video">Full video</a>
 </p>
-
-<div align="center">
-
-[![Project](https://img.shields.io/badge/Project-λ₀-6950C8?style=flat-square)](https://lambdahumanoid.github.io/)
-[![Checkpoint](https://img.shields.io/badge/🤗_Checkpoint-Stage_II-6950C8?style=flat-square)](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k)
-[![License](https://img.shields.io/badge/License-Apache_2.0-64748B?style=flat-square)](LICENSE)
-
-[News](#news) · [Get started](#get-started) · [Model](#model-training) · [Hardware](#hardware-setup) · [Data pipeline](#data-collection) · [Release status](#release-status) · [Citation](#citation)
-
-</div>
 
 <a id="news"></a>
 
