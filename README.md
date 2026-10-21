@@ -4,7 +4,13 @@
   </a>
 </p>
 
-<h1 align="center">OpenLambda</h1>
+<h1 align="center">Openlambda for Generalist Humanoid Learning</h1>
+
+<p align="center">
+  <a href="https://arxiv.org/abs/2610.18950">
+    <img src="https://img.shields.io/badge/Paper-%CE%BB%E2%82%80-6950C8" alt="Paper: λ₀ (arXiv)">
+  </a>
+</p>
 
 <p align="center"><a id="abstract"></a>λ₀ learns whole-body humanoid loco-manipulation from everyday human experience.</p>
 
