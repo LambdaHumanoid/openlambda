@@ -7,9 +7,10 @@
 <h1 align="center">Openlambda for Generalist Humanoid Learning</h1>
 
 <p align="center">
-  <a href="https://arxiv.org/abs/2610.18950">
-    <img src="https://img.shields.io/badge/Paper-%CE%BB%E2%82%80-6950C8" alt="Paper: λ₀ (arXiv)">
-  </a>
+  <a href="https://arxiv.org/abs/2610.18950"><img src="https://img.shields.io/badge/arXiv-Paper-B31B1B" alt="arXiv Paper"></a>
+  <a href="https://lambdahumanoid.github.io/"><img src="https://img.shields.io/badge/Project-Page-6950C8" alt="Project Page"></a>
+  <a href="https://huggingface.co/papers/2610.18950"><img src="https://img.shields.io/badge/Hugging_Face-Paper-FFD21E" alt="Hugging Face Paper"></a>
+  <a href="https://lambdahumanoid.github.io/#report-video"><img src="https://img.shields.io/badge/Video-Demo-2563EB" alt="Video Demo"></a>
 </p>
 
 <p align="center"><a id="abstract"></a>λ₀ learns whole-body humanoid loco-manipulation from everyday human experience.</p>
@@ -18,10 +19,6 @@
   <a href="https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/assets/lambda0-demo.mp4">
     <img src="assets/lambda0-demo.gif" width="960" alt="λ₀ demo: human data capture transitions to humanoid object transport">
   </a>
-</p>
-
-<p align="center">
-  <a href="https://lambdahumanoid.github.io/">Website</a> · <a href="https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k">Checkpoint</a> · <a href="https://lambdahumanoid.github.io/#report-video">Full video</a>
 </p>
 
 <a id="news"></a>
