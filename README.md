@@ -375,6 +375,14 @@ Each command saves `replay.mp4` in its output directory. Results may vary slight
 `lambda0 serve` takes camera observations, language instructions, and proprioceptive state, and returns SONIC motion tokens and Revo2 hand commands. It does not send actuator commands. Motion-level simulation replay is available under [Action alignment](#action-alignment).
 
 <a id="todo"></a>
+
+## TODO
+
+- [ ] Complete the human and robot hardware setup guides, including assembly, calibration, connectivity checks, and troubleshooting.
+- [ ] Build out data collection infrastructure for human and robot episodes, including recording, synchronization, validation, and conversion to the training format.
+- [ ] Build out inference infrastructure for real-robot deployment, connecting policy outputs to the robot controller with runtime monitoring and safety checks.
+- [ ] Write a beginner tutorial that walks through setup, a sample recording, data preparation, and local inference with expected outputs.
+
 <a id="workflow--release-checklist"></a>
 <a id="release-status"></a>
 
