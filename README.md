@@ -400,6 +400,18 @@ Not yet released:
 
 Pretraining and HumanVerse mid-training datasets are not included; only the four alignment examples are available. Stage I/II code and configs do not guarantee end-to-end reproduction.
 
+<a id="community"></a>
+
+## Community
+
+Join our WeChat community to discuss humanoid intelligence, human data, and λ₀.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/LambdaHumanoid/.github/main/assets/wechat-community-qr.png" width="220" alt="Lambda0 WeChat community QR code">
+  <br>
+  <sub>微信扫码加入 Lambda0 交流群</sub>
+</p>
+
 <a id="citation"></a>
 
 ## Citation
