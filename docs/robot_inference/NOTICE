@@ -1,0 +1,11 @@
+OpenLambda robot inference
+
+The observation alignment, Lambda0 preprocessing, hand-target clamping,
+signed action envelope and runtime attachment logic are adapted from the
+lambda0-inference deployment workspace. This extraction removes model registry,
+web console, task-specific configuration and automatic service deployment,
+and uses the public lambda0 serve API for model loading and prediction.
+
+SONIC, hardware SDKs and model weights remain separately installed components
+under their original licenses. The inference client contains no weights or device SDKs.
+See the repository root LICENSE and NOTICE for project licensing.

@@ -1,0 +1,33 @@
+{
+  "instruction": "Pick up the object and place it in the basket.",
+  "observation": {
+    "type": "g1",
+    "body_endpoint": "tcp://127.0.0.1:5657",
+    "hand_endpoint": "tcp://127.0.0.1:18560",
+    "anchor_view": "ego",
+    "cameras": {
+      "ego": {"endpoint": "tcp://127.0.0.1:5559", "image_key": "ego_view"}
+    }
+  },
+  "policy": {
+    "type": "lambda0",
+    "url": "http://127.0.0.1:8010",
+    "model_path": "/path/to/checkpoint",
+    "normalization_dataset": "your_dataset_name",
+    "embodiment_id": 0,
+    "action_space_id": 2,
+    "horizon": 50,
+    "inference_steps": 10,
+    "image_order": ["ego"],
+    "state_order": ["body_joints", "left_hand", "right_hand", "projected_gravity"]
+  },
+  "controller": {
+    "type": "sonic",
+    "control_endpoint": "tcp://127.0.0.1:5683",
+    "policy_endpoint": "tcp://127.0.0.1:5684",
+    "pid": null,
+    "binary": "/path/to/g1_deploy_onnx_ref",
+    "robot_ip": "ROBOT_IP"
+  },
+  "schedule": {"type": "serial", "execute_steps": 50}
+}
