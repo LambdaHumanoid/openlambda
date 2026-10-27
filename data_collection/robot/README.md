@@ -32,6 +32,12 @@ source .venv-robot-data/bin/activate
 python -m pip install -e 'data_collection/robot[export]'
 ```
 
+Run the existing offline/loopback tests in this export environment (no robot required):
+
+```bash
+python -m unittest discover -s data_collection/robot/tests -v
+```
+
 ## Record a demonstration
 
 Open three terminals **on G1**, with the robot environment activated in each.

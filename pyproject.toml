@@ -23,9 +23,13 @@ fast = ["flash-linear-attention==0.4.2", "fla-core==0.4.2", "causal-conv1d==1.5.
 [project.scripts]
 lambda0 = "lambda0.__main__:main"
 
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["lambda0*"]
+[tool.setuptools]
+# Preserve import paths used by released metadata and CLI commands during the
+# source-layout migration. Each module is installed once, under its legacy name.
+packages = ["lambda0", "lambda0.data", "lambda0.data.domain_handler",
+            "lambda0.models", "lambda0.training", "lambda0.inference",
+            "lambda0.evaluation", "lambda0.runtime"]
+package-dir = {lambda0 = "src/openlambda"}
 
 [tool.setuptools.package-data]
 lambda0 = ["recipes/*.json"]

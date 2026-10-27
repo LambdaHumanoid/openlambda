@@ -4,7 +4,7 @@ set -euo pipefail
 
 case "${1:-}" in
     --help|-h)
-        echo "Usage: bash setup/human/install.sh [--check]"
+        echo "Usage: bash data_collection/human/setup/install.sh [--check]"
         echo "--check: check system prerequisites without installing anything."
         exit 0 ;;
     ""|--check) ;;
@@ -33,7 +33,7 @@ if [[ "${1:-}" == --check ]]; then
     exit 0
 fi
 
-project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 venv="$project_root/.venv-human"
 if [[ ! -e "$venv" ]]; then
     python3.10 -m venv "$venv"
@@ -42,7 +42,7 @@ else
 fi
 python="$venv/bin/python"
 "$python" -c 'import sys; assert sys.version_info[:2] == (3, 10), "Existing environment must use Python 3.10"'
-bash "$project_root/setup/install_xrobotoolkit.sh" "$venv"
+bash "$project_root/data_collection/human/setup/install_xrobotoolkit.sh" "$venv"
 "$python" -m pip install -e "$project_root/data_collection/human"
 
 # Imports and CLI checks only: never initialize hardware during installation.

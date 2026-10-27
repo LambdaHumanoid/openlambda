@@ -4,7 +4,7 @@ set -eo pipefail
 
 case "${1:-}" in
     --help|-h)
-        echo "Usage: bash setup/robot/install_robot.sh [--check]"
+        echo "Usage: bash data_collection/robot/setup/install_robot.sh [--check]"
         echo "Ubuntu 20.04 / ROS 2 Foxy / ARM64. --check only checks prerequisites."
         exit 0 ;;
     ""|--check) ;;
@@ -25,7 +25,7 @@ if [[ "${1:-}" == --check ]]; then
     exit 0
 fi
 
-project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 venv="$project_root/.venv-robot"
 if [[ ! -e "$venv" ]]; then
     python3 -m venv "$venv"
@@ -68,7 +68,7 @@ done
 for package in ros2_stark_interfaces ros2_stark_controller; do
     stage "$sources/brainco/ros2_stark_ws/src/$package" "$workspace/src/$package"
 done
-patches="$project_root/robot/hands"
+patches="$project_root/data_collection/robot/hardware/robot/hands"
 cp "$patches/MotorStatus.msg" "$workspace/src/ros2_stark_interfaces/msg/"
 cp "$patches/stark_node.cpp" "$workspace/src/ros2_stark_controller/src/"
 cp "$patches/stark_node.hpp" "$workspace/src/ros2_stark_controller/include/ros2_stark_controller/"
@@ -87,7 +87,7 @@ source "$workspace/install/setup.bash"
 
 export CYCLONEDDS_HOME="$workspace/install/cyclonedds"
 # Editable SDK installation retains the native CRC libraries omitted by its wheel.
-"$python" -m pip install -e "$sources/sdk" "$project_root/robot[bridge]"
+"$python" -m pip install -e "$sources/sdk" "$project_root/data_collection/robot/hardware/robot[bridge]"
 "$python" -m pip check
 "$venv/bin/eh2-robot-bridge" --check
 "$venv/bin/eh2-gopro-relay" --help >/dev/null

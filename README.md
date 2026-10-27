@@ -61,37 +61,37 @@ cd openlambda
 Requires Python 3.11 or 3.12. From the repository root:
 
 ```bash
-cd lambda0
-python3.11 -m venv .venv
+PYTHON=python3.11 bash scripts/install.sh
 source .venv/bin/activate
-python -m pip install -e .
-python -m lambda0 doctor
+python scripts/test.py -v
 ```
 
-Optional extras: `.[serve]` for HTTP inference, `.[tracking]` for WandB, and `.[fast]` for platform-dependent GPU kernels.
+`scripts/test.py` checks package installation and CLI compatibility.
+
+Optional extras: `bash scripts/install.sh serve,tracking` enables HTTP inference and WandB; `fast` adds platform-dependent GPU kernels. Existing environments can still use `python -m pip install -e .` (or `.[serve]`, `.[tracking]`, `.[fast]`) from the repository root.
 
 ### Training
 
 | Stage | Data selection | Training config |
 | :--- | :--- | :--- |
-| I · Pretraining | `lambda0/configs/pretrain/data.json` | `lambda0/configs/pretrain/train.json` |
-| II · Mid-training | `lambda0/configs/midtrain/data.example.json` | `lambda0/configs/midtrain/train.json` |
-| III · Post-training | `lambda0/configs/posttrain/data.example.json` | `lambda0/configs/posttrain/train.json` |
+| I · Pretraining | `configs/lambda0/pretrain/data.json` | `configs/lambda0/pretrain/train.json` |
+| II · Mid-training | `configs/lambda0/midtrain/data.example.json` | `configs/lambda0/midtrain/train.json` |
+| III · Post-training | `configs/lambda0/posttrain/data.example.json` | `configs/lambda0/posttrain/train.json` |
 
 The Stage III example initializes from the raw weights in the [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k). Set `STAGE2_CHECKPOINT_DIR` to its downloaded directory.
 
-From `lambda0/`, set the paths required by the selected config, then prepare data and validate it (Stage I example):
+From the repository root, set the paths required by the selected config, then prepare data and validate it (Stage I example). Relative paths in JSON configs resolve from the config file; command-line paths resolve from the current working directory:
 
 ```bash
-python -m lambda0 prepare --source-config configs/pretrain/data.json \
+python scripts/prepare.py --source-config configs/lambda0/pretrain/data.json \
   --data-root "$DATA_ROOT" --output "$BUNDLE_DIR"
-python -m lambda0 train --config configs/pretrain/train.json --check-only
+python scripts/train.py --config configs/lambda0/pretrain/train.json --check-only
 ```
 
 <details>
 <summary><strong>Training data format</strong></summary>
 
-Stage I expects first-person video and Parquet `observation.state` and `observation.valid_mask` fields, each with 138 coordinates per frame. Stage II and III examples expect canonical `observation.state`, `observation.valid_mask`, `action`, and `action.valid_mask` fields plus aligned video and metadata; the action and state dimensions follow the selected contract in `lambda0/lambda0/models/action_specs.py`. Defaults are in `lambda0/lambda0/recipes/`; editable examples are in `lambda0/configs/`.
+Stage I expects first-person video and Parquet `observation.state` and `observation.valid_mask` fields, each with 138 coordinates per frame. Stage II and III examples expect canonical `observation.state`, `observation.valid_mask`, `action`, and `action.valid_mask` fields plus aligned video and metadata; the action and state dimensions follow the selected contract in `src/openlambda/models/action_specs.py`. Defaults are in `src/openlambda/recipes/`; editable examples are in `configs/lambda0/`.
 
 Human collection outputs (`observation.pico.*`, `observation.images.gopro`) and alignment outputs (64-dimensional `action.motion_token`) require conversion before training. Stage II uses a 76-dimensional SONIC/Revo2 action contract, including hand commands. Conversion must supply aligned video, actions, proprioception, timestamps, task text, and validity masks. `lambda0 prepare` only bundles episodes already in the canonical format.
 
@@ -152,14 +152,14 @@ Human collection outputs (`observation.pico.*`, `observation.images.gopro`) and 
 
 - **Hand:** 6 active DOF per hand<br>11 including passive joints ([specs](https://brainco.tech/docs/revolimb-hand/en/revo2/parameters.html))
 - **Software:** [official&nbsp;SDK](https://github.com/BrainCoTech/brainco-hand-sdk)<br>hand control and state feedback
-- **Mount:** custom G1–Revo2 adapters<br>STL: [part 1](hardware/Revo2-G1-1.stl) · [part 2](hardware/Revo2-G1-2.stl)
+- **Mount:** custom G1–Revo2 adapters<br>STL: [part 1](data_collection/robot/hardware/assets/Revo2-G1-1.stl) · [part 2](data_collection/robot/hardware/assets/Revo2-G1-2.stl)
 
 </details>
 <br>
 <details>
 <summary>🟠 <strong>GoPro</strong></summary>
 
-- **Mount:** head-mounted bracket<br>STL: [part 1](hardware/G1_GoPro_1.stl) · [part 2](hardware/G1_GoPro_2.stl)
+- **Mount:** head-mounted bracket<br>STL: [part 1](data_collection/robot/hardware/assets/G1_GoPro_1.stl) · [part 2](data_collection/robot/hardware/assets/G1_GoPro_2.stl)
 - **Alignment:** match height, pitch and framing to the human camera
 - **Connec&#8203;tion:** USB control and video to robot;<br>wired / WiFi forwarding to host ([API](https://github.com/gopro/OpenGoPro))
 
@@ -216,7 +216,7 @@ export TensorRT_ROOT=/opt/TensorRT-10.13.3.9
 export onnxruntime_ROOT=/opt/onnxruntime-linux-x64-1.16.3
 export CUDAToolkit_ROOT=/usr/local/cuda-12.4
 export LD_LIBRARY_PATH="$TensorRT_ROOT/lib:$onnxruntime_ROOT/lib:$CUDAToolkit_ROOT/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
-bash setup/robot/install_host.sh
+bash data_collection/robot/setup/install_host.sh
 ```
 
 **4. Activate environment.**
@@ -234,7 +234,7 @@ ARM64 · Ubuntu 20.04 · ROS 2 Foxy · Python 3.8.
 ```bash
 sudo apt-get update
 sudo apt-get install -y python3-dev python3-venv build-essential cmake git python3-colcon-common-extensions ros-foxy-rmw-cyclonedds-cpp ros-foxy-rosidl-generator-dds-idl libyaml-cpp-dev libssl-dev libgl1 libglib2.0-0
-bash setup/robot/install_robot.sh
+bash data_collection/robot/setup/install_robot.sh
 ```
 
 **2. Activate environment.**
@@ -259,7 +259,7 @@ source .venv-robot/bin/activate
 ```bash
 sudo apt-get update
 sudo apt-get install -y ca-certificates python3.10-dev python3.10-venv build-essential cmake git ffmpeg bluez network-manager
-bash setup/human/install.sh
+bash data_collection/human/setup/install.sh
 ```
 
 **2. Activate environment.**
@@ -316,7 +316,7 @@ The [data format reference](data_collection/robot/docs/data-format.md) covers th
 
 <a id="action-alignment"></a>
 
-Four [example trajectories](data_alignment/action_alignment/examples) and their [data, reports, and videos](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.1) are available. Each replay compares motion before (left) and after (right) alignment.
+Four [example trajectories](data_collection/human/data_alignment/examples) and their [data, reports, and videos](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.1) are available. Each replay compares motion before (left) and after (right) alignment.
 
 <table>
 <tr>
@@ -386,7 +386,7 @@ Each command saves `replay.mp4` in its output directory. Results may vary slight
 
 ## Inference
 
-`lambda0 serve` takes camera observations, language instructions, and proprioceptive state, and returns SONIC motion tokens and Revo2 hand commands. It does not send actuator commands. Motion-level simulation replay is available under [Action alignment](#action-alignment).
+`python scripts/serve.py` (also `lambda0 serve`) takes camera observations, language instructions, and proprioceptive state, and returns SONIC motion tokens and Revo2 hand commands. It does not send actuator commands. Motion-level simulation replay is available under [Action alignment](#action-alignment).
 
 <a id="todo"></a>
 

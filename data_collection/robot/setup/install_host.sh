@@ -2,7 +2,7 @@
 # Install/build only. Never launch a controller, bridge, camera or PICO service.
 set -euo pipefail
 if [[ "${1:-}" == --help || "${1:-}" == -h ]]; then
-    echo "Usage: bash setup/robot/install_host.sh [--check | SONIC_DIRECTORY]"
+    echo "Usage: bash data_collection/robot/setup/install_host.sh [--check | SONIC_DIRECTORY]"
     echo "Default: sonic; --check checks tools without installing."
     exit 0
 fi
@@ -18,7 +18,7 @@ if [[ "${1:-}" == --check ]]; then
     echo "Tool checks passed. CMake will verify CUDA, TensorRT and ONNX Runtime during installation."
     exit 0
 fi
-project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+project_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 sonic="${1:-$project_root/sonic}"
 revision=b042411fae38ee4d1af9aac82a37a1f8d14d6dd0
 if [[ ! -e "$sonic" ]]; then
@@ -29,7 +29,7 @@ fi
 [[ -e "$sonic/.git" ]] || fail "Existing target is not a Git checkout; left unchanged."
 [[ "$(git -C "$sonic" rev-parse HEAD)" == "$revision" ]] || fail "Existing SONIC revision differs; left unchanged."
 cd "$sonic"
-patch="$project_root/setup/robot/sonic.patch"
+patch="$project_root/data_collection/robot/setup/sonic.patch"
 if ! git apply --reverse --check "$patch" 2>/dev/null; then
     git apply --check "$patch" || fail "Patch conflicts with existing SONIC source."
     git apply "$patch"
@@ -51,7 +51,7 @@ fi
 [[ -z "$(git -C "$model_source" status --porcelain --untracked-files=no)" ]] || fail "Existing Revo2 model source has edits; left unchanged."
 model="$PWD/models/g1_revo2"
 mkdir -p "$model"
-cp "$project_root/setup/robot/model/"{g1_revo2.xml,scene.xml,LICENSE} "$model/"
+cp "$project_root/data_collection/robot/hardware/model/"{g1_revo2.xml,scene.xml,LICENSE} "$model/"
 cp "$model_source/robots/g1_with_brainco_hand/g1_29dof_mode_15_brainco_hand.urdf" "$model/g1_revo2.urdf"
 if [[ ! -e "$model/meshes" && ! -L "$model/meshes" ]]; then
     ln -s ../unitree_ros/robots/g1_with_brainco_hand/meshes "$model/meshes"
@@ -67,8 +67,8 @@ uv pip install --python .venv/bin/python -e 'gear_sonic[sim,data_collection]' \
     -e external_dependencies/unitree_sdk2_python 'torch==2.6.0+cpu' \
     'torchvision==0.21.0+cpu' 'huggingface-hub<1' 'opencv-python>=4.8,<4.12'
 uv pip install --python .venv/bin/python -e "$project_root/data_collection/human" \
-    -e "$project_root/data_alignment/action_alignment"
-bash "$project_root/setup/install_xrobotoolkit.sh" "$PWD/.venv"
+    -e "$project_root/data_collection/human/data_alignment"
+bash "$project_root/data_collection/human/setup/install_xrobotoolkit.sh" "$PWD/.venv"
 # Install frozen endpoint response weights.
 .venv/bin/python - "$project_root" "$PWD" <<'RESPONSE_MODELS'
 import hashlib

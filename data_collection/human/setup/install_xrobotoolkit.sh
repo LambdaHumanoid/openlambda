@@ -2,7 +2,7 @@
 # Install the pinned native PICO binding into an existing Python 3.10 venv.
 set -euo pipefail
 if [[ "${1:-}" == --help || "${1:-}" == -h ]]; then
-    echo "Usage: bash setup/install_xrobotoolkit.sh VENV"
+    echo "Usage: bash data_collection/human/setup/install_xrobotoolkit.sh VENV"
     exit 0
 fi
 fail() { echo "ERROR: $*" >&2; exit 1; }
