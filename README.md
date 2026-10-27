@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/LambdaHumanoid">
-    <img src="assets/lambda-humanoid-logo.png" width="240" alt="Lambda-humanoid Team">
+    <img src="docs/assets/lambda-humanoid-logo.png" width="240" alt="Lambda-humanoid Team">
   </a>
 </p>
 
@@ -16,8 +16,8 @@
 <p align="center"><a id="abstract"></a>λ₀ learns whole-body humanoid loco-manipulation from everyday human experience.</p>
 
 <p align="center"><a id="demo"></a>
-  <a href="https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/assets/lambda0-demo.mp4">
-    <img src="assets/lambda0-demo.gif" width="960" alt="λ₀ demo: human data capture transitions to humanoid object transport">
+  <a href="docs/assets/lambda0-demo.mp4">
+    <img src="docs/assets/lambda0-demo.gif" width="960" alt="λ₀ demo: human data capture transitions to humanoid object transport">
   </a>
 </p>
 
@@ -49,7 +49,7 @@ cd openlambda
 
 <p align="center">
   <a href="https://lambdahumanoid.github.io/#overview">
-    <img src="assets/lambda-teaser.png" width="1280" alt="λ₀ overview: HumanVerse, three-stage learning, and humanoid loco-manipulation results">
+    <img src="docs/assets/lambda-teaser.png" width="1280" alt="λ₀ overview: HumanVerse, three-stage learning, and humanoid loco-manipulation results">
   </a>
 </p>
 
@@ -106,7 +106,7 @@ Human collection outputs (`observation.pico.*`, `observation.images.gopro`) and 
 <td width="50%" valign="top">
 <a id="human-data-collection-hardware"></a>
 <h3>Human Hardware</h3>
-<img src="assets/hardware-human.gif" width="100%" alt="Animated human hardware tour: PICO headset, five body trackers and neck-mounted GoPro">
+<img src="docs/assets/hardware-human.gif" width="100%" alt="Animated human hardware tour: PICO headset, five body trackers and neck-mounted GoPro">
 <details>
 <summary>🔴 <strong>PICO 4 Ultra</strong></summary>
 
@@ -137,7 +137,7 @@ Human collection outputs (`observation.pico.*`, `observation.images.gopro`) and 
 <td width="50%" valign="top">
 <a id="robot-data-collection-hardware"></a>
 <h3>Robot Hardware</h3>
-<img src="assets/hardware-robot.gif" width="100%" alt="Animated robot hardware tour: Unitree G1, BrainCo Revo2 hands and head-mounted GoPro">
+<img src="docs/assets/hardware-robot.gif" width="100%" alt="Animated robot hardware tour: Unitree G1, BrainCo Revo2 hands and head-mounted GoPro">
 <details>
 <summary>🟢 <strong>Unitree G1</strong></summary>
 
