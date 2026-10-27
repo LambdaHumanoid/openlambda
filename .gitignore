@@ -40,3 +40,9 @@ cohn.crt
 *.pem
 id_rsa*
 id_ed25519*
+
+# Local real-robot capture artifacts
+/clock-*.json
+*.records
+camera.ts
+camera.timestamps.bin

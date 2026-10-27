@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68,<75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lambda-robot-data"
+version = "0.1.0"
+description = "G1/SONIC/Revo2 real-robot demonstration recording and offline alignment"
+requires-python = ">=3.8"
+dependencies = ["msgpack>=1,<2", "pyzmq>=25,<28"]
+
+[project.optional-dependencies]
+export = ["numpy>=1.24,<3", "opencv-python-headless>=4.8,<5", "av>=12,<17", "pyarrow>=15,<24"]
+
+[project.scripts]
+lambda-collect-robot = "lambda_robot_data.cli:main"
+lambda-robot-hand-telemetry = "lambda_robot_data.hand_telemetry:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

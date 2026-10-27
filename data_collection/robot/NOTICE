@@ -1,0 +1,15 @@
+OpenLambda real-robot collection
+
+The source decoding, checksummed record format, MPEG-TS timestamp parser,
+physical schema validation and offline nearest-source alignment are adapted
+from the g1-control-platform recording/ and gopro/ components. This release
+extracts those components, replaces dashboard/process/OSS dependencies with a
+standalone CLI, adds a read-only ROS hand observer, and exports timestamped
+Parquet/MP4 without the original GR00T/LeRobot exporter.
+
+The source project's code license is Apache-2.0 and carries this notice:
+Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+See the repository root LICENSE for Apache-2.0 terms. Original and upstream
+SONIC code, hardware SDKs and model assets retain their respective licenses.
+No SONIC weights, proprietary device SDK or collected demonstrations are
+included in this module.

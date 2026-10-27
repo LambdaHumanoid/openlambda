@@ -39,6 +39,7 @@ cd openlambda
 | Task | Guide |
 | :--- | :--- |
 | Train λ₀ | [Model setup](#lambda0-install) |
+| Collect real-robot demonstrations | [G1 recorder and tutorial](data_collection/robot/README.md) |
 | Collect human data | [Hardware](#human-data-collection-hardware) → [Environment](#human-collection-environment) → [Recording](#human-data-collection) |
 | Align and replay motion | [Environment](#robot-runtime-environment) → [Alignment](#action-alignment) |
 
@@ -294,6 +295,19 @@ lambda-sync-human --root "data/{task_name}"
 ```
 
 Synchronizes motion and video at 50 Hz. Output: `data/{task_name}_synced/`; synchronization and quality reports: `meta/`.
+
+<a id="robot-data-collection"></a>
+
+## Real-robot data collection
+
+Record G1/SONIC/Revo2 demonstrations with a wired GoPro. Video, robot states
+and hand targets are saved on G1 during teleoperation, then aligned and exported
+as Parquet and MP4 on the workstation.
+
+Follow the [collection guide](data_collection/robot/README.md) or
+[中文教程](data_collection/robot/docs/tutorial.zh-CN.md) to record your first episode.
+The [data format reference](data_collection/robot/docs/data-format.md) covers the
+44D state and 76D action layout for training adapters.
 
 <a id="data-processing"></a>
 <a id="data-alignment"></a>
