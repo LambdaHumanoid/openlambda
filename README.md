@@ -13,7 +13,7 @@
   <a href="https://lambdahumanoid.github.io/#report-video"><img src="https://img.shields.io/badge/Video-Demo-2563EB" alt="Video Demo"></a>
   <br>
   <a href="https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k"><img src="https://img.shields.io/badge/🤗_Model-Stage_II_checkpoint-FFD21E" alt="Stage II checkpoint"></a>
-  <a href="https://huggingface.co/datasets/lambda-humanoid/HumanVerse-500-sample"><img src="https://img.shields.io/badge/🤗_Dataset-HumanVerse_sample-FFD21E" alt="HumanVerse sample"></a>
+  <a href="https://huggingface.co/spaces/lambda-humanoid/HumanVerse-500-Viewer"><img src="https://img.shields.io/badge/🤗_Space-HumanVerse_viewer-FFD21E" alt="HumanVerse viewer"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-3DA639" alt="License: Apache 2.0"></a>
   <img src="https://img.shields.io/badge/Python-3.11_|_3.12-3776AB" alt="Python 3.11 | 3.12">
 </p>
@@ -133,7 +133,7 @@ See the [project page](https://lambdahumanoid.github.io/) and the [report](https
 | Resource | Description | Link |
 | :--- | :--- | :--- |
 | Stage II checkpoint | λ₀ after 100k mid-training updates, used to initialize the Stage III example | [🤗 lambda0-midtrain-100k](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k) |
-| HumanVerse sample | A sample of the HumanVerse dataset (not the full 500 hours) | [🤗 HumanVerse-500-sample](https://huggingface.co/datasets/lambda-humanoid/HumanVerse-500-sample) |
+| HumanVerse viewer | Browse 20 HumanVerse excerpts with egocentric RGB video and SMPL body and hand motion | [🤗 HumanVerse-500-Viewer](https://huggingface.co/spaces/lambda-humanoid/HumanVerse-500-Viewer) |
 | Alignment examples | Four trajectories with data, reports and replay videos | [examples](data_collection/human/data_alignment/examples) · [v0.1.1 release](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.1) |
 | Hardware mounts | STL files for the G1–Revo2 adapters and the head-mounted GoPro bracket | [hardware/assets](data_collection/robot/hardware/assets) |
 
@@ -507,7 +507,8 @@ Each command saves `replay.mp4` in its output directory. Results may vary slight
 
 - [x] Human data collection, synchronization and motion alignment
 - [x] Real-robot demonstration recording on G1
-- [x] Stage II checkpoint and HumanVerse sample on Hugging Face
+- [x] Stage II checkpoint on Hugging Face
+- [ ] HumanVerse sample data on Hugging Face
 - [ ] **Hardware guides:** assembly, calibration, connectivity checks and troubleshooting for the human and robot setups
 - [ ] **Visual alignment:** render the robot arm into human egocentric video to match the robot camera view
 - [ ] **Data conversion:** episode validation and converters from human and robot recordings to the canonical training format
@@ -517,7 +518,7 @@ Each command saves `replay.mp4` in its output directory. Results may vary slight
 - [ ] **Beginner tutorial:** setup, a sample recording, data preparation and local inference with expected outputs
 
 > [!NOTE]
-> Due to data licensing, privacy and institutional policy constraints, the full pretraining and HumanVerse mid-training datasets are not publicly released at this time. A [HumanVerse sample](https://huggingface.co/datasets/lambda-humanoid/HumanVerse-500-sample) is provided for reference. The Stage I and II code and configurations are provided as a reference for the training recipe.
+> Due to data licensing, privacy and institutional policy constraints, the full pretraining and HumanVerse mid-training datasets are not publicly released at this time. The Stage I and II code and configurations are provided as a reference for the training recipe.
 
 <a id="community"></a>
 
