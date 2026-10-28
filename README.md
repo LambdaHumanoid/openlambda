@@ -601,7 +601,7 @@ openlambda builds on the following open-source projects and prior work. We thank
 | Policy learning | [X-VLA](https://github.com/2toinf/X-VLA), [StarVLA](https://github.com/starVLA/starVLA) |
 | Whole-body control | [SONIC](https://github.com/NVlabs/GR00T-WholeBodyControl) |
 | Human data collection | [XRoboToolkit](https://github.com/XR-Robotics/XRoboToolkit-Unity-Client), [Open GoPro](https://github.com/gopro/OpenGoPro) |
-| Robot data collection | g1-control-platform (NVIDIA), [Unitree G1](https://www.unitree.com/g1/) model files |
+| Robot data collection | g1-control-platform, [Unitree G1](https://www.unitree.com/g1/) model files |
 | Motion alignment | [EgoHumanoid-V2](https://opendrivelab.com/EgoHumanoid-V2/), [EgoAlign](https://lambdahumanoid.github.io/EgoAlign/) |
 
 See [NOTICE](NOTICE) for detailed source and asset attributions.
