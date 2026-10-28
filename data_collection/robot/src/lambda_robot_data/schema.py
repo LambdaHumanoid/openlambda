@@ -1,5 +1,3 @@
-# Adapted from g1-control-platform; modified for standalone OpenLambda collection.
-# Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 # SPDX-License-Identifier: Apache-2.0
 """Physical field validation for G1/SONIC/Revo2 demonstration episodes."""
 
