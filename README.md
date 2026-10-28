@@ -47,6 +47,7 @@
 ## News
 
 - **`2026.10.27`** 🤖 Real-robot demonstration collection for Unitree G1 is released. See the [collection guide](data_collection/robot/README.md) ([中文教程](data_collection/robot/docs/tutorial.zh-CN.md)).
+- **`2026.10.21`** 🤗 The λ₀ report is featured in [Hugging Face Daily Papers](https://huggingface.co/papers/2610.18950).
 - **`2026.10.14`** 🚀 **openlambda** is open-sourced with λ₀ training code, human data collection, motion alignment and [alignment examples](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.1).
 - **`2026.10.13`** 📄 The [λ₀ report](https://arxiv.org/abs/2610.18950) is on arXiv: from everyday human experience to humanoid intelligence. The shape of **λ** echoes **人**, the Chinese character for “human”.
 - **`2026.09.30`** 📄 [Towards a General Humanoid Loco-Manipulation Model via Egocentric Whole-Body Human Data Pretraining](https://arxiv.org/abs/2610.00438) is on arXiv.
