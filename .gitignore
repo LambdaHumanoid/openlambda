@@ -45,3 +45,7 @@ id_ed25519*
 *.records
 camera.ts
 camera.timestamps.bin
+
+/runtime/
+!/data_collection/human/vision_alignment/examples/*/motion.npz
+!/data_collection/human/data_alignment/models/response/*.pt

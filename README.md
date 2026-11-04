@@ -135,6 +135,7 @@ See the [project page](https://lambdahumanoid.github.io/) and the [report](https
 | Stage II checkpoint | λ₀ after 100k mid-training updates, used to initialize the Stage III example | [🤗 lambda0-midtrain-100k](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k) |
 | HumanVerse viewer | Browse 20 HumanVerse excerpts with egocentric RGB video and SMPL body and hand motion | [🤗 HumanVerse-500-Viewer](https://huggingface.co/spaces/lambda-humanoid/HumanVerse-500-Viewer) |
 | Alignment examples | Four trajectories with data, reports and replay videos | [examples](data_collection/human/data_alignment/examples) · [v0.1.1 release](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.1) |
+| Visual alignment examples | Three recordings with four-stage previews and synchronized motion | [Examples](#vision-alignment) |
 | Hardware mounts | STL files for the G1–Revo2 adapters and the head-mounted GoPro bracket | [hardware/assets](data_collection/robot/hardware/assets) |
 
 <a id="get-started"></a>
@@ -152,6 +153,7 @@ cd openlambda
 | Collect real-robot demonstrations | [G1 recorder and tutorial](data_collection/robot/README.md) |
 | Collect human data | [Hardware](#human-data-collection-hardware) → [Environment](#human-collection-environment) → [Recording](#human-data-collection) |
 | Align and replay motion | [Environment](#robot-runtime-environment) → [Alignment](#action-alignment) |
+| Align egocentric video | [Environment](#vision-alignment-environment) → [Alignment](#vision-alignment) |
 
 <a id="model-training"></a>
 
@@ -277,7 +279,7 @@ Human collection outputs (`observation.pico.*`, `observation.images.gopro`) and 
 
 ## Environment setup
 
-Use separate environments for robot control, human collection, and [model training](#lambda0-install).
+Use separate environments for robot control, human collection, visual alignment, and [model training](#lambda0-install).
 
 <a id="prerequisites"></a>
 
@@ -374,6 +376,34 @@ source .venv-human/bin/activate
 
 </details>
 <br>
+<a id="vision-alignment-environment"></a>
+
+<details>
+<summary>🎨 <strong>Vision Alignment</strong></summary>
+
+<p></p>
+
+Tested on Linux with a 48 GB NVIDIA GPU. Allow about 35 GB of disk space. Requires [uv](https://docs.astral.sh/uv/getting-started/installation/), FFmpeg, and an NVIDIA driver compatible with CUDA 13.0; reuse these if already installed.
+
+**1. Obtain model access.** Request access to [SAM 3.1](https://huggingface.co/facebook/sam3.1), then authenticate:
+
+```bash
+uvx --from huggingface_hub hf auth login
+```
+
+**2. Install the environments and models.**
+
+```bash
+bash data_collection/human/vision_alignment/setup/install.sh
+```
+
+The installer creates two isolated environments under `runtime/vision`: Python 3.12 for segmentation/rendering and Python 3.10 for inpainting. It downloads pinned models and verifies their checksums. The alignment command calls both environments automatically; no manual switching is needed.
+
+Installation scripts, dependency pins, model manifests, and the SAM compatibility patch are in [`data_collection/human/vision_alignment/setup/`](data_collection/human/vision_alignment/setup/). Processing code, tests, and example motion files are in [`data_collection/human/vision_alignment/`](data_collection/human/vision_alignment/).
+
+</details>
+<br>
+
 <a id="data-collection"></a>
 
 <a id="human-data-collection"></a>
@@ -419,6 +449,8 @@ The [data format reference](data_collection/robot/docs/data-format.md) covers th
 ## Data alignment
 
 <a id="action-alignment"></a>
+
+### Action alignment
 
 <p align="center">
   <img src="docs/assets/action-alignment.webp" width="1280" alt="Action alignment: human motion, SONIC rollout initialization, kinematic reference correction with offline IK, dynamics-aware refinement with an MLP response model, aligned robot motion">
@@ -490,6 +522,131 @@ lambda-replay \
 
 Each command saves `replay.mp4` in its output directory. Results may vary slightly between runs.
 
+<a id="vision-alignment"></a>
+
+### Visual alignment
+
+The pipeline replaces human arms with rendered **G1 arms** while preserving the original gloves and hand–object contact. **[SAM 3.1](https://github.com/facebookresearch/sam3)** segments human arms and wrist trackers. **[DiffuEraser](https://github.com/lixiaowen-xw/DiffuEraser)** reconstructs the background.
+
+Synchronized joint trajectories drive the G1 model through an approximate virtual camera. Wrist locations and segmentation masks then refine the rendered arms' placement in the image without changing the joint angles.
+
+The examples below demonstrate visual alignment for closing a laptop, opening a fridge, and pulling a curtain. Each row shows **RGB → Mask → Inpainting → Robot-arm rendering**. Download the video and motion files to reproduce the results.
+
+**Close Laptop** · [Video](https://github.com/user-attachments/assets/aee7625e-2b8a-4de2-9e74-f549cf8324f6) · [Motion](https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/data_collection/human/vision_alignment/examples/close_laptop/motion.npz)
+
+<table>
+<tr>
+<th width="25%">Human RGB</th>
+<th width="25%">SAM 3.1 Mask</th>
+<th width="25%">Inpainting</th>
+<th width="25%">Robot-arm Rendering</th>
+</tr>
+<tr>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/close_laptop/rgb.webp" width="100%" alt="Close Laptop animation">
+
+</td>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/close_laptop/mask.webp" width="100%" alt="Close Laptop animation">
+
+</td>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/close_laptop/inpaint.webp" width="100%" alt="Close Laptop animation">
+
+</td>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/close_laptop/render.webp" width="100%" alt="Close Laptop animation">
+
+</td>
+</tr>
+</table>
+
+**Open Fridge** · [Video](https://github.com/user-attachments/assets/f6b4d3b5-4d71-417d-8c4b-88fa4739a5a6) · [Motion](https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/data_collection/human/vision_alignment/examples/open_fridge/motion.npz)
+
+<table>
+<tr>
+<th width="25%">Human RGB</th>
+<th width="25%">SAM 3.1 Mask</th>
+<th width="25%">Inpainting</th>
+<th width="25%">Robot-arm Rendering</th>
+</tr>
+<tr>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/open_fridge/rgb.webp" width="100%" alt="Open Fridge animation">
+
+</td>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/open_fridge/mask.webp" width="100%" alt="Open Fridge animation">
+
+</td>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/open_fridge/inpaint.webp" width="100%" alt="Open Fridge animation">
+
+</td>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/open_fridge/render.webp" width="100%" alt="Open Fridge animation">
+
+</td>
+</tr>
+</table>
+
+**Pull Curtain** · [Video](https://github.com/user-attachments/assets/073e3d1b-ab19-477b-8bf5-5bdd19e8bfb3) · [Motion](https://github.com/LambdaHumanoid/openlambda/raw/refs/heads/main/data_collection/human/vision_alignment/examples/pull_curtain/motion.npz)
+
+<table>
+<tr>
+<th width="25%">Human RGB</th>
+<th width="25%">SAM 3.1 Mask</th>
+<th width="25%">Inpainting</th>
+<th width="25%">Robot-arm Rendering</th>
+</tr>
+<tr>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/pull_curtain/rgb.webp" width="100%" alt="Pull Curtain animation">
+
+</td>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/pull_curtain/mask.webp" width="100%" alt="Pull Curtain animation">
+
+</td>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/pull_curtain/inpaint.webp" width="100%" alt="Pull Curtain animation">
+
+</td>
+<td width="25%">
+
+<img src="docs/assets/vision_alignment/pull_curtain/render.webp" width="100%" alt="Pull Curtain animation">
+
+</td>
+</tr>
+</table>
+
+**Align a recording.**
+
+Save the video as `{task_name}/rgb.mp4` and its synchronized motion as `{task_name}/motion.npz`. The NPZ contains `body_q` (29 G1 joint angles in radians per frame), `joint_names`, and `fps` matching the video.
+
+```bash
+runtime/vision/.venv-sam/bin/lambda-visual-align \
+  --video "{task_name}/rgb.mp4" \
+  --motion "{task_name}/motion.npz" \
+  --runtime "runtime/vision" \
+  --output "results/{task_name}"
+```
+
+Results are saved under `results/{task_name}/`: `aligned.mp4` contains the aligned video; `run.json` records settings and completed stages.
+
+<p></p>
+
 <a id="deployment"></a>
 
 ## Inference
@@ -499,7 +656,6 @@ Each command saves `replay.mp4` in its output directory. Results may vary slight
 <a id="todo"></a>
 <a id="workflow--release-checklist"></a>
 <a id="release-status"></a>
-<a id="vision-alignment"></a>
 <a id="data-conversion"></a>
 <a id="humanverse"></a>
 
@@ -510,7 +666,7 @@ Each command saves `replay.mp4` in its output directory. Results may vary slight
 - [x] Stage II checkpoint on Hugging Face
 - [ ] HumanVerse sample data on Hugging Face
 - [ ] **Hardware guides:** assembly, calibration, connectivity checks and troubleshooting for the human and robot setups
-- [ ] **Visual alignment:** render the robot arm into human egocentric video to match the robot camera view
+- [x] Visual alignment with SAM 3.1, background inpainting and G1 arm rendering
 - [ ] **Data conversion:** episode validation and converters from human and robot recordings to the canonical training format
 - [ ] **Training and evaluation:** complete Stage III post-training and policy evaluation workflows
 - [ ] **SIMPLE evaluation:** release the evaluation pipeline and a guide for reproducing results on the six SIMPLE core tasks
