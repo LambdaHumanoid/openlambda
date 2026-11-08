@@ -664,11 +664,11 @@ Results are saved under `results/{task_name}/`: `aligned.mp4` contains the align
 - [x] Human data collection, synchronization and motion alignment
 - [x] Real-robot demonstration recording on G1
 - [x] Stage II checkpoint on Hugging Face
-- [ ] HumanVerse sample data on Hugging Face
+- [x] HumanVerse sample data on Hugging Face
 - [x] **Hardware guides:** assembly, calibration, connectivity checks and troubleshooting for the human and robot setups
 - [x] Visual alignment with SAM 3.1, background inpainting and G1 arm rendering
 - [x] **Data conversion:** episode validation and converters from human and robot recordings to the canonical training format
-- [ ] **Training and evaluation:** complete Stage III post-training and policy evaluation workflows
+- [ ] **Post-training:** complete Stage III post-training and policy evaluation workflows
 - [ ] **SIMPLE evaluation:** release the evaluation pipeline and a guide for reproducing results on the six SIMPLE core tasks
 - [ ] **Deployment:** connect policy outputs to the robot controller with runtime monitoring and safety checks
 - [ ] **Beginner tutorial:** setup, a sample recording, data preparation and local inference with expected outputs
