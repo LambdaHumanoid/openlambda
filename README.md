@@ -46,6 +46,7 @@
 
 ## News
 
+- **`2026.11.11`** 🚀 We release **[OnboardMimic](https://github.com/LambdaHumanoid/OnboardMimic)**, an onboard WBC platform that brings **SONIC directly to Unitree G1’s Jetson**.
 - **`2026.10.27`** 🤖 Real-robot demonstration collection for Unitree G1 is released. See the [collection guide](data_collection/robot/README.md) ([中文教程](data_collection/robot/docs/tutorial.zh-CN.md)).
 - **`2026.10.21`** 🤗 The λ₀ report is featured in [Hugging Face Daily Papers](https://huggingface.co/papers/2610.18950).
 - **`2026.10.14`** 🚀 **openlambda** is open-sourced with λ₀ training code, human data collection, motion alignment and [alignment examples](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.1).
