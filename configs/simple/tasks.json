@@ -1,0 +1,50 @@
+{
+  "handover": {
+    "env": "simple/G1WholebodyHandoverTeleop-v0",
+    "backend": "amo",
+    "policy": "openlambda_amo",
+    "eval_module": "simple.cli.eval",
+    "normalization_dataset": "psi_simple_task_00",
+    "normalization": "normalization/handover.json"
+  },
+  "xmove_pick": {
+    "env": "simple/G1WholebodyXMovePickTeleop-v0",
+    "backend": "amo",
+    "policy": "openlambda_amo",
+    "eval_module": "simple.cli.eval",
+    "normalization_dataset": "psi_simple_task_03",
+    "normalization": "normalization/xmove_pick.json"
+  },
+  "bend_pick": {
+    "env": "simple/G1WholebodyBendPickMP-v0",
+    "backend": "amo",
+    "policy": "openlambda_amo",
+    "eval_module": "simple.cli.eval",
+    "normalization_dataset": "psi_simple_task_01",
+    "normalization": "normalization/bend_pick.json"
+  },
+  "tabletop_grasp": {
+    "env": "simple/G1WholebodyTabletopGraspMP-v0",
+    "backend": "amo",
+    "policy": "openlambda_amo",
+    "eval_module": "simple.cli.eval",
+    "normalization_dataset": "psi_simple_task_02",
+    "normalization": "normalization/tabletop_grasp.json"
+  },
+  "xmove_bend_pick": {
+    "env": "simple/G1WholebodyXMoveBendPickTeleop-v0",
+    "backend": "amo",
+    "policy": "openlambda_amo",
+    "eval_module": "simple.cli.eval",
+    "normalization_dataset": "psi_simple_task_11",
+    "normalization": "normalization/xmove_bend_pick.json"
+  },
+  "mobile_pick_place": {
+    "env": "simple/G1WholebodyLocomotionPickBetweenTablesTeleop-v0",
+    "backend": "amo",
+    "policy": "openlambda_amo",
+    "eval_module": "simple.cli.eval",
+    "normalization_dataset": "psi_simple_task_10",
+    "normalization": "normalization/mobile_pick_place.json"
+  }
+}

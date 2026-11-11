@@ -652,7 +652,9 @@ Results are saved under `results/{task_name}/`: `aligned.mp4` contains the align
 
 ## Inference
 
-`python scripts/serve.py` (also `lambda0 serve`) takes camera observations, language instructions, and proprioceptive state, and returns SONIC motion tokens and Revo2 hand commands. It does not send actuator commands. Motion-level simulation replay is available under [Action alignment](#action-alignment).
+`python scripts/serve.py` (also `lambda0 serve`) takes camera observations, language instructions, and proprioceptive state, and returns actions for the checkpoint's configured action space. It does not send actuator commands. Motion-level simulation replay is available under [Action alignment](#action-alignment).
+
+For the six original AMO-based SIMPLE core tasks, use [`scripts/eval_simple.py`](scripts/eval_simple.py) in the simulation environment with the existing HTTP server. The [SIMPLE evaluation guide](docs/simple_evaluation.md) covers checkpoint requirements, task-specific normalization, the AMO adapter, evaluation settings and result validation.
 
 <a id="todo"></a>
 <a id="workflow--release-checklist"></a>
@@ -670,7 +672,8 @@ Results are saved under `results/{task_name}/`: `aligned.mp4` contains the align
 - [x] Visual alignment with SAM 3.1, background inpainting and G1 arm rendering
 - [x] **Data conversion:** episode validation and converters from human and robot recordings to the canonical training format
 - [ ] **Post-training:** complete Stage III post-training and policy evaluation workflows
-- [ ] **SIMPLE evaluation:** release the evaluation pipeline and a guide for reproducing results on the six SIMPLE core tasks
+- [x] **SIMPLE evaluation interface:** six-task AMO launcher, policy adapter and [usage guide](docs/simple_evaluation.md)
+- [ ] **SIMPLE benchmark reproduction:** validate and publish full six-task results under a pinned simulation protocol
 - [ ] **Deployment:** connect policy outputs to the robot controller with runtime monitoring and safety checks
 - [ ] **Beginner tutorial:** setup, a sample recording, data preparation and local inference with expected outputs
 
