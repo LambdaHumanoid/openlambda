@@ -1,10 +1,12 @@
 # 真机推理技术说明
 
+第一次使用请先阅读[终端部署入门教程](tutorial.zh-CN.md)。本文主要说明推理客户端的字段与流程；外部运行时的安装、命令和验证边界见入门教程及 [interfaces.md](interfaces.md)。
+
 ## 1. 模块范围
 
 `scripts/infer_robot.py` 负责连接观测数据源、模型服务和底层控制器，完成观测读取、模型请求、动作发送及运行记录。当前实现对应 G1、单路 ego 相机、Lambda0 和 SONIC/Revo2。
 
-模型加载与归一化由仓库中的 `lambda0 serve` 提供。机器人启动、回零、姿态调整和下电由外部控制系统负责。真机执行依赖已有的签名 motion router、带时间戳的 RGB 发布服务及机器人端服务，这些运行时组件尚未包含在本目录中。官方 SONIC 和基础 robot bridge 不能直接替代上述接口。
+模型加载与归一化由仓库中的 `lambda0 serve` 提供。机器人启动、回零、姿态调整和下电由外部控制系统负责。真机执行依赖签名 motion router、带时间戳的 RGB 发布服务及机器人端服务，公共终端适配器的使用见[入门教程](tutorial.zh-CN.md)。SONIC、设备 SDK 和模型资产仍需单独安装；官方未适配的 SONIC 和基础 robot bridge 不能直接替代上述接口。
 
 当前支持串行推理，不包含 RTC 或动作预取。通用数据结构允许多个视角和不同状态字段；已提供的 G1 数据源和 Lambda0 适配器限定为单路 ego 输入。
 
@@ -107,7 +109,10 @@ HTTP、ZMQ 和签名消息的字段定义见[运行时接口](interfaces.md)。
 | `controller.policy_endpoint` | motion router 动作接收地址 |
 | `controller.pid` | 执行模式下使用的 SONIC 进程 PID |
 | `controller.binary` | SONIC 可执行文件的绝对路径 |
-| `controller.robot_ip` | 与 SONIC `--bridge-host` 一致的机器人地址 |
+| `controller.robot_ip` | 与公共 SONIC `--zmq-robot-ip` 一致的机器人地址 |
+| `controller.runtime_endpoint` | 可选，本地 SONIC runtime 回执地址，默认 `tcp://127.0.0.1:5686` |
+| `controller.hand_command_endpoint` | 可选，normalized-STARK 手部命令地址，默认 `tcp://127.0.0.1:18561` |
+| `controller.action_endpoint` | 可选，显式初始化使用的公共 SONIC pose 输入地址，默认 `tcp://127.0.0.1:5656` |
 | `schedule.type` | 当前限定为 `serial` |
 | `schedule.execute_steps` | 正整数，不超过预测步数；当前 Lambda0 对应 `1..50` |
 
@@ -139,7 +144,7 @@ G1 数据源以最新相机帧为基准，选择时间最近的身体和双手�
 
 ### 5.3 控制器初始化
 
-执行模式读取参考 episode 的第 0 帧，检查任务文字、SONIC PID、可执行文件、进程启动标识、`--external-token-override` 和机器人地址。motion router 必须处于未启用 policy 的稳定 Hold。
+执行模式读取参考 episode 的第 0 帧，检查任务文字、SONIC PID、可执行文件、进程启动标识及机器人地址。公共 SONIC 进程必须设置 `OPENLAMBDA_RUNTIME=1`，`--zmq-robot-ip` 与配置一致，使用 `--hand-type none` 将手部发布权交给独立 normalized-STARK 适配器，并且不能设置本地 `--encoder-file` 或 `--planner-file`。motion router 必须处于未启用 policy 的稳定 Hold；控制周期回执是实际后端兼容性的必要证据，不能仅用静止遥测冒充。
 
 起始姿态需连续满足 50 个不同身体样本的检查，默认等待上限为 10 s：
 
@@ -175,14 +180,16 @@ G1 数据源以最新相机帧为基准，选择时间最近的身体和双手�
 
 ## 6. 运行示例
 
-客户端要求 Python 3.10+，以下命令在仓库根目录执行。模型环境见[仓库安装说明](../../README.md#lambda0-install)。
+以下命令在仓库根目录的 Python 3.11 模型环境执行（模型包支持 3.11/3.12）；G1 的 Python 3.8 / ROS 环境独立保留。模型环境见[仓库安装说明](../../README.md#lambda0-install)。
 
 ```bash
+PYTHON=python3.11 bash scripts/install.sh serve
+source .venv/bin/activate
 python -m pip install -r scripts/requirements-robot-inference.txt
 cp configs/robot_inference/lambda0_g1.json configs/robot_inference/local.json
 ```
 
-模型服务在模型环境中启动，路径及 embodiment ID 使用 checkpoint 对应值：
+模型服务在模型环境中启动，路径及 embodiment ID 使用 checkpoint 对应值。归一化文件必须来自该 checkpoint 的训练数据 bundle，其 dataset 名称需被 `data_bundle/manifest.json` 收录；不能用新录制的单段统计替换。以下不启用 RTC：
 
 ```bash
 lambda0 serve \

@@ -1,0 +1,55 @@
+--- a/gear_sonic_deploy/src/g1/g1_deploy_onnx_ref/src/g1_deploy_onnx_ref.cpp
++++ b/gear_sonic_deploy/src/g1/g1_deploy_onnx_ref/src/g1_deploy_onnx_ref.cpp
+@@ -103,6 +103,7 @@
+ // Robot parameters
+ #include "../include/robot_parameters.hpp"
+ #include "../include/policy_parameters.hpp"
++#include "../include/openlambda_runtime.hpp"
+ 
+ // Input interface and input handlers
+ #include "../include/input_interface/keyboard_handler.hpp"
+@@ -209,6 +210,7 @@
+     std::array<double, 7> left_hand_joint_buffer_;
+     std::array<double, 7> right_hand_joint_buffer_;
+     std::vector<double> token_state_data_;  // Token buffer (size from config)
++    OpenLambdaRuntime openlambda_runtime_;
+     
+     // =========================================================================
+     // Motion data, current motion, and recording
+@@ -4143,6 +4145,7 @@
+             operator_state.stop = true;
+             break;
+           }
++          openlambda_runtime_.Waiting(token_state_data_, !is_using_encoder_ && !planner_);
+ 
+           // Re-publish robot_config so late-joining subscribers can receive it
+           // before the policy is activated (ZMQ PUB has no persistence).
+@@ -4154,6 +4157,11 @@
+             break;
+           }
+           if (operator_state.start) {
++            // The opt-in runtime never starts the decoder with implicit zero tokens.
++            if (openlambda_runtime_.Enabled() &&
++                (is_using_encoder_ || planner_ || !input_interface_->HasExternalTokenState())) {
++              break;
++            }
+             if (!PrepareControlStart()) {
+               break;
+             }
+@@ -4257,6 +4265,8 @@
+             // Update heading state (handles reinitialize_heading_ and frame-0 init)
+             // Must run before any orientation observation functions
+             UpdateHeadingState();
++            openlambda_runtime_.Before(
++                token_state_data_, first_token_received_ && !is_using_encoder_ && !planner_);
+ 
+             // Gather all observations using modular functions
+             // This may update token_state_data_ with encoder output (if encoder is used)
+@@ -4285,6 +4295,7 @@
+             operator_state.stop = true;
+             return;
+           }
++          openlambda_runtime_.After(token_state_data_);
+           auto motor_command_end_time = std::chrono::steady_clock::now();
+ 
+           // Update Dex3 hands max close ratio from keyboard-controlled value (X/C keys)

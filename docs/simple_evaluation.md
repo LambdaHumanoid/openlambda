@@ -1,6 +1,6 @@
 # SIMPLE simulation evaluation
 
-Run the existing OpenLambda HTTP server in the model environment and the original AMO-based SIMPLE evaluator in its own simulation environment. All six tasks use the AMO adapter and `simple.cli.eval`. No simulator dependencies are added to the model package, and the integration does not modify the installed SIMPLE checkout.
+Run the OpenLambda HTTP server in the model environment and the AMO-based SIMPLE evaluator in its own simulation environment. The six-task integration uses the AMO adapter and `simple.cli.eval`; each task must provide a compatible AMO environment. No simulator dependencies are added to the model package, and the integration does not modify the installed SIMPLE checkout.
 
 ## Prerequisites
 
@@ -14,7 +14,7 @@ Run the existing OpenLambda HTTP server in the model environment and the origina
 
 A bare `model.safetensors` plus normalization files is not a loadable model directory for the current server. Use the original full checkpoint, or an inference export containing its original `config.json`, processor/tokenizer assets and `data_bundle/manifest.json`, in addition to the main weights. EMA and optimizer/training state are unnecessary. Do not reconstruct model configuration from defaults.
 
-The current server reads a local checkpoint directory, not a Hugging Face repository ID. Download a complete export before starting it. The initial `lambda-humanoid/lambda0-simple-6task-100k` upload contains weights and normalization only; it needs the matching original configuration and processor assets before standalone serving.
+The server reads a local checkpoint directory, not a Hugging Face repository ID. Download the [complete public inference export](https://huggingface.co/lambda-humanoid/lambda0-simple-6task-100k/tree/8c8fbd81c852192c0f8c1128755ccd077358a638) before starting it. Pin the linked revision to keep the weights, configuration, processor and manifest consistent.
 
 Renaming statistics files does not change their internal dataset identities. The six tasks share model weights, not normalization statistics:
 
@@ -110,41 +110,28 @@ The launcher checks the task's normalization identity and model-serving contract
 
 This interface does not perform retries, checkpoint selection, asset repairs, resume merging or multi-node scheduling. Keep protocol variants and outputs separate rather than combining scores from different checkpoints or thresholds.
 
-## HOPE verification (2026-11-11)
+## Task compatibility
 
-The uploaded checkpoint at HF revision `fed5851e57c81105c3eeb536fc84da4c1ff810bf` was copied to `hope-5090-01`, with its original configuration, processor/tokenizer and manifest restored from the training checkpoint. Its main-weight SHA-256 is `8dd9ebc7ec148ee58ff67d76f61fa4ec37bc1544b48596b3192deab1597f0827`, identical to the HF LFS object. This did not change the HF repository.
+Some SIMPLE versions register the following tasks with `SonicLocoManipEnv` and `g1_sonic`, rather than the AMO `LocoManipulationEnv` and `g1_wholebody` required by this adapter:
 
-`bend_pick` and `tabletop_grasp` each completed level-0 episode 0 successfully with both inference and simulation on HOPE RTX 5090 D v2 GPUs, using the native episode budget and recording videos. This is an integration check, not a six-task benchmark score.
+| Task | Environment ID to check |
+| --- | --- |
+| `handover` | `simple/G1WholebodyHandoverTeleop-v0` |
+| `xmove_pick` | `simple/G1WholebodyXMovePickTeleop-v0` |
+| `mobile_pick_place` | `simple/G1WholebodyLocomotionPickBetweenTablesTeleop-v0` |
+| `xmove_bend_pick` | `simple/G1WholebodyXMoveBendPickTeleop-v0` |
 
-The prepared model/runtime and evidence are under the following HOPE directory. Run the server in one terminal:
+Use matching AMO task definitions, controller weights and scene assets. Renaming a registration or replacing a reset method does not make a SONIC environment compatible. The launcher rejects incompatible environments before evaluation.
 
-```bash
-BASE=/cfs/mlp/training/docker/user/hadoop-aipnlp/xuchongyang04
-RUN=$BASE/lambda0-eval/openlambda-hf-amo-20261111
-CUDA_VISIBLE_DEVICES=1 OMP_NUM_THREADS=4 \
-HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 PYTHONPATH="$RUN/site" \
-  "$BASE/lambda0-eval/policy-venv/bin/python" "$RUN/openlambda/scripts/serve.py" \
-  --model "$RUN/model" --normalization "$RUN/model/normalization/bend_pick.json" \
-  --default-embodiment-id 7 --default-action-space-id 3 --inference-steps 10 \
-  --device cuda --host 127.0.0.1 --port 23582 \
-  --output "$RUN/policy-bend-pick-$(date +%s)"
-```
+## Validation coverage
 
-Run simulation in another terminal after sourcing the native runtime. These library paths are specific to the prepared HOPE installation:
+The following checks used the linked checkpoint, episodes 0–9 at each difficulty, task-specific normalization, ten inference steps, RTC disabled, success threshold 0.9 and native episode budgets (400 steps for `bend_pick`, 800 for `tabletop_grasp`). Videos were recorded. The simulator installation included local modifications, so these results are integration evidence, not a benchmark reproduced from a clean upstream revision.
 
-```bash
-BASE=/cfs/mlp/training/docker/user/hadoop-aipnlp/xuchongyang04
-RUN=$BASE/lambda0-eval/openlambda-hf-amo-20261111
-source "$BASE/SIMPLE/.venv/simple_env.sh"
-export LD_LIBRARY_PATH="$BASE/lambda0-eval/ffmpeg7/av.libs:$BASE/lambda0-eval/system-libs/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH"
-export PATH="$BASE/lambda0-eval/system-libs/sbin:$PATH"
-export MUJOCO_EGL_DEVICE_ID=0 MUJOCO_GL=egl PYOPENGL_PLATFORM=egl
-export OMP_NUM_THREADS=4 HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 SIMPLE_DISABLE_TUI=1
-"$BASE/SIMPLE/.venv/bin/python" "$RUN/openlambda/scripts/eval_simple.py" \
-  --task bend_pick --host 127.0.0.1 --port 23582 \
-  --level level-0 --num-episodes 1 \
-  --data-root "$BASE/SIMPLE/data/evals/simple-eval/G1WholebodyBendPickMP-v0/level-0" \
-  --output "$RUN/results-bend-pick-$(date +%s)"
-```
+| Task | Level 0 | Level 1 | Level 2 |
+| --- | --- | --- | --- |
+| `bend_pick` | 10/10 | 10/10 | 10/10 |
+| `tabletop_grasp` | 10/10 | 9/10 | 8/10 |
 
-Check available GPUs before reuse. Evidence from the HOPE-local runs is retained in `results-hope-local/bend_pick/` and `results-hope-local/tabletop_grasp/`. For tabletop, change the server's normalization file to `tabletop_grasp.json`, the evaluation task to `tabletop_grasp` and the data directory's environment name to `G1WholebodyTabletopGraspMP-v0`.
+Each value is successful/completed episodes. Failed task outcomes were retained. The other four tasks were not evaluated with a compatible AMO environment; no full six-task score is claimed.
+
+For your own evaluation, preserve the generated protocol and result files alongside the simulator revision, local changes, controller assets and dataset versions. Use separate output directories for different configurations. If concurrent cold starts fail while loading renderer assets, start simulator processes sequentially; do not count infrastructure failures as completed episodes.

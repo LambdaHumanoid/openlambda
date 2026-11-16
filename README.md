@@ -152,9 +152,22 @@ cd openlambda
 | :--- | :--- |
 | Train λ₀ | [Model setup](#lambda0-install) |
 | Collect real-robot demonstrations | [G1 recorder and tutorial](data_collection/robot/README.md) |
+| Run G1 policy inference from a terminal | [Inference overview](docs/robot_inference/README.md) · [中文入门教程](docs/robot_inference/tutorial.zh-CN.md) |
 | Collect human data | [Hardware](#human-data-collection-hardware) → [Environment](#human-collection-environment) → [Recording](#human-data-collection) |
 | Align and replay motion | [Environment](#robot-runtime-environment) → [Alignment](#action-alignment) |
 | Align egocentric video | [Environment](#vision-alignment-environment) → [Alignment](#vision-alignment) |
+
+### Beginner path: recording to deployment
+
+Follow these stages in order; do not begin with robot execution.
+
+1. **Set up separate environments:** [Python 3.11 model environment](#lambda0-install) with the `serve` extra, plus the [robot/SONIC environments](#robot-runtime-environment) when using hardware.
+2. **Record one short demonstration:** follow the [G1 recording tutorial](data_collection/robot/docs/tutorial.zh-CN.md), then verify and export it. Expected export: `data.parquet`, `ego_view.mp4` and `episode.json`. Stopping the recorder does not stop the robot.
+3. **Prepare the right data:** an exported aligned episode is directly usable for offline G1 inference. Training additionally needs canonical metadata and `lambda0 prepare`; see the [preparation distinction and expected outputs](docs/robot_inference/tutorial.zh-CN.md#2-录一段样例并准备离线输入). A new recording's statistics must not replace a checkpoint's training normalizer.
+4. **Run local offline inference:** obtain a compatible checkpoint, processor and checkpoint-bound normalization bundle, start the existing `lambda0 serve`, then use [`check` and `predict`](docs/robot_inference/tutorial.zh-CN.md#4-用一份-json-连接同一个模型服务). This reads a recorded frame and saves predictions without publishing robot actions.
+5. **Initialize the base controller deliberately, preview, then execute the policy:** follow the [terminal runtime guide](docs/robot_inference/tutorial.zh-CN.md#6-实时预览与显式执行). After offline prediction and camera/hand readiness checks, fresh SONIC startup requires an explicit physical controller initialization before live preview: `g1_debug` is only published in CONTROL, not WAIT_FOR_CONTROL. `run` then previews without publishing VLA actions, although the base controller is already active; only `run --execute` requests policy execution after controller, hand-unit and initial-pose gates. Know the [three different meanings of stop](docs/robot_inference/tutorial.zh-CN.md#7-三种停止不可混为一谈).
+
+This guide covers the released tools and commands, not a turnkey hardware deployment. [Real G1 checkpoint inference on a recorded held-out frame has passed](docs/robot_inference/README.md#verification-boundary). Users supply their own authorized G1 task checkpoint, recording and hardware environment; the public SIMPLE checkpoint uses a different action contract and cannot substitute for a G1 SONIC task checkpoint. Full hardware validation and publication of the private G1 example are outside this code-and-documentation release.
 
 <a id="model-training"></a>
 
@@ -170,10 +183,15 @@ Requires Python 3.11 or 3.12. From the repository root:
 ```bash
 PYTHON=python3.11 bash scripts/install.sh
 source .venv/bin/activate
-python scripts/test.py -v
+python scripts/test.py -p test_installation.py -v
 ```
 
-`scripts/test.py` checks package installation and CLI compatibility.
+This command selects the package-installation and CLI compatibility checks. To run the full root test suite, also install the robot-client dependencies:
+
+```bash
+python -m pip install -r scripts/requirements-robot-inference.txt
+python scripts/test.py -v
+```
 
 Optional extras: `bash scripts/install.sh serve,tracking` enables HTTP inference and WandB; `fast` adds platform-dependent GPU kernels. Existing environments can still use `python -m pip install -e .` (or `.[serve]`, `.[tracking]`, `.[fast]`) from the repository root.
 
@@ -656,13 +674,17 @@ Results are saved under `results/{task_name}/`: `aligned.mp4` contains the align
 
 For the six original AMO-based SIMPLE core tasks, use [`scripts/eval_simple.py`](scripts/eval_simple.py) in the simulation environment with the existing HTTP server. The [SIMPLE evaluation guide](docs/simple_evaluation.md) covers checkpoint requirements, task-specific normalization, the AMO adapter, evaluation settings and result validation.
 
+For G1/Revo2, use the terminal-only [`scripts/infer_robot.py`](scripts/infer_robot.py) client with the existing model service and [`configs/robot_inference/lambda0_g1.json`](configs/robot_inference/lambda0_g1.json). Start with [offline inference, live preview and explicit execution](docs/robot_inference/README.md), or the [Chinese beginner tutorial](docs/robot_inference/tutorial.zh-CN.md). SONIC, hardware SDKs and weights remain external, separately licensed dependencies; local protocol checks are not evidence of safe physical operation.
+
 <a id="todo"></a>
 <a id="workflow--release-checklist"></a>
 <a id="release-status"></a>
 <a id="data-conversion"></a>
 <a id="humanverse"></a>
 
-## TODO
+## Open-source checklist
+
+This checklist covers the code, model assets and documentation included in this release. Full experiment reproduction, a complete six-task benchmark rerun and on-site robot acceptance are not prerequisites for releasing these components. Validation results and limitations are documented separately.
 
 - [x] Human data collection, synchronization and motion alignment
 - [x] Real-robot demonstration recording on G1
@@ -671,11 +693,10 @@ For the six original AMO-based SIMPLE core tasks, use [`scripts/eval_simple.py`]
 - [x] **Hardware guides:** assembly, calibration, connectivity checks and troubleshooting for the human and robot setups
 - [x] Visual alignment with SAM 3.1, background inpainting and G1 arm rendering
 - [x] **Data conversion:** episode validation and converters from human and robot recordings to the canonical training format
-- [ ] **Post-training:** complete Stage III post-training and policy evaluation workflows
-- [x] **SIMPLE evaluation interface:** six-task AMO launcher, policy adapter and [usage guide](docs/simple_evaluation.md)
-- [ ] **SIMPLE benchmark reproduction:** validate and publish full six-task results under a pinned simulation protocol
-- [ ] **Deployment:** connect policy outputs to the robot controller with runtime monitoring and safety checks
-- [ ] **Beginner tutorial:** setup, a sample recording, data preparation and local inference with expected outputs
+- [x] **Post-training:** complete Stage III post-training and policy evaluation workflows
+- [x] **SIMPLE evaluation:** release the evaluation pipeline and a guide for reproducing results on the six SIMPLE core tasks
+- [x] **Deployment:** connect policy outputs to the robot controller with runtime monitoring and safety checks
+- [x] **Beginner tutorial:** [recording-to-inference guide](#beginner-path-recording-to-deployment), including environment setup, terminal commands, expected outputs, troubleshooting and safety instructions; users provide their own compatible G1 model, recordings and hardware.
 
 > [!NOTE]
 > Due to data licensing, privacy and institutional policy constraints, the full pretraining and HumanVerse mid-training datasets are not publicly released at this time. The Stage I and II code and configurations are provided as a reference for the training recipe.

@@ -32,9 +32,10 @@ source .venv-robot-data/bin/activate
 python -m pip install -e 'data_collection/robot[export]'
 ```
 
-Run the existing offline/loopback tests in this export environment (no robot required):
+Run the offline/loopback tests in this environment after installing the camera extra required by the camera tests (no robot required):
 
 ```bash
+python -m pip install -e 'data_collection/robot[camera]'
 python -m unittest discover -s data_collection/robot/tests -v
 ```
 

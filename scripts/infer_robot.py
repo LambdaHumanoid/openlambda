@@ -797,8 +797,15 @@ class ControllerProcess:
                 "Controller executable does not match the selected binary"
             )
         args = (self.root / "cmdline").read_bytes().decode().strip("\0").split("\0")
-        if "--external-token-override" not in args:
-            raise RuntimeError("Controller is not explicitly in external-token mode")
+        environment = (self.root / "environ").read_bytes().split(b"\0")
+        if b"OPENLAMBDA_RUNTIME=1" not in environment:
+            raise RuntimeError("Controller public runtime adapter is not explicitly enabled")
+        if any(
+            arg == name or arg.startswith(name + "=")
+            for arg in args
+            for name in ("--encoder-file", "--planner-file")
+        ):
+            raise RuntimeError("Public runtime requires external decoder mode without encoder/planner")
 
         def flag(name):
             for i, arg in enumerate(args):
@@ -808,8 +815,10 @@ class ControllerProcess:
                     return arg.split("=", 1)[1]
             return None
 
-        if flag("--bridge-host") != self.robot_ip:
+        if flag("--zmq-robot-ip") != self.robot_ip:
             raise RuntimeError("Controller robot address mismatch")
+        if flag("--hand-type") != "none":
+            raise RuntimeError("SONIC hand output must be disabled; the normalized-STARK adapter owns hands")
         # /proc/stat's comm field can contain spaces: starttime is field 22.
         return (self.root / "stat").read_text().rsplit(")", 1)[1].split()[19]
 
