@@ -208,7 +208,7 @@ def action_chunk(value, horizon=50):
         raise ValueError(f"Expected a finite [{horizon},76] action chunk")
     if np.max(np.abs(array[:, :64])) > 1.25:
         raise ValueError("SONIC token exceeds runtime limit 1.25")
-    # Preserve production Lambda0 hand clamping, with diagnostics before modification.
+    # Preserve Lambda0 hand clamping, with diagnostics before modification.
     array = array.copy()
     hands = array[:, 64:]
     info = {

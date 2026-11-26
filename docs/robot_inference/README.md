@@ -34,7 +34,7 @@ The checkpoint path, normalization dataset and inference settings must agree wit
 
 ## Terminal runtime entry points
 
-The [step-by-step tutorial](tutorial.zh-CN.md#6-实时预览与显式执行) labels which commands run on G1 versus the Linux SONIC host. The model remains the existing `lambda0 serve`; no web console is required.
+The [step-by-step tutorial](tutorial.zh-CN.md#6-实时预览与显式执行) labels which commands run on G1 versus the Linux SONIC host. The model remains the existing `lambda0 serve` CLI.
 
 | Component | Terminal entry point | Boundary |
 | --- | --- | --- |
@@ -76,7 +76,7 @@ python -m pip install -r scripts/requirements-robot-inference.txt
 cp configs/robot_inference/lambda0_g1.json configs/robot_inference/local.json
 ```
 
-Obtain a real compatible checkpoint, processor and checkpoint-bound normalizer before starting `lambda0 serve`: its dataset must be present in the checkpoint's `data_bundle/manifest.json`, with the correct embodiment ID and action space 2. The public Stage II weights alone are not a validated task-specific deployment package. Keep RTC disabled. The [beginner tutorial](tutorial.zh-CN.md#3-核对真实模型资产) explains these asset requirements and the server command.
+Obtain a real compatible checkpoint, processor and checkpoint-bound normalizer before starting `lambda0 serve`: its dataset must be present in the checkpoint's `data_bundle/manifest.json`, with the correct embodiment ID and action space 2. The public pretrained weights alone are not a validated task-specific deployment package. Keep RTC disabled. The [beginner tutorial](tutorial.zh-CN.md#3-核对真实模型资产) explains these asset requirements and the server command.
 
 ```bash
 python scripts/infer_robot.py --config configs/robot_inference/local.json check

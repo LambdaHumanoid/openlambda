@@ -1,19 +1,23 @@
 {
   "handover": {
     "env": "simple/G1WholebodyHandoverTeleop-v0",
-    "backend": "amo",
-    "policy": "openlambda_amo",
-    "eval_module": "simple.cli.eval",
+    "backend": "decoupled_wbc",
+    "policy": "openlambda_decoupled_wbc",
+    "eval_module": "simple.cli.eval_decoupled_wbc",
     "normalization_dataset": "psi_simple_task_00",
-    "normalization": "normalization/handover.json"
+    "normalization": "normalization/handover.json",
+    "default_success_criteria": 0.7,
+    "default_action_horizon": 20
   },
   "xmove_pick": {
     "env": "simple/G1WholebodyXMovePickTeleop-v0",
-    "backend": "amo",
-    "policy": "openlambda_amo",
-    "eval_module": "simple.cli.eval",
+    "backend": "decoupled_wbc",
+    "policy": "openlambda_decoupled_wbc",
+    "eval_module": "simple.cli.eval_decoupled_wbc",
     "normalization_dataset": "psi_simple_task_03",
-    "normalization": "normalization/xmove_pick.json"
+    "normalization": "normalization/xmove_pick.json",
+    "default_success_criteria": 0.7,
+    "default_action_horizon": 20
   },
   "bend_pick": {
     "env": "simple/G1WholebodyBendPickMP-v0",
@@ -21,7 +25,8 @@
     "policy": "openlambda_amo",
     "eval_module": "simple.cli.eval",
     "normalization_dataset": "psi_simple_task_01",
-    "normalization": "normalization/bend_pick.json"
+    "normalization": "normalization/bend_pick.json",
+    "default_success_criteria": 0.9
   },
   "tabletop_grasp": {
     "env": "simple/G1WholebodyTabletopGraspMP-v0",
@@ -29,22 +34,27 @@
     "policy": "openlambda_amo",
     "eval_module": "simple.cli.eval",
     "normalization_dataset": "psi_simple_task_02",
-    "normalization": "normalization/tabletop_grasp.json"
+    "normalization": "normalization/tabletop_grasp.json",
+    "default_success_criteria": 0.9
   },
   "xmove_bend_pick": {
     "env": "simple/G1WholebodyXMoveBendPickTeleop-v0",
-    "backend": "amo",
-    "policy": "openlambda_amo",
-    "eval_module": "simple.cli.eval",
+    "backend": "decoupled_wbc",
+    "policy": "openlambda_decoupled_wbc",
+    "eval_module": "simple.cli.eval_decoupled_wbc",
     "normalization_dataset": "psi_simple_task_11",
-    "normalization": "normalization/xmove_bend_pick.json"
+    "normalization": "normalization/xmove_bend_pick.json",
+    "default_success_criteria": 0.7,
+    "default_action_horizon": 20
   },
   "mobile_pick_place": {
     "env": "simple/G1WholebodyLocomotionPickBetweenTablesTeleop-v0",
-    "backend": "amo",
-    "policy": "openlambda_amo",
-    "eval_module": "simple.cli.eval",
+    "backend": "decoupled_wbc",
+    "policy": "openlambda_decoupled_wbc",
+    "eval_module": "simple.cli.eval_decoupled_wbc",
     "normalization_dataset": "psi_simple_task_10",
-    "normalization": "normalization/mobile_pick_place.json"
+    "normalization": "normalization/mobile_pick_place.json",
+    "default_success_criteria": 0.4,
+    "default_action_horizon": 20
   }
 }

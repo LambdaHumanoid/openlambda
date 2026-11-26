@@ -50,8 +50,12 @@ def parse_args(tasks: dict) -> argparse.Namespace:
     )
     parser.add_argument("--output", required=True, type=Path, help="New output directory; must not exist")
     parser.add_argument(
-        "--success-criteria", type=float, default=0.9,
-        help="AMO evaluation success threshold (default: 0.9)",
+        "--success-criteria", type=float, default=None,
+        help="Evaluation success threshold (omitted uses task default from tasks.json)",
+    )
+    parser.add_argument(
+        "--action-horizon", type=positive_int, default=None,
+        help="Action chunk execution horizon override (omitted uses task/policy default)",
     )
     parser.add_argument(
         "--max-episode-steps", type=positive_int,
@@ -69,7 +73,7 @@ def parse_args(tasks: dict) -> argparse.Namespace:
     args = parser.parse_args()
     if args.port > 65535:
         parser.error("--port must be at most 65535")
-    if not 0 <= args.success_criteria <= 1:
+    if args.success_criteria is not None and not 0 <= args.success_criteria <= 1:
         parser.error("--success-criteria must be between 0 and 1")
     return args
 
@@ -185,6 +189,16 @@ def run(args: argparse.Namespace, tasks: dict) -> int:
             f"exceed dataset size {total_episodes}"
         )
     health = check_health(args.host, args.port, task["normalization_dataset"])
+    success_criteria = (
+        args.success_criteria
+        if args.success_criteria is not None
+        else task.get("default_success_criteria", 0.9)
+    )
+    action_horizon = (
+        args.action_horizon
+        if args.action_horizon is not None
+        else task.get("default_action_horizon")
+    )
     selection = {
         **task,
         "task": args.task,
@@ -194,6 +208,8 @@ def run(args: argparse.Namespace, tasks: dict) -> int:
         "episode_start": args.episode_start,
         "num_episodes": args.num_episodes,
         "dataset_total_episodes": total_episodes,
+        "success_criteria": success_criteria,
+        "action_horizon": action_horizon,
         "save_video": args.save_video,
     }
     config = {
@@ -210,7 +226,7 @@ def run(args: argparse.Namespace, tasks: dict) -> int:
         "num_episodes": args.num_episodes,
         "episode_start": args.episode_start,
         "data_dir": str(data_root),
-        "success_criteria": args.success_criteria,
+        "success_criteria": success_criteria,
         "save_video": args.save_video,
         "num_workers": args.num_workers,
     }
@@ -219,17 +235,26 @@ def run(args: argparse.Namespace, tasks: dict) -> int:
     if environment.get("PYTHONPATH"):
         python_paths.append(environment["PYTHONPATH"])
     environment["PYTHONPATH"] = os.pathsep.join(python_paths)
+    if action_horizon is not None:
+        environment["SIMPLE_ACTION_HORIZON"] = str(action_horizon)
+    if task["backend"] == "decoupled_wbc":
+        environment.setdefault("SIMPLE_CLOCK_MODE", "sim_step")
+        environment.setdefault("SIMPLE_HEIGHT_SNAP", "1")
+        environment.setdefault("SIMPLE_STATE_MODE", "measured")
+        environment.setdefault("SIMPLE_LOSSLESS_PNG", "1")
     protocol = {
         "schema_version": 1,
         "protocol_name": "openlambda_simple_native_evaluator",
         "protocol_note": (
             "Explicit integration settings, not a claim of historical baseline reproduction. "
             "The installed SIMPLE revision and local modifications determine native behavior. "
-            "LeRobot input, headless mode, and success threshold 0.9 are "
-            "integration defaults for the original AMO tasks. A null step limit "
+            "LeRobot input, headless mode, and task-specific success thresholds are integration "
+            "defaults for the six SIMPLE tasks (AMO for bend_pick/tabletop_grasp; decoupled_wbc "
+            "for handover/xmove_pick/xmove_bend_pick/mobile_pick_place). A null step limit "
             "delegates to native task metadata, not EvalConfig's 15000-step default. "
             "The supplied data-root selects the dataset; level labels the native split."
         ),
+        "backend": task["backend"],
         "eval_module": task["eval_module"],
         "entrypoint": "run_eval(EvalConfig(**config))",
         "config": config,
@@ -241,6 +266,8 @@ def run(args: argparse.Namespace, tasks: dict) -> int:
             for key in (
                 "CUDA_VISIBLE_DEVICES", "NVIDIA_VISIBLE_DEVICES", "MUJOCO_GL",
                 "MUJOCO_EGL_DEVICE_ID", "VK_ICD_FILENAMES", "SIMPLE_DISABLE_TUI",
+                "SIMPLE_ACTION_HORIZON", "SIMPLE_CLOCK_MODE", "SIMPLE_HEIGHT_SNAP",
+                "SIMPLE_STATE_MODE", "SIMPLE_LOSSLESS_PNG",
             )
             if key in environment
         },

@@ -84,7 +84,7 @@ HTTP、ZMQ 和签名消息的字段定义见[运行时接口](interfaces.md)。
 
 ## 4. 配置参数
 
-完整示例见 [`configs/lambda0_g1.json`](../../configs/robot_inference/lambda0_g1.json)。所有配置地址均要求使用本机回环地址；跨机器服务需通过本地转发接入。SONIC 数据使用工作站单调时钟，不能仅通过端口转发将远端 SONIC 数据视为本机时钟。
+完整示例见 [`configs/robot_inference/lambda0_g1.json`](../../configs/robot_inference/lambda0_g1.json)。所有配置地址均要求使用本机回环地址；跨机器服务需通过本地转发接入。SONIC 数据使用工作站单调时钟，不能仅通过端口转发将远端 SONIC 数据视为本机时钟。
 
 | 参数 | 含义及约束 |
 | --- | --- |
@@ -254,4 +254,4 @@ NPZ 的状态键以 `state.` 开头，动作键以 `action.` 开头。例如 `st
 
 接入其他模型时，在模型适配器中定义输入字段、预处理和动作规格。接入其他低层控制器时，在控制器适配器中实现初始化、动作映射、调度及退出处理。多相机输入需要数据源提供时间对齐后的命名图像，并由支持多视角的模型适配器消费。
 
-当前完成了模拟服务和合成观测检查，尚未完成该重构版本的真实 checkpoint 推理与真机验证。
+已完成真实 G1 checkpoint 离线预测、Linux SONIC 构建与相机输入检查；完整验证边界见 [README.md](README.md#verification-boundary)。真机闭环执行前请在现场完成硬件安全与急停验收。

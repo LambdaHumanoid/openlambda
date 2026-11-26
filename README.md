@@ -11,11 +11,12 @@
   <a href="https://lambdahumanoid.github.io/"><img src="https://img.shields.io/badge/Project-Page-6950C8" alt="Project Page"></a>
   <a href="https://huggingface.co/papers/2610.18950"><img src="https://img.shields.io/badge/Hugging_Face-Paper-FFD21E" alt="Hugging Face Paper"></a>
   <a href="https://lambdahumanoid.github.io/#report-video"><img src="https://img.shields.io/badge/Video-Demo-2563EB" alt="Video Demo"></a>
-  <br>
-  <a href="https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k"><img src="https://img.shields.io/badge/🤗_Model-Stage_II_checkpoint-FFD21E" alt="Stage II checkpoint"></a>
-  <a href="https://huggingface.co/spaces/lambda-humanoid/HumanVerse-500-Viewer"><img src="https://img.shields.io/badge/🤗_Space-HumanVerse_viewer-FFD21E" alt="HumanVerse viewer"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-Apache_2.0-3DA639" alt="License: Apache 2.0"></a>
-  <img src="https://img.shields.io/badge/Python-3.11_|_3.12-3776AB" alt="Python 3.11 | 3.12">
+  <br>
+  <a href="https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k"><img src="https://img.shields.io/badge/🤗_Model-Pretrained_checkpoint-FFD21E" alt="Pretrained checkpoint"></a>
+  <a href="https://huggingface.co/lambda-humanoid/lambda0-simple-checkpoints"><img src="https://img.shields.io/badge/🤗_Model-SIMPLE_checkpoints-FFD21E" alt="SIMPLE checkpoints"></a>
+  <a href="https://huggingface.co/datasets/lambda-humanoid/lambda0-simple-eval-docker"><img src="https://img.shields.io/badge/🤗_Docker-SIMPLE_eval-FFD21E" alt="SIMPLE evaluation Docker"></a>
+  <a href="https://huggingface.co/spaces/lambda-humanoid/HumanVerse-500-Viewer"><img src="https://img.shields.io/badge/🤗_Space-HumanVerse_viewer-FFD21E" alt="HumanVerse viewer"></a>
 </p>
 
 <p align="center">
@@ -32,7 +33,7 @@
 <a id="abstract"></a>
 <div align="center">
 
-*$\lambda_{\mathit{0}}$ learns whole-body humanoid loco-manipulation from everyday human experience.*
+*λ₀ learns whole-body humanoid loco-manipulation from everyday human experience.*
 
 </div>
 
@@ -46,6 +47,7 @@
 
 ## News
 
+- **`2026.11.26`** 🤗 We release the six-task **[SIMPLE checkpoints](https://huggingface.co/lambda-humanoid/lambda0-simple-checkpoints)** and prebuilt **[SIMPLE evaluation Docker image](https://huggingface.co/datasets/lambda-humanoid/lambda0-simple-eval-docker)**. See the [SIMPLE evaluation guide](docs/simple_evaluation.md) to get started.
 - **`2026.11.11`** 🚀 We release **[OnboardMimic](https://github.com/LambdaHumanoid/OnboardMimic)**, an onboard WBC platform that brings **SONIC directly to Unitree G1’s Jetson**.
 - **`2026.10.27`** 🤖 Real-robot demonstration collection for Unitree G1 is released. See the [collection guide](data_collection/robot/README.md) ([中文教程](data_collection/robot/docs/tutorial.zh-CN.md)).
 - **`2026.10.21`** 🤗 The λ₀ report is featured in [Hugging Face Daily Papers](https://huggingface.co/papers/2610.18950).
@@ -133,7 +135,9 @@ See the [project page](https://lambdahumanoid.github.io/) and the [report](https
 
 | Resource | Description | Link |
 | :--- | :--- | :--- |
-| Stage II checkpoint | λ₀ after 100k mid-training updates, used to initialize the Stage III example | [🤗 lambda0-midtrain-100k](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k) |
+| Pretrained checkpoint | λ₀ after 100k mid-training updates, used to initialize the Stage III example | [🤗 lambda0-midtrain-100k](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k) |
+| SIMPLE checkpoints | Six task-specific λ₀ checkpoints for the SIMPLE core benchmark | [🤗 lambda0-simple-checkpoints](https://huggingface.co/lambda-humanoid/lambda0-simple-checkpoints) |
+| SIMPLE evaluation Docker | Prebuilt SIMPLE evaluation runtime image (`lambda0-simple-eval:v1`) | [🤗 lambda0-simple-eval-docker](https://huggingface.co/datasets/lambda-humanoid/lambda0-simple-eval-docker) |
 | HumanVerse viewer | Browse 20 HumanVerse excerpts with egocentric RGB video and SMPL body and hand motion | [🤗 HumanVerse-500-Viewer](https://huggingface.co/spaces/lambda-humanoid/HumanVerse-500-Viewer) |
 | Alignment examples | Four trajectories with data, reports and replay videos | [examples](data_collection/human/data_alignment/examples) · [v0.1.1 release](https://github.com/LambdaHumanoid/openlambda/releases/tag/v0.1.1) |
 | Visual alignment examples | Three recordings with four-stage previews and synchronized motion | [Examples](#vision-alignment) |
@@ -151,6 +155,7 @@ cd openlambda
 | Task | Guide |
 | :--- | :--- |
 | Train λ₀ | [Model setup](#lambda0-install) |
+| Evaluate λ₀ on SIMPLE | [SIMPLE evaluation guide](docs/simple_evaluation.md) |
 | Collect real-robot demonstrations | [G1 recorder and tutorial](data_collection/robot/README.md) |
 | Run G1 policy inference from a terminal | [Inference overview](docs/robot_inference/README.md) · [中文入门教程](docs/robot_inference/tutorial.zh-CN.md) |
 | Collect human data | [Hardware](#human-data-collection-hardware) → [Environment](#human-collection-environment) → [Recording](#human-data-collection) |
@@ -167,7 +172,7 @@ Follow these stages in order; do not begin with robot execution.
 4. **Run local offline inference:** obtain a compatible checkpoint, processor and checkpoint-bound normalization bundle, start the existing `lambda0 serve`, then use [`check` and `predict`](docs/robot_inference/tutorial.zh-CN.md#4-用一份-json-连接同一个模型服务). This reads a recorded frame and saves predictions without publishing robot actions.
 5. **Initialize the base controller deliberately, preview, then execute the policy:** follow the [terminal runtime guide](docs/robot_inference/tutorial.zh-CN.md#6-实时预览与显式执行). After offline prediction and camera/hand readiness checks, fresh SONIC startup requires an explicit physical controller initialization before live preview: `g1_debug` is only published in CONTROL, not WAIT_FOR_CONTROL. `run` then previews without publishing VLA actions, although the base controller is already active; only `run --execute` requests policy execution after controller, hand-unit and initial-pose gates. Know the [three different meanings of stop](docs/robot_inference/tutorial.zh-CN.md#7-三种停止不可混为一谈).
 
-This guide covers the released tools and commands, not a turnkey hardware deployment. [Real G1 checkpoint inference on a recorded held-out frame has passed](docs/robot_inference/README.md#verification-boundary). Users supply their own authorized G1 task checkpoint, recording and hardware environment; the public SIMPLE checkpoint uses a different action contract and cannot substitute for a G1 SONIC task checkpoint. Full hardware validation and publication of the private G1 example are outside this code-and-documentation release.
+This guide covers the released tools and commands, not a turnkey hardware deployment. [Real G1 checkpoint inference on a recorded frame has passed](docs/robot_inference/README.md#verification-boundary). Users supply their own G1 task checkpoint, recording and hardware environment; the public SIMPLE checkpoints use a different action contract and cannot substitute for a G1 SONIC task checkpoint. Full on-robot hardware validation is outside this code-and-documentation release.
 
 <a id="model-training"></a>
 
@@ -203,7 +208,7 @@ Optional extras: `bash scripts/install.sh serve,tracking` enables HTTP inference
 | II · Mid-training | `configs/lambda0/midtrain/data.example.json` | `configs/lambda0/midtrain/train.json` |
 | III · Post-training | `configs/lambda0/posttrain/data.example.json` | `configs/lambda0/posttrain/train.json` |
 
-The Stage III example initializes from the raw weights in the [Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k). Set `STAGE2_CHECKPOINT_DIR` to its downloaded directory.
+The Stage III example initializes from the raw weights in the [pretrained checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k). Set `STAGE2_CHECKPOINT_DIR` to its downloaded directory.
 
 From the repository root, set the paths required by the selected config, then prepare data and validate it (Stage I example). Relative paths in JSON configs resolve from the config file; command-line paths resolve from the current working directory:
 
@@ -672,7 +677,7 @@ Results are saved under `results/{task_name}/`: `aligned.mp4` contains the align
 
 `python scripts/serve.py` (also `lambda0 serve`) takes camera observations, language instructions, and proprioceptive state, and returns actions for the checkpoint's configured action space. It does not send actuator commands. Motion-level simulation replay is available under [Action alignment](#action-alignment).
 
-For the six original AMO-based SIMPLE core tasks, use [`scripts/eval_simple.py`](scripts/eval_simple.py) in the simulation environment with the existing HTTP server. The [SIMPLE evaluation guide](docs/simple_evaluation.md) covers checkpoint requirements, task-specific normalization, the AMO adapter, evaluation settings and result validation.
+For the six SIMPLE core tasks, use [`scripts/eval_simple.py`](scripts/eval_simple.py) with the prebuilt [SIMPLE evaluation Docker image](https://huggingface.co/datasets/lambda-humanoid/lambda0-simple-eval-docker) and the [six-task SIMPLE checkpoints](https://huggingface.co/lambda-humanoid/lambda0-simple-checkpoints). The [SIMPLE evaluation guide](docs/simple_evaluation.md) covers checkpoint setup, Docker usage, task-specific normalization, evaluation settings and result validation.
 
 For G1/Revo2, use the terminal-only [`scripts/infer_robot.py`](scripts/infer_robot.py) client with the existing model service and [`configs/robot_inference/lambda0_g1.json`](configs/robot_inference/lambda0_g1.json). Start with [offline inference, live preview and explicit execution](docs/robot_inference/README.md), or the [Chinese beginner tutorial](docs/robot_inference/tutorial.zh-CN.md). SONIC, hardware SDKs and weights remain external, separately licensed dependencies; local protocol checks are not evidence of safe physical operation.
 
@@ -688,7 +693,7 @@ This checklist covers the code, model assets and documentation included in this 
 
 - [x] Human data collection, synchronization and motion alignment
 - [x] Real-robot demonstration recording on G1
-- [x] Stage II checkpoint on Hugging Face
+- [x] Pretrained checkpoint on Hugging Face
 - [x] HumanVerse sample data on Hugging Face
 - [x] **Hardware guides:** assembly, calibration, connectivity checks and troubleshooting for the human and robot setups
 - [x] Visual alignment with SAM 3.1, background inpainting and G1 arm rendering

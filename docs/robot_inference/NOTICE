@@ -1,10 +1,8 @@
 OpenLambda robot inference
 
-The observation alignment, Lambda0 preprocessing, hand-target clamping,
-signed action envelope and runtime attachment logic are adapted from the
-lambda0-inference deployment workspace. This extraction removes model registry,
-web console, task-specific configuration and automatic service deployment,
-and uses the public lambda0 serve API for model loading and prediction.
+This module provides observation alignment, Lambda0 preprocessing, hand-target
+clamping, a signed action envelope and terminal runtime integration, using the
+public lambda0 serve API for model loading and prediction.
 
 The terminal runtime, normalized-STARK hand adapter and optional runtime header
 are original OpenLambda integrations. The additional SONIC patch inserts minimal

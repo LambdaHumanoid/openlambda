@@ -92,8 +92,14 @@ class OpenlambdaAmoAgent(PrimitiveAgent):
             )
             pred_action = validate_action_chunk(pred_action)
             self._reset_history = False
-            # Execute the complete native model chunk, including upsampling.
-            for action in pred_action:
+            horizon_env = os.environ.get("SIMPLE_ACTION_HORIZON")
+            steps_to_queue = (
+                min(int(pred_action.shape[0]), int(horizon_env))
+                if horizon_env and int(horizon_env) > 0
+                else int(pred_action.shape[0])
+            )
+            # Execute the configured action horizon (full chunk by default), including upsampling.
+            for action in pred_action[:steps_to_queue]:
                 for _ in range(self.upsample_factor):
                     command = [
                         action[32],  # vx

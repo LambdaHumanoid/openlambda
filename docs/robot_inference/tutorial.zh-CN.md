@@ -1,6 +1,6 @@
 # 从一段示范到 G1 终端推理
 
-这篇教程介绍如何在 G1 上运行 Lambda0：先用一段录制数据测试模型，再接入相机和机器人，最后运行策略。全程使用终端，不需要网页控制台。
+这篇教程介绍如何在 G1 上运行 Lambda0：先用一段录制数据测试模型，再接入相机和机器人，最后运行策略。全程通过终端命令运行。
 
 目前已用真实 G1 权重和一帧录制数据跑通离线预测，Linux SONIC 构建和相机输入检查也已通过；[验收记录](README.md#verification-boundary)列出了所用资产和结果。真机闭环仍未验收，所用 G1 模型与示范也还不是公开下载包。第一次上机请安排熟悉 G1 的人员在场，确认机器人支撑、活动范围和物理急停。后文会标出开始控制机器人的步骤。
 
@@ -85,7 +85,7 @@ lambda0 prepare --source-config configs/lambda0/posttrain/data.example.json \
 - 训练时使用的 normalization JSON，其 `dataset_name` 必须被 checkpoint 的 manifest 收录，且 action space 与本次 G1 一致。
 - 数据集对应的 embodiment ID，以及 44D state / 76D action 的定义和手部单位。配置示例中的 `embodiment_id: 0` 需要按模型修改。
 
-[公开 Stage II checkpoint](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k)尚不是经过真机验证的任务部署包。本文需要与你的任务、机器人配置及归一化统计匹配的权重；SIMPLE/AMO 使用另一套动作空间，不能混用。
+[公开预训练权重](https://huggingface.co/lambda-humanoid/lambda0-midtrain-100k)尚不是经过真机验证的任务部署包。本文需要与你的任务、机器人配置及归一化统计匹配的权重；SIMPLE 使用另一套动作空间，不能混用。
 
 <a id="4-用一份-json-连接同一个模型服务"></a>
 
@@ -151,6 +151,20 @@ python scripts/infer_robot.py --config configs/robot_inference/local.json predic
 ## 6. 实时预览与显式执行
 
 下面接入相机、双手和 SONIC。全部安装完成后再标定相机时钟，避免构建期间标定文件过期。首次启动需要先初始化底层控制器，再进行实时预览。
+
+本节涉及多个常驻终端，先对照下表分清所在机器和端口（按从上到下的顺序启动）：
+
+| 所在机器 | 进程 / 命令 | 端口 | 作用 |
+| --- | --- | --- | --- |
+| G1 机载 | `lambda-robot-hand-telemetry` | `18560` | 只读手部关节反馈 |
+| G1 机载 | `eh2-gopro-relay` → `live_camera capture` | `18554` → `5558` | GoPro 视频流解码并打 G1 时间戳 |
+| G1 机载 | `scripts/robot_hands.py serve` | `18561` | 灵巧手命令执行适配器（`--allow-actuation` 后生效） |
+| G1 机载 | `eh2-robot-bridge --enable-control` | `5560` / `5561` | G1 身体底层状态与控制桥 |
+| 工作站 | SSH 端口转发（至 G1） | `5558`、`18560`、`18561` | 将 G1 相机与手部端口映射回工作站本机 |
+| 工作站 | `live_camera publish` | `5559` | 发布映射到工作站时钟域的相机流 |
+| 工作站 | `g1_deploy_onnx_ref`（SONIC） | `5656` / `5657` / `5686` | 全身底层控制器 |
+| 工作站 | `scripts/robot_runtime.py serve` | `5683` / `5684` | 签名动作路由器与安全看门狗 |
+| 工作站 | `lambda0 serve` + `scripts/infer_robot.py` | `8010` | 模型推理服务与主控推理客户端 |
 
 ### 6.1 接入真实相机和手部反馈
 

@@ -52,23 +52,38 @@ def environment_spec(env_id: str):
     return gym.spec(env_id)
 
 
+BACKEND_ENTRY_POINTS = {
+    "amo": "simple.envs.loco_manipulation:LocoManipulationEnv",
+    "decoupled_wbc": "simple.envs.sonic_loco_manip:SonicLocoManipEnv",
+}
+
+
+def validate_environment_backend(env_id: str, entry_point: str, backend: str) -> None:
+    if backend not in BACKEND_ENTRY_POINTS:
+        raise ValueError(
+            f"Unsupported SIMPLE backend {backend!r}; expected one of {sorted(BACKEND_ENTRY_POINTS)}."
+        )
+    expected = BACKEND_ENTRY_POINTS[backend]
+    if entry_point != expected:
+        raise RuntimeError(
+            f"{env_id} uses {entry_point}, expected {expected} for backend {backend!r}. "
+            "Use the matching SIMPLE revision and task backend."
+        )
+
+
 def main() -> None:
     protocol_path = Path(sys.argv[1])
     protocol = json.loads(protocol_path.read_text())
     module_name = protocol["eval_module"]
+    backend = protocol.get("backend", "amo")
     protocol["native"] = native_provenance(module_name)
     spec = environment_spec(protocol["config"]["env_id"])
     protocol["native"]["environment_entry_point"] = spec.entry_point
     protocol["native"]["environment_kwargs"] = spec.kwargs
     protocol_path.write_text(json.dumps(protocol, indent=2, sort_keys=True) + "\n")
-    if spec.entry_point != "simple.envs.loco_manipulation:LocoManipulationEnv":
-        raise RuntimeError(
-            f"{spec.id} uses {spec.entry_point}, not the native AMO environment. "
-            "Use the matching AMO SIMPLE revision; changing the robot or evaluator "
-            "does not convert a different task/controller protocol to AMO."
-        )
+    validate_environment_backend(spec.id, spec.entry_point, backend)
 
-    # Use the public AMO evaluator; policies are discovered by module name.
+    # Use the public SIMPLE evaluator; policies are discovered by module name.
     evaluator = importlib.import_module(module_name)
     from simple.evals.api import EvalConfig
 
