@@ -48,6 +48,7 @@
 ## News
 
 - **`2026.11.26`** 🤗 We release the six-task **[SIMPLE checkpoints](https://huggingface.co/lambda-humanoid/lambda0-simple-checkpoints)** and prebuilt **[SIMPLE evaluation Docker image](https://huggingface.co/datasets/lambda-humanoid/lambda0-simple-eval-docker)**. See the [SIMPLE evaluation guide](docs/simple_evaluation.md) to get started.
+- **`2026.11.16`** 📖 We release the **Unitree G1 terminal inference runtime and beginner tutorial** (from demonstration recording to policy deployment). See the [inference guide](docs/robot_inference/README.md) ([中文入门教程](docs/robot_inference/tutorial.zh-CN.md)).
 - **`2026.11.11`** 🚀 We release **[OnboardMimic](https://github.com/LambdaHumanoid/OnboardMimic)**, an onboard WBC platform that brings **SONIC directly to Unitree G1’s Jetson**.
 - **`2026.10.27`** 🤖 Real-robot demonstration collection for Unitree G1 is released. See the [collection guide](data_collection/robot/README.md) ([中文教程](data_collection/robot/docs/tutorial.zh-CN.md)).
 - **`2026.10.21`** 🤗 The λ₀ report is featured in [Hugging Face Daily Papers](https://huggingface.co/papers/2610.18950).
